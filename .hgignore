@@ -1,0 +1,10 @@
+syntax: glob
+*.orig
+*.rej
+*~
+*.o
+.DS_Store
+cscope.out
+
+syntax: regexp
+.*\#.*\#$

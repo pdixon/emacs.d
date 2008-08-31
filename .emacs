@@ -39,6 +39,15 @@
 
 ;; Setup for eshell mode
 
+;; Setup for yasnippets
+(require `yasnippet)
+(yas/initialize)
+(yas/load-directory "~/elisp/snippets/")
+
+(add-hook 'org-mode-hook
+          '(lambda ()
+             (make-variable-buffer-local 'yas/trigger-key)
+             (setq yas/trigger-key [tab])))
 
 ;; Create my personal C style.
 (defconst my-c-style
