@@ -4,6 +4,7 @@
 ;;(set-default-font "Monospace-10")
 
 (show-paren-mode 1)
+(setq-default x-stretch-cursor t)
 
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
@@ -40,6 +41,8 @@
 
 ;; Setup for xgtags
 (require 'xgtags)
+
+;; Setup for eshell mode
 
 ;; Setup for yasnippets
 (require `yasnippet)
@@ -153,9 +156,3 @@
  '(column-number-mode t)
  '(org-agenda-files (quote ("~/netdrives/h/org/master.org")))
  '(tool-bar-mode nil))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- )
