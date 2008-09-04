@@ -1,10 +1,12 @@
 (add-to-list 'load-path "~/elisp")
 
 ;; Basic visual customisation
-;;(set-default-font "Monospace-10")
+(set-default-font "Monospace-10")
 (setq-default x-stretch-cursor t)
 
 (require 'mercurial)
+(require 'outline-magic)
+
 
 ;; Setup for ido.el
 (require 'ido)
@@ -12,9 +14,18 @@
 (setq ido-enable-flex-matching t)
 
 ;; Setup for AsciiDoc doc-mode
+(defun my-doc-mode-hook ()
+  (setq outline-regexp "^[=]+")
+  (setq outline-promotion-headings
+	'("=" "==" "===" "===="))
+  (outline-minor-mode 1))
+
 (require 'doc-mode)
 (add-to-list 'auto-mode-alist '("\\.adoc$" . doc-mode))
 (autoload 'doc-mode "doc-mode")
+(add-hook 'doc-mode-hook 'my-doc-mode-hook)
+
+
 
 ;; Setup for Org
 ;(require 'org)
