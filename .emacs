@@ -2,8 +2,12 @@
 
 ;; Basic visual customisation
 (set-default-font "Monospace-10")
+
+(show-paren-mode 1)
 (setq-default x-stretch-cursor t)
 
+(autoload 'js2-mode "js2" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (require 'mercurial)
 (require 'outline-magic)
 
