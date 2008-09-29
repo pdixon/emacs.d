@@ -1,16 +1,23 @@
+
+
 (add-to-list 'load-path "~/elisp")
 
 ;; Basic visual customisation
-(set-default-font "Monospace-10")
+;(set-default-font "Monospace-10")
 
 (show-paren-mode 1)
 (setq-default x-stretch-cursor t)
+(put 'dired-find-alternate-file 'disabled nil)
+(fset 'yes-or-no-p 'y-or-n-p)
 
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (require 'mercurial)
 (require 'outline-magic)
 
+;; Setup for better printing
+(require 'printing)
+(pr-update-menus)
 
 ;; Setup for ido.el
 (require 'ido)
@@ -41,7 +48,7 @@
 ;; Setup for Org Remember
 (require 'remember)
 (org-remember-insinuate)
-(setq org-directory "~/netdrives/h/org/")
+(setq org-directory "~/org/")
 (setq org-default-notes-file (concat org-directory "master.org"))
 (define-key global-map "\C-cr" 'org-remember)
 (setq org-remember-templates
@@ -153,10 +160,11 @@
        cur))))
 
 ;; key bindings
-(global-set-key [(control .)] 'tags-search) ;Regex through files in tag table.
-(global-set-key "\C-w" 'backward-kill-word)
-(global-set-key "\C-x\C-k" 'kill-region)
-(global-set-key [(control *)] 'my-search-word-forward)
+(load-file "~/elisp/ergonomic_keybinding_dvorak.el")
+;(global-set-key [(control .)] 'tags-search) ;Regex through files in tag table.
+;(global-set-key "\C-w" 'backward-kill-word)
+;(global-set-key "\C-x\C-k" 'kill-region)
+;(global-set-key [(control *)] 'my-search-word-forward)
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -164,5 +172,17 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(org-agenda-files (quote ("~/netdrives/h/org/master.org")))
+ '(lpr-printer-switch nil)
+ '(org-agenda-files (quote ("~/org/master.org")))
+ '(pr-ps-printer-alist (quote ((default "lpr" nil nil nil))))
+ '(pr-txt-name (quote Engineering_01))
+ '(printer-name "Engineering_01")
+ '(ps-printer-name nil)
+ '(ps-printer-name-option "-P")
  '(tool-bar-mode nil))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
