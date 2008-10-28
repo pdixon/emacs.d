@@ -1,5 +1,3 @@
-
-
 (add-to-list 'load-path "~/elisp")
 
 ;; Basic visual customisation
@@ -70,6 +68,20 @@
           '(lambda ()
              (make-variable-buffer-local 'yas/trigger-key)
              (setq yas/trigger-key [tab])))
+
+;; mail setup
+(require 'smtpmail)
+(setq smtpmail-smtp-server "smtp.gmail.com")
+(setq smtpmail-smtp-service 587)
+(setq smtpmail-starttls-credentials
+      '(("smtp.gmail.com" 587 nil nil)))
+(setq smtpmail-auth-credentials
+      '(("smtp.gmail.com"
+	 587
+	 "phillip.dixon@gmail.com"
+	 nil)))
+(setq message-send-mail-function 'smtpmail-send-it)
+(setq send-mail-function 'smtpmail-send-it)
 
 ;; Create my personal C style.
 (defconst my-c-style
