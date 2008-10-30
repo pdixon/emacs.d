@@ -83,6 +83,13 @@
 (setq message-send-mail-function 'smtpmail-send-it)
 (setq send-mail-function 'smtpmail-send-it)
 
+;; Project Root setup
+(require 'project-root)
+(setq project-roots
+      '(("Hg Hosted Project"
+	 :root-contains-files (".hg")
+	 :on-hit (lambda (p) (message (car p))))))
+
 ;; Create my personal C style.
 (defconst my-c-style
   '((c-basic-offset . 3)
