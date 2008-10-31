@@ -1,8 +1,5 @@
 (add-to-list 'load-path "~/elisp")
 
-;; Basic visual customisation
-;(set-default-font "Monospace-10")
-
 (show-paren-mode 1)
 (setq-default x-stretch-cursor t)
 (put 'dired-find-alternate-file 'disabled nil)
@@ -60,7 +57,7 @@
 ;; Setup for eshell mode
 
 ;; Setup for yasnippets
-(require `yasnippet)
+(require 'yasnippet)
 (yas/initialize)
 (yas/load-directory "~/elisp/snippets/")
 
@@ -184,13 +181,7 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(lpr-printer-switch nil)
  '(org-agenda-files (quote ("~/org/master.org")))
- '(pr-ps-printer-alist (quote ((default "lpr" nil nil nil))))
- '(pr-txt-name (quote Engineering_01))
- '(printer-name "Engineering_01")
- '(ps-printer-name nil)
- '(ps-printer-name-option "-P")
  '(tool-bar-mode nil))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
