@@ -1,8 +1,5 @@
 (add-to-list 'load-path "~/elisp")
 
-;; Basic visual customisation
-;(set-default-font "Monospace-10")
-
 (show-paren-mode 1)
 (setq-default x-stretch-cursor t)
 (put 'dired-find-alternate-file 'disabled nil)
@@ -199,6 +196,9 @@
  '(printer-name "Engineering_01")
  '(ps-printer-name nil)
  '(ps-printer-name-option "-P")
+ '(rst-adornment-faces-alist nil)
+ '(scroll-bar-mode nil)
+ '(show-paren-mode t)
  '(tool-bar-mode nil))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
