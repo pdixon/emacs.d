@@ -6,6 +6,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (defalias 'list-buffers 'ibuffer)
 
+
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (require 'mercurial)
@@ -200,3 +201,10 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  )
+
+(require 'zenburn)
+(unless (zenburn-format-spec-works-p)
+  (zenburn-define-format-spec))
+(require 'color-theme)
+(color-theme-initialize)
+(color-theme-zenburn)
