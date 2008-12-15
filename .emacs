@@ -202,9 +202,11 @@
   ;; If there is more than one, they won't work right.
  )
 
+(put 'dired-find-alternate-file 'disabled nil)
 (require 'zenburn)
 (unless (zenburn-format-spec-works-p)
   (zenburn-define-format-spec))
 (require 'color-theme)
 (color-theme-initialize)
 (color-theme-zenburn)
+

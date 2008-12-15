@@ -30,9 +30,9 @@
 
 (define-derived-mode adoc-mode text-mode "Ascii Doc"
   "Major mode for AsciiDoc files.
-\\{adoc-mode-map}"
-)
+\\{adoc-mode-map}")
 
+(provide 'adoc-mode)
 ;;}}}
 
 ;;; doc-mode.el ends here
