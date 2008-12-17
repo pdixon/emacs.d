@@ -178,11 +178,16 @@ described in PROJECT."
       (when root
         (file-name-as-directory root)))))
 
-(defun project-root-bookmarks (&optional project)
-  "Grab the bookmarks (if any) for PROJECT. If PROJECT is ommited
-then attempt to get the bookmarks for the current project."
+(defun project-root-data (key &optional project)
+  "Grab the value (if any) for key in PROJECT. If PROJECT is
+ommited then attempt to get the value for the current
+project."
   (let ((project (or project project-details)))
-    (plist-get (cdr (assoc (car project) project-roots)) :bookmarks)))
+    (plist-get (cdr (assoc (car project) project-roots)) key)))
+
+(defun project-root-bookmarks (&optional project)
+  "Grab the bookmarks (if any) for PROJECT."
+  (project-root-data :bookmarks project))
 
 (defun project-root-gen-org-url (project)
   ;; The first link to the project root itself
@@ -284,6 +289,7 @@ current-directory."
   "Run BODY with default-directory set to the project root. Error
 if not found. If `project-root' isn't defined then try and find
 one."
+  (declare (indent 2))
   (unless project-details (project-root-fetch))
   `(if (project-root-p)
        (let ((default-directory ,(cdr project-details)))
@@ -336,6 +342,29 @@ then the current project-details are used."
 
 ;;; anything.el config
 
+(defun project-root-anything-colourfy-hits (hits)
+  ;; delete the project-root part
+  (let ((highs (project-root-data :anything-highlight
+                                  anything-project-root)))
+    (mapcar
+     '(lambda (hit)
+       (let ((new (replace-regexp-in-string
+                   (regexp-quote (cdr anything-project-root))
+                   ""
+                   hit)))
+         (when highs
+           (mapc '(lambda (s)
+                   ;; propertize either the first group or the whole
+                   ;; string
+                   (when (string-match (car s) new)
+                     (put-text-property (or (match-beginning 1) 0)
+                                        (or (match-end 1) (length new))
+                                        'face (cdr s)
+                                        new)))
+                 highs))
+         (cons new hit)))
+     hits)))
+
 (defvar project-root-anything-config-files
   '((name . "Project Files")
     (init . (lambda ()
@@ -344,6 +373,7 @@ then the current project-details are used."
               (setq anything-project-root project-details)))
     (candidates . (lambda ()
                     (project-root-file-find-process anything-pattern)))
+    (candidate-transformer . project-root-anything-colourfy-hits)
     (type . file)
     (requires-pattern . 2)
     (volatile)
