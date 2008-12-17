@@ -4,6 +4,8 @@
 (setq-default x-stretch-cursor t)
 (put 'dired-find-alternate-file 'disabled nil)
 (fset 'yes-or-no-p 'y-or-n-p)
+(set-default 'sentence-end-double-space nil)
+
 (defalias 'list-buffers 'ibuffer)
 
 
@@ -20,20 +22,6 @@
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
-
-;; Setup for AsciiDoc doc-mode
-(defun my-doc-mode-hook ()
-  (setq outline-regexp "^[=]+")
-  (setq outline-promotion-headings
-	'("=" "==" "===" "===="))
-  (outline-minor-mode 1))
-
-(require 'doc-mode)
-(add-to-list 'auto-mode-alist '("\\.adoc$" . doc-mode))
-(autoload 'doc-mode "doc-mode")
-(add-hook 'doc-mode-hook 'my-doc-mode-hook)
-
-
 
 ;; Setup for Org
 ;(require 'org)

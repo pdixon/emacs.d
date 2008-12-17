@@ -156,8 +156,12 @@
 (global-set-key (kbd "M-t") 'next-line)
 
 ;; Move by word
-(global-set-key (kbd "M-g") 'backward-word) ; was (prefix)
-(global-set-key (kbd "M-r") 'forward-word)
+(global-set-key (kbd "M-H") 'backward-word) ; was (prefix)
+(global-set-key (kbd "M-N") 'forward-word)
+
+;; Move by paragraph
+(global-set-key (kbd "M-g") 'backward-sentence)
+(global-set-key (kbd "M-r") 'forward-sentence)
 
 ;; Move by paragraph
 (global-set-key (kbd "M-G") 'backward-paragraph)
@@ -172,8 +176,8 @@
 (global-set-key (kbd "M-C") 'scroll-down)
 
 ;; Move to beginning/ending of file
-(global-set-key (kbd "M-H") 'beginning-of-buffer)
-(global-set-key (kbd "M-N") 'end-of-buffer)
+(global-set-key (kbd "M-f") 'beginning-of-buffer)
+(global-set-key (kbd "M-F") 'end-of-buffer)
 
 ;; isearch
 (global-set-key (kbd "M-s") 'isearch-forward)
