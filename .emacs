@@ -4,8 +4,10 @@
 (setq-default x-stretch-cursor t)
 (put 'dired-find-alternate-file 'disabled nil)
 (fset 'yes-or-no-p 'y-or-n-p)
-(defalias 'list-buffers 'ibuffer)
+(set-default 'sentence-end-double-space nil)
+(server-start)
 
+(defalias 'list-buffers 'ibuffer)
 
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
@@ -20,20 +22,6 @@
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
-
-;; Setup for AsciiDoc doc-mode
-(defun my-doc-mode-hook ()
-  (setq outline-regexp "^[=]+")
-  (setq outline-promotion-headings
-	'("=" "==" "===" "===="))
-  (outline-minor-mode 1))
-
-(require 'doc-mode)
-(add-to-list 'auto-mode-alist '("\\.adoc$" . doc-mode))
-(autoload 'doc-mode "doc-mode")
-(add-hook 'doc-mode-hook 'my-doc-mode-hook)
-
-
 
 ;; Setup for Org
 ;(require 'org)
@@ -88,6 +76,72 @@
       '(("Hg Hosted Project"
 	 :root-contains-files (".hg")
 	 :on-hit (lambda (p) (message (car p))))))
+
+(defun anything-project-root-find-files (pattern)
+  (when anything-project-root
+      (start-process-shell-command "project-root-find"
+                                   nil
+                                   "find"
+                                   anything-project-root
+                                   (find-to-string
+                                    `(and (prune (name "*.svn" "*.git" "*.hg"))
+                                          (name ,(concat "*" pattern "*"))
+                                          (type "f"))))))
+
+(defvar anything-c-source-project-files
+  '((name . "Project Files")
+    (init . (lambda ()
+              (unless project-details (project-root-fetch))
+              (setq anything-project-root (cdr project-details))))
+    (candidates . (lambda ()
+                    (anything-project-root-find-files anything-pattern)))
+    (type . file)
+    (requires-pattern . 2)
+    (volatile)
+    (delayed)))
+
+(defvar anything-c-source-occur
+  '((name . "Occur")
+    (init . (lambda ()
+              (setq anything-occur-current-buffer
+                    (current-buffer))))
+    (candidates . (lambda ()
+                    (let ((anything-occur-buffer (get-buffer-create "*Anything Occur*")))
+                      (with-current-buffer anything-occur-buffer
+                        (occur-mode)
+                        (erase-buffer)
+                        (let ((count (occur-engine anything-pattern
+                                                   (list anything-occur-current-buffer) anything-occur-buffer
+                                                   list-matching-lines-default-context-lines case-fold-search
+                                                   list-matching-lines-buffer-name-face
+                                                   nil list-matching-lines-face
+                                                   (not (eq occur-excluded-properties t)))))
+                          (when (> count 0)
+                            (setq next-error-last-buffer anything-occur-buffer)
+                            (cdr (split-string (buffer-string) "\n" t))))))))
+    (action . (("Goto line" . (lambda (candidate)
+                                (with-current-buffer "*Anything Occur*"
+                                  (search-forward candidate))
+                                (goto-line (string-to-number candidate) anything-occur-current-buffer)))))
+    (requires-pattern . 3)
+    (volatile)
+    (delayed)))
+
+
+(require 'anything)
+(require 'anything-config)
+(require 'anything-make)
+(setq anything-sources
+      (list anything-c-source-buffers
+	   ; anything-c-source-filename-history
+	   ; anything-c-source-file-cache
+	    anything-c-source-make-targets
+	    anything-c-source-project-files
+	    anything-c-source-occur
+	    anything-c-source-info-pages
+	    anything-c-source-man-pages
+	    anything-c-source-emacs-commands))
+(global-set-key (kbd "M-X") 'anything)
 
 ;; Create my personal C style.
 (defconst my-c-style
@@ -208,7 +262,6 @@
   ;; If there is more than one, they won't work right.
  )
 
-(put 'dired-find-alternate-file 'disabled nil)
 (require 'zenburn)
 (unless (zenburn-format-spec-works-p)
   (zenburn-define-format-spec))
