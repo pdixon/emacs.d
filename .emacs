@@ -42,16 +42,16 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 
-;; Setup for Org Remember
-(require 'remember)
-(org-remember-insinuate)
+;; ;; Setup for Org Remember
+;; (require 'remember)
+;; (org-remember-insinuate)
 (setq org-directory "~/org/")
 (setq org-default-notes-file (concat org-directory "master.org"))
-(define-key global-map "\C-cr" 'org-remember)
-(setq org-remember-templates
-      '(("Todo" ?t "* TODO %?\n  %i\n  %a" "master.org" "Tasks")
-        ("Journal" ?j "* %U %?\n\n  %i\n  %a" "journal.org")
-        ("Idea" ?i "* %^{Title}\n  %i\n  %a" "master.org" "Ideas")))
+;; (define-key global-map "\C-cr" 'org-remember)
+;; (setq org-remember-templates
+;;       '(("Todo" ?t "* TODO %?\n  %i\n  %a" "master.org" "Tasks")
+;;         ("Journal" ?j "* %U %?\n\n  %i\n  %a" "journal.org")
+;;         ("Idea" ?i "* %^{Title}\n  %i\n  %a" "master.org" "Ideas")))
 
 ;; Setup for xgtags
 (require 'xgtags)
@@ -130,6 +130,12 @@
 		  (auto-fill-mode 1)
 		  (flyspell-mode 1)))
 
+
+(defun my-toggle-fullscreen () 
+  (interactive) 
+  (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen) 
+                                           nil 
+                                           'fullboth)))
 (defun my-kill-word ()
   (interactive)
   (save-excursion
