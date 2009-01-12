@@ -1,3 +1,4 @@
+
 (add-to-list 'load-path "~/elisp")
 
 (show-paren-mode 1)
@@ -29,12 +30,13 @@
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
-
+(setq org-directory "~/org/")
+(setq org-default-notes-file (concat org-directory "master.org"))
+(setq org-use-fast-todo-selection t)
 ;; ;; Setup for Org Remember
 ;; (require 'remember)
 ;; (org-remember-insinuate)
-(setq org-directory "~/org/")
-(setq org-default-notes-file (concat org-directory "master.org"))
+
 ;; (define-key global-map "\C-cr" 'org-remember)
 ;; (setq org-remember-templates
 ;;       '(("Todo" ?t "* TODO %?\n  %i\n  %a" "master.org" "Tasks")
@@ -237,6 +239,27 @@
 	 (match-beginning 0)
        cur))))
 
+(defun my-to-wizard-str-ref ()
+  "Transform the number under the point to Wizard DB string ref.
+   Note current only works for PM databases."
+  (interactive)
+  (skip-chars-backward "0123456789")
+  (or (looking-at "[0123456789]+")
+      (error "No number at point"))
+  (replace-match (number-to-string (+ 8388608 (string-to-number (match-string 0))))))
+(global-set-key "\C-cr" 'my-to-wizard-str-ref)
+
+(defun my-increment ()
+  "Transform the number under the point to Wizard DB string ref.
+   Note current only works for PM databases."
+  (interactive)
+  (skip-chars-backward "0123456789")
+  (or (looking-at "[0123456789]+")
+      (error "No number at point"))
+  (replace-match (number-to-string (+ 1 (string-to-number (match-string 0))))))
+(global-set-key "\C-c+" 'my-increment)
+
+
 ;; key bindings
 (load-file "~/elisp/ergonomic_keybinding_dvorak.el")
 ;(global-set-key [(control .)] 'tags-search) ;Regex through files in tag table.
@@ -250,6 +273,7 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(mediawiki-site-alist (quote (("pensieve" "http://wiki.sw/mediawiki/index.php/Main_Page" "pdixon" ""))))
  '(org-agenda-files (quote ("~/org/master.org")))
  '(rst-adornment-faces-alist nil)
  '(scroll-bar-mode nil)
