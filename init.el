@@ -8,6 +8,7 @@
 
 ;; Load up my config stuff
 (setq tweaks-dir (concat dotfiles-dir "/tweaks"))
+(add-to-list 'load-path tweaks-dir)
 (mapc #'load (directory-files tweaks-dir nil ".*el$"))
 
 ;; load the customize stuff

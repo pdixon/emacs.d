@@ -227,14 +227,23 @@
 ; Mark point.
 (global-set-key (kbd "M-SPC") 'set-mark-command)
 
-(global-set-key (kbd "M-a") 'execute-extended-command)
+(global-set-key (kbd "M-x") 'execute-extended-command)
 (global-set-key (kbd "M-A") 'shell-command)
 
 ;;; WINDOW SPLITING
+(global-set-key (kbd "M-3") 'split-window-horizontally)
 (global-set-key (kbd "M-2") 'split-window-vertically)
 (global-set-key (kbd "M-1") 'delete-other-windows)
 (global-set-key (kbd "M-0") 'delete-window)
 (global-set-key (kbd "M-o") 'other-window) ; was prefix
+
+;; Phil's Bindings
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key "\C-cr" 'my-to-wizard-str-ref)
+(global-set-key "\C-c+" 'my-increment)
+(global-set-key (kbd "M-X") 'anything)
 
 ;;; --------------------------------------------------
 ;;; STANDARD SHORTCUTS
