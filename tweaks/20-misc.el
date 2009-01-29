@@ -7,8 +7,6 @@
 
 (defalias 'list-buffers 'ibuffer)
 
-(autoload 'js2-mode "js2" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (require 'mercurial)
 (require 'outline-magic)
 
@@ -40,18 +38,6 @@
 
 ;; Setup for xgtags
 (require 'xgtags)
-
-;; Setup for eshell mode
-
-;; Setup for yasnippets
-(require 'yasnippet)
-(yas/initialize)
-(yas/load-directory "~/elisp/snippets/")
-
-(add-hook 'org-mode-hook
-          '(lambda ()
-             (make-variable-buffer-local 'yas/trigger-key)
-             (setq yas/trigger-key [tab])))
 
 ;; mail setup
 (require 'smtpmail)
@@ -130,8 +116,6 @@
 (require 'anything-make)
 (setq anything-sources
       (list anything-c-source-buffers
-	   ; anything-c-source-filename-history
-	   ; anything-c-source-file-cache
 	    anything-c-source-make-targets
 	    anything-c-source-project-files
 	    anything-c-source-occur
@@ -141,11 +125,6 @@
 
 
 
-;; Customisation for text mode.
-(add-hook 'text-mode-hook
-	  '(lambda ()
-		  (auto-fill-mode 1)
-		  (flyspell-mode 1)))
 
 ;(global-set-key [(control *)] 'my-search-word-forward)
 
@@ -155,5 +134,5 @@
   (zenburn-define-format-spec))
 (require 'color-theme)
 (color-theme-initialize)
-(color-theme-zenburn)
+; (color-theme-zenburn)
 

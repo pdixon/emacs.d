@@ -5,6 +5,7 @@ syntax: glob
 *.o
 .DS_Store
 cscope.out
+anything-c-adaptive-history
 
 syntax: regexp
 .*\#.*\#$
