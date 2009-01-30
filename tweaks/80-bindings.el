@@ -250,6 +250,7 @@
 (global-set-key (kbd "C-x C-p") 'find-file-at-point)
 (global-set-key (kbd "C-c y") 'bury-buffer)
 ; (global-set-key (kbd "C-c r") 'revert-buffer)
+(global-set-key "\C-x\C-i" 'ido-imenu)
 
 
 ;;; --------------------------------------------------

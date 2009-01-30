@@ -69,6 +69,8 @@
       (error "No number at point"))
   (replace-match (number-to-string (+ 1 (string-to-number (match-string 0))))))
 
+(require 'imenu)
+
 (defun ido-imenu ()
   "Update the imenu index and then use ido to select a symbol to navigate to."
   (interactive)
