@@ -3,9 +3,23 @@
 (put 'dired-find-alternate-file 'disabled nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 (set-default 'sentence-end-double-space nil)
+(setq inhibit-startup-message t)
 (server-start)
 
 (defalias 'list-buffers 'ibuffer)
+
+;; Don't clutter up directories with files~
+(setq backup-directory-alist `(("." . ,(expand-file-name
+                                        (concat dotfiles-dir "backups")))))
+
+;; Transparently open compressed files
+(auto-compression-mode t)
+ 
+;; Enable syntax highlighting for older Emacsen that have it off
+(global-font-lock-mode t)
+ 
+;; Save a list of recent files visited.
+(recentf-mode 1)
 
 (require 'mercurial)
 (require 'outline-magic)
@@ -17,7 +31,8 @@
 ;; Setup for ido.el
 (require 'ido)
 (ido-mode t)
-(setq ido-enable-flex-matching t)
+(setq ido-enable-flex-matching t
+      ido-use-filename-at-point t)
 
 ;; Setup for Org
 ;(require 'org)
