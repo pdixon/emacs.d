@@ -3,9 +3,11 @@ syntax: glob
 *.rej
 *~
 *.o
+*.elc
 .DS_Store
 cscope.out
 anything-c-adaptive-history
+tramp
 
 syntax: regexp
 .*\#.*\#$
