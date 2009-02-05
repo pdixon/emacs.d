@@ -3,6 +3,7 @@
 
 (add-to-list 'load-path dotfiles-dir)
 (add-to-list 'load-path (concat dotfiles-dir "/vendor"))
+(add-to-list 'load-path (concat dotfiles-dir "/vendor/w3m"))
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
 

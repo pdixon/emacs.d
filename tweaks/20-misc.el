@@ -84,13 +84,6 @@
 	 :root-contains-files (".hg")
 	 :on-hit (lambda (p) (message (car p))))))
 
-
-
-
-
-;(global-set-key [(control *)] 'my-search-word-forward)
-
-
 (require 'zenburn)
 (unless (zenburn-format-spec-works-p)
   (zenburn-define-format-spec))

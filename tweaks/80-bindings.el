@@ -243,6 +243,7 @@
 (global-set-key "\C-cb" 'org-iswitchb)
 (global-set-key "\C-cr" 'my-to-wizard-str-ref)
 (global-set-key "\C-c+" 'my-increment)
+(global-set-key [(control *)] 'my-search-word-forward)
 (global-set-key (kbd "M-X") 'anything)
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
 (global-set-key (kbd "C-x C-M-f") 'project-root-find-file)
