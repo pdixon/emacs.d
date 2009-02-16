@@ -34,22 +34,6 @@
 (setq ido-enable-flex-matching t
       ido-use-filename-at-point t)
 
-;; Setup for Org
-;(require 'org)
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-
-(setq org-directory "~/org/")
-(setq org-default-notes-file (concat org-directory "master.org"))
-(setq org-use-fast-todo-selection t)
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states)   ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-
-(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
-
-
-
 ;; ;; Setup for Org Remember
 ;; (require 'remember)
 ;; (org-remember-insinuate)

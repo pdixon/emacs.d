@@ -50,16 +50,6 @@
 	 (match-beginning 0)
        cur))))
 
-(defun my-to-wizard-str-ref ()
-  "Transform the number under the point to Wizard DB string ref.
-   Note current only works for PM databases."
-  (interactive)
-  (skip-chars-backward "0123456789")
-  (or (looking-at "[0123456789]+")
-      (error "No number at point"))
-  (replace-match (number-to-string (+ 8388608 (string-to-number (match-string 0))))))
-
-
 (defun my-increment ()
   "Transform the number under the point to Wizard DB string ref.
    Note current only works for PM databases."
