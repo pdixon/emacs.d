@@ -6,6 +6,9 @@
 (setq inhibit-startup-message t)
 (server-start)
 
+(setq user-mail-address "phil@dixon.gen.nz")
+(setq user-full-name "Phillip Dixon")
+
 (defalias 'list-buffers 'ibuffer)
 
 ;; Don't clutter up directories with files~
@@ -56,8 +59,9 @@
 (setq smtpmail-auth-credentials
       '(("smtp.gmail.com"
 	 587
-	 "phillip.dixon@gmail.com"
+	 "phil@dixon.gen.nz"
 	 nil)))
+
 (setq message-send-mail-function 'smtpmail-send-it)
 (setq send-mail-function 'smtpmail-send-it)
 

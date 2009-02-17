@@ -6,6 +6,7 @@
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/w3m"))
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
+(setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
 
 ;; Load up my config stuff
 (setq tweaks-dir (concat dotfiles-dir "/tweaks"))
