@@ -252,7 +252,7 @@
 (global-set-key (kbd "C-c y") 'bury-buffer)
 ; (global-set-key (kbd "C-c r") 'revert-buffer)
 (global-set-key "\C-x\C-i" 'ido-imenu)
-
+(global-set-key "\C-cr" 'org-remember)
 
 ;;; --------------------------------------------------
 ;;; STANDARD SHORTCUTS

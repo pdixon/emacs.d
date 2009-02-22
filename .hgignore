@@ -8,6 +8,8 @@ syntax: glob
 cscope.out
 anything-c-adaptive-history
 tramp
+.org-id-locations
 
 syntax: regexp
 .*\#.*\#$
+.*\#

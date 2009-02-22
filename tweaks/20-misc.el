@@ -37,15 +37,6 @@
 (setq ido-enable-flex-matching t
       ido-use-filename-at-point t)
 
-;; ;; Setup for Org Remember
-;; (require 'remember)
-;; (org-remember-insinuate)
-
-;; (define-key global-map "\C-cr" 'org-remember)
-;; (setq org-remember-templates
-;;       '(("Todo" ?t "* TODO %?\n  %i\n  %a" "master.org" "Tasks")
-;;         ("Journal" ?j "* %U %?\n\n  %i\n  %a" "journal.org")
-;;         ("Idea" ?i "* %^{Title}\n  %i\n  %a" "master.org" "Ideas")))
 
 ;; Setup for xgtags
 (require 'xgtags)
