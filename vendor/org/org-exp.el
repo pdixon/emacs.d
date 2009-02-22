@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.22b
+;; Version: 6.23
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -653,7 +653,13 @@ settings with <style>...</style> tags."
   :type 'string)
 
 (defcustom org-export-html-toplevel-hlevel 2
-  "The <H> level for level 1 headings in HTML export."
+  "The <H> level for level 1 headings in HTML export.
+This is also important for the classes that will be wrapped around headlines
+and outline structure.  If this variable is 1, the top-level headlines will
+be <h1>, and the corresponding classes will be outline-1, section-number-1,
+and outline-text-1.  If this is 2, all of these will get a 2 instead.
+The default for this variable is 2, because we use <h1> for formatting the
+document title."
   :group 'org-export-html
   :type 'string)
 
@@ -1861,7 +1867,7 @@ from the buffer."
 	   (replace-match ""))))))
 
 (defun org-export-remove-clock-lines ()
-  "Remove timestamps and keywords for export."
+  "Remove clock lines for export."
   (let ((re (concat "^[ \t]*" org-clock-string ".*\n?")))
     (while (re-search-forward re nil t)
       (org-if-unprotected
@@ -2044,7 +2050,7 @@ When it is nil, all comments will be removed."
     (goto-char (point-min))
     (while (re-search-forward re-plain-link nil t)
       (goto-char (1- (match-end 0)))
-      (org-if-unprotected
+      (org-if-unprotected-at (1+ (match-beginning 0))
        (let* ((s (concat (match-string 1) "[[" (match-string 2)
 			 ":" (match-string 3) "]]")))
 	 ;; added 'org-link face to links
@@ -3737,7 +3743,8 @@ lang=\"%s\" xml:lang=\"%s\">
 			    (if (member (match-string 2 line)
 					org-done-keywords)
 				"done" "todo")
-			    "\">" (match-string 2 line)
+			    " " (match-string 2 line)
+			    "\"> " (match-string 2 line)
 			    "</span>" (substring line (match-end 2)))))
 
 	  ;; Does this contain a reference to a footnote?
@@ -4646,12 +4653,16 @@ When TITLE is nil, just close all open levels."
 		(insert "<ul>\n<li>" title "<br/>\n"))))
 	(aset org-levels-open (1- level) t)
 	(setq snumber (org-section-number level))
-	(if (and org-export-with-section-numbers (not body-only))
-	    (setq title (concat snumber " " title)))
 	(setq level (+ level org-export-html-toplevel-hlevel -1))
+	(if (and org-export-with-section-numbers (not body-only))
+	    (setq title (concat
+			 (format "<span class=\"section-number-%d\">%s</span>"
+				 level snumber)
+			 " " title)))
 	(unless (= head-count 1) (insert "\n</div>\n"))
-	(insert (format "\n<div id=\"outline-container-%s\" class=\"outline-%d\">\n<h%d id=\"sec-%s\">%s%s</h%d>\n<div id=\"text-%s\">\n"
-			snumber level level snumber extra-targets title level snumber))
+	(insert (format "\n<div id=\"outline-container-%s\" class=\"outline-%d\">\n<h%d id=\"sec-%s\">%s%s</h%d>\n<div class=\"outline-text-%d\" id=\"text-%s\">\n"
+			snumber level level snumber extra-targets
+			title level level snumber))
 	(org-open-par)))))
 
 (defun org-get-text-property-any (pos prop &optional object)

@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.22b
+;; Version: 6.23
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -108,6 +108,11 @@ We use a macro so that the test can happen at compilation time."
 (defmacro org-if-unprotected-1 (&rest body)
   "Execute BODY if there is no `org-protected' text property at point-1."
   `(unless (get-text-property (1- (point)) 'org-protected)
+     ,@body))
+
+(defmacro org-if-unprotected-at (pos &rest body)
+  "Execute BODY if there is no `org-protected' text property at point-1."
+  `(unless (get-text-property ,pos 'org-protected)
      ,@body))
 
 (defmacro org-with-remote-undo (_buffer &rest _body)

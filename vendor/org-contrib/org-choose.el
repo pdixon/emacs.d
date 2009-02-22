@@ -63,8 +63,9 @@
 ;;;_ , Requires
 
 (require 'org)
-(eval-when-compile
-   (require 'cl))
+;(eval-when-compile
+;   (require 'cl))
+(require 'cl)
 
 ;;;_. Body
 ;;;_ , The variables
@@ -109,7 +110,7 @@ Each entry is an `org-choose-mark-data.'" )
 	    ;;Split it
 	    (arglist
 	       (let
-		  ((arglist-x (split-string args ",")))
+		  ((arglist-x (org-split-string args ",")))
 		  ;;When string starts with "," `split-string' doesn't
 		  ;;make a first arg, so in that case make one
 		  ;;manually.
@@ -273,7 +274,6 @@ interpretation."
 (defun org-choose-keep-sensible (change-plist)
   "Bring the other items back into a sensible state after an item's
 setting was changed."
-
    (let*
       (  (from (plist-get change-plist :from))
 	 (to (plist-get change-plist :to))
@@ -385,6 +385,7 @@ setting was changed."
    "Return a function to map over the group"
    
    #'(lambda (fn)
+       (require 'org-agenda) ;; `org-map-entries' seems to need it.
 	(save-excursion
 	  (unless (org-up-heading-safe)
 	    (error "Chosing is only supported between siblings in a tree, not on top level"))
@@ -420,7 +421,6 @@ If there is none, return 0"
   "Return the highest index that any choose mark can sensibly have,
 given that another mark has index IX.
 DATA must be a `org-choose-mark-data.'."
-
 
    (let
       (		
@@ -499,19 +499,18 @@ NEW-MARK and OLD-MARK are the text of the new and old marks."
 
 ;;;_ , Setting it all up
 
-(eval-after-load 'org
+(eval-after-load "org"
   '(progn
      (add-to-list 'org-todo-setup-filter-hook
-		  #'org-choose-setup-filter) 
+		  #'org-choose-setup-filter)
      (add-to-list 'org-todo-get-default-hook
-		  #'org-choose-get-default-mark) 
+		  #'org-choose-get-default-mark)
      (add-to-list 'org-trigger-hook
 		  #'org-choose-keep-sensible)
      (add-to-list 'org-todo-interpretation-widgets
 		  '(:tag "Choose   (to record decisions)" choose)
 		  'append)
-   ))
-
+     ))
 
 
 ;;;_. Footers

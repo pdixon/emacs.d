@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.22b
+;; Version: 6.23
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -166,9 +166,12 @@ you can \"misuse\" it to also add other text to the header.  However,
 (defconst org-agenda-custom-commands-local-options
   `(repeat :tag "Local settings for this command. Remember to quote values"
 	   (choice :tag "Setting"
+	    (list :tag "Heading for this block"
+		  (const org-agenda-overriding-header)
+		  (string :tag "Headline"))
 	    (list :tag "Any variable"
 		  (variable :tag "Variable")
-		  (sexp :tag "Value"))
+		  (sexp :tag "Value (sexp)"))
 	    (list :tag "Files to be searched"
 		  (const org-agenda-files)
 		  (list
@@ -377,7 +380,8 @@ you can then use it to define a custom command."
   '("+LEVEL=2/-DONE" ("TODO" "NEXT" "NEXTACTION") nil "")
   "How to identify stuck projects.
 This is a list of four items:
-1. A tags/todo matcher string that is used to identify a project.
+1. A tags/todo/property matcher string that is used to identify a project.
+   See the manual for a description of tag and property searches.
    The entire tree below a headline matched by this is considered one project.
 2. A list of TODO keywords identifying non-stuck projects.
    If the project subtree contains any headline with one of these todo
@@ -451,7 +455,8 @@ You can use this if you prefer to mark mere appointments with a TODO keyword,
 but don't want them to show up in the TODO list.
 When this is set, it also covers deadlines and scheduled items, the settings
 of `org-agenda-todo-ignore-scheduled' and `org-agenda-todo-ignore-deadlines'
-will be ignored."
+will be ignored.
+See also the variable `org-agenda-tags-todo-honor-ignore-options'."
   :group 'org-agenda-skip
   :group 'org-agenda-todo-list
   :type 'boolean)
@@ -460,7 +465,8 @@ will be ignored."
   "Non-nil means, don't show scheduled entries in the global todo list.
 The idea behind this is that by scheduling it, you have already taken care
 of this item.
-See also `org-agenda-todo-ignore-with-date'."
+See also `org-agenda-todo-ignore-with-date'.
+See also the variable `org-agenda-tags-todo-honor-ignore-options'."
   :group 'org-agenda-skip
   :group 'org-agenda-todo-list
   :type 'boolean)
@@ -469,7 +475,8 @@ See also `org-agenda-todo-ignore-with-date'."
   "Non-nil means, don't show near deadline entries in the global todo list.
 Near means closer than `org-deadline-warning-days' days.
 The idea behind this is that such items will appear in the agenda anyway.
-See also `org-agenda-todo-ignore-with-date'."
+See also `org-agenda-todo-ignore-with-date'.
+See also the variable `org-agenda-tags-todo-honor-ignore-options'."
   :group 'org-agenda-skip
   :group 'org-agenda-todo-list
   :type 'boolean)
@@ -517,12 +524,19 @@ deadlines are always turned off when the item is DONE."
 
 (defcustom org-agenda-dim-blocked-tasks t
   "Non-nil means, dim blocked tasks in the agenda display.
-This causes some overhead during agenda construction, but if you have turned
-on `org-enforce-todo-dependencies' or any other blocking mechanism, this
-will create useful feedback in the agenda.
-Instead ot t, this variable can also have the value `invisible'.  Then
-blocked tasks will be invisible and only become visible when they
-become unblocked."
+This causes some overhead during agenda construction, but if you
+have turned on `org-enforce-todo-dependencies',
+`org-enforce-todo-checkbox-dependencies', or any other blocking
+mechanism, this will create useful feedback in the agenda.
+
+Instead ot t, this variable can also have the value `invisible'.
+Then blocked tasks will be invisible and only become visible when
+they become unblocked.  An exemption to this behavior is when a task is
+blocked because of unchecked checkboxes below it.  Since checkboxes do
+not show up in the agenda views, making this task invisible you remove any
+trace from agenda views that there is something to do.  Therefore, a task
+that is blocked because of checkboxes will never be made invisible, it
+will only be dimmed."
   :group 'org-agenda-daily/weekly
   :group 'org-agenda-todo-list
   :type '(choice
@@ -1444,6 +1458,15 @@ m     Call `org-tags-view' to display headlines with tags matching
 M     Like `m', but select only TODO entries, no ordinary headlines.
 L     Create a timeline for the current buffer.
 e     Export views to associated files.
+s     Search entries for keywords.
+/     Multi occur accros all agenda files and also files listed
+      in `org-agenda-text-search-extra-files'.
+<     Restrict agenda commands to buffer, subtree, or region.
+      Press several times to get the desired effect.
+>     Remove a previous restriction.
+#     List \"stuck\" projects.
+!     Configure what \"stuck\" means.
+C     Configure custom agenda commands.
 
 More commands can be added by configuring the variable
 `org-agenda-custom-commands'.  In particular, specific tags and TODO keyword
@@ -1764,6 +1787,7 @@ s   Search for keywords                 C   Configure custom agenda commands
     (widen)
     (setq org-agenda-redo-command redo)
     (goto-char (point-min)))
+  (org-fit-agenda-window)
   (org-let (nth 1 series) '(org-finalize-agenda)))
 
 ;;;###autoload
@@ -2190,10 +2214,12 @@ VALUE defaults to t."
     (let ((inhibit-read-only t)
 	  (org-depend-tag-blocked nil)
 	  (invis (eq org-agenda-dim-blocked-tasks 'invisible))
-	  b e p ov h l)
+	  org-blocked-by-checkboxes
+	  invis1 b e p ov h l)
       (goto-char (point-min))
       (while (let ((pos (next-single-property-change (point) 'todo-state)))
 	       (and pos (goto-char (1+ pos))))
+	(setq org-blocked-by-checkboxes nil invis1 invis)
 	(let ((marker (get-text-property (point) 'org-hd-marker)))
 	  (when (and marker
 		     (not (with-current-buffer (marker-buffer marker)
@@ -2205,10 +2231,11 @@ VALUE defaults to t."
 				     :position marker
 				     :from 'todo
 				     :to 'done))))))
-	    (setq b (if invis (max (point-min) (1- (point))) (point))
+	    (if org-blocked-by-checkboxes (setq invis1 nil))
+	    (setq b (if invis1 (max (point-min) (1- (point))) (point))
 		  e (point-at-eol)
 		  ov (org-make-overlay b e))
-	    (if invis
+	    (if invis1
 		(org-overlay-put ov 'invisible t)
 	      (org-overlay-put ov 'face 'org-agenda-dimmed-todo-face))
 	    (org-overlay-put ov 'org-type 'org-blocked-todo)))))))
@@ -2509,14 +2536,17 @@ given in `org-agenda-start-on-weekday'."
 	     (w1 (org-days-to-iso-week d1))
 	     (w2 (org-days-to-iso-week d2)))
 	(setq s (point))
-	(insert (capitalize (symbol-name (org-agenda-ndays-to-span nd)))
-		"-agenda"
-		(if (< (- d2 d1) 350)
-		    (if (= w1 w2)
-			(format " (W%02d)" w1)
-		      (format " (W%02d-W%02d)" w1 w2))
-		  "")
-		":\n"))
+	(if org-agenda-overriding-header
+	    (insert (org-add-props (copy-sequence org-agenda-overriding-header)
+			nil 'face 'org-agenda-structure) "\n")
+	  (insert (capitalize (symbol-name (org-agenda-ndays-to-span nd)))
+		  "-agenda"
+		  (if (< (- d2 d1) 350)
+		      (if (= w1 w2)
+			  (format " (W%02d)" w1)
+			(format " (W%02d-W%02d)" w1 w2))
+		    "")
+		  ":\n")))
       (add-text-properties s (1- (point)) (list 'face 'org-agenda-structure
 						'org-date-line t)))
     (while (setq d (pop day-numbers))
@@ -2586,7 +2616,7 @@ given in `org-agenda-start-on-weekday'."
 	(setq tbl (apply 'org-get-clocktable p))
 	(insert tbl)))
     (goto-char (point-min))
-    (org-fit-agenda-window)
+    (or org-agenda-multi (org-fit-agenda-window))
     (unless (and (pos-visible-in-window-p (point-min))
 		 (pos-visible-in-window-p (point-max)))
       (goto-char (1- (point-max)))
@@ -2796,7 +2826,7 @@ in `org-agenda-text-search-extra-files'."
     (when rtnall
       (insert (org-finalize-agenda-entries rtnall) "\n"))
     (goto-char (point-min))
-    (org-fit-agenda-window)
+    (or org-agenda-multi (org-fit-agenda-window))
     (add-text-properties (point-min) (point-max) '(org-agenda-type search))
     (org-finalize-agenda)
     (setq buffer-read-only t)))
@@ -2866,7 +2896,7 @@ for a keyword.  A numeric prefix directly selects the Nth keyword in
     (when rtnall
       (insert (org-finalize-agenda-entries rtnall) "\n"))
     (goto-char (point-min))
-    (org-fit-agenda-window)
+    (or org-agenda-multi (org-fit-agenda-window))
     (add-text-properties (point-min) (point-max) '(org-agenda-type todo))
     (org-finalize-agenda)
     (setq buffer-read-only t)))
@@ -2932,7 +2962,7 @@ The prefix arg TODO-ONLY limits the search to TODO entries."
     (when rtnall
       (insert (org-finalize-agenda-entries rtnall) "\n"))
     (goto-char (point-min))
-    (org-fit-agenda-window)
+    (or org-agenda-multi (org-fit-agenda-window))
     (add-text-properties (point-min) (point-max) '(org-agenda-type tags))
     (org-finalize-agenda)
     (setq buffer-read-only t)))
@@ -3476,7 +3506,8 @@ the documentation of `org-diary'."
 		      (format "mouse-2 or RET jump to org file %s"
 			      (abbreviate-file-name buffer-file-name))))
 	 (regexp "^&?%%(")
-	 marker category ee txt tags entry result beg b sexp sexp-entry)
+	 marker category ee txt tags entry result beg b sexp sexp-entry
+	 todo-state)
     (goto-char (point-min))
     (while (re-search-forward regexp nil t)
       (catch :skip
@@ -3492,7 +3523,8 @@ the documentation of `org-diary'."
 	(setq result (org-diary-sexp-entry sexp sexp-entry date))
 	(when result
 	  (setq marker (org-agenda-new-marker beg)
-		category (org-get-category beg))
+		category (org-get-category beg)
+		todo-state (org-get-todo-state))
 
 	  (if (string-match "\\S-" result)
 	      (setq txt result)
@@ -3502,7 +3534,7 @@ the documentation of `org-diary'."
                      "" txt category tags 'time))
 	  (org-add-props txt props 'org-marker marker)
 	  (org-add-props txt nil
-	    'org-category category 'date date
+	    'org-category category 'date date 'todo-state todo-state
 	    'type "sexp")
 	  (push txt ee))))
     (nreverse ee)))
@@ -4161,10 +4193,19 @@ HH:MM."
 
 (defsubst org-cmp-todo-state (a b)
   "Compare the todo states of strings A and B."
-  (let* ((ta (or (get-text-property 1 'todo-state a) ""))
+  (let* ((ma (or (get-text-property 1 'org-marker a)
+		 (get-text-property 1 'org-hd-marker a)))
+	 (mb (or (get-text-property 1 'org-marker b)
+		 (get-text-property 1 'org-hd-marker b)))
+	 (fa (and ma (marker-buffer ma)))
+	 (fb (and mb (marker-buffer mb)))
+	 (todo-kwds
+	  (or (and fa (with-current-buffer fa org-todo-keywords-1))
+	      (and fb (with-current-buffer fb org-todo-keywords-1))))
+	 (ta (or (get-text-property 1 'todo-state a) ""))
 	 (tb (or (get-text-property 1 'todo-state b) ""))
-	 (la (- (length (member ta org-todo-keywords-for-agenda))))
-	 (lb (- (length (member tb org-todo-keywords-for-agenda))))
+	 (la (- (length (member ta todo-kwds))))
+	 (lb (- (length (member tb todo-kwds))))
 	 (donepa (member ta org-done-keywords-for-agenda))
 	 (donepb (member tb org-done-keywords-for-agenda)))
     (cond ((and donepa (not donepb)) -1)
@@ -5054,6 +5095,78 @@ if it was hidden in the outline."
 	  (org-agenda-goto t))
       (org-agenda-goto t))
     (select-window win)))
+
+(defun org-agenda-show-1 (&optional more)
+  "Display the Org-mode file which contains the item at point.
+The prefix arg causes further revieling:
+
+0   hide the subtree
+1   just show the entry according to defaults.
+2   show the text below the heading
+3   show the entire subtree
+4   show the entire subtree and any LOGBOOK drawers
+5   show the entire subtree and any drawers
+With prefix argument FULL-ENTRY, make the entire entry visible
+if it was hidden in the outline."
+  (interactive "p")
+  (let ((win (selected-window)))
+    (org-agenda-goto t)
+    (org-recenter-heading 1)
+    (cond
+     ((= more 0)
+      (hide-subtree)
+      (message "Remote: hide subtree"))
+     ((and (interactive-p) (= more 1))
+      (message "Remote: show with default settings"))
+     ((= more 2)
+      (show-entry)
+      (save-excursion
+	(org-back-to-heading)
+	(org-cycle-hide-drawers 'children))
+      (message "Remote: show entry"))
+     ((= more 3)
+      (show-subtree)
+      (save-excursion
+	(org-back-to-heading)
+	(org-cycle-hide-drawers 'subtree))
+      (message "Remote: show subtree"))
+     ((= more 4)
+      (let* ((org-drawers (delete "LOGBOOK" (copy-sequence org-drawers)))
+	     (org-drawer-regexp
+	      (concat "^[ \t]*:\\("
+		      (mapconcat 'regexp-quote org-drawers "\\|")
+		      "\\):[ \t]*$")))
+	(show-subtree)
+	(save-excursion
+	  (org-back-to-heading)
+	  (org-cycle-hide-drawers 'subtree)))
+      (message "Remote: show subtree and LOGBOOK"))
+     ((> more 4)
+      (show-subtree)
+      (message "Remote: show subtree and LOGBOOK")))
+    (select-window win)))
+
+(defun org-recenter-heading (n)
+  (save-excursion
+    (org-back-to-heading)
+    (recenter n)))
+
+(defvar org-agenda-cycle-counter nil)
+(defun org-agenda-cycle-show (n)
+  "Show the current entry in another window, with default settings.
+Default settings are taken from `org-show-hierarchy-above' and siblings.
+When use repeadedly in immediate succession, the remote entry will cycle
+through visibility
+
+entry -> subtree -> subtree with logbook"
+  (interactive "p")
+  (when (and (= n 1)
+	     (not (eq last-command this-command)))
+    (setq org-agenda-cycle-counter 0))
+  (setq org-agenda-cycle-counter (1+ org-agenda-cycle-counter))
+  (if (> org-agenda-cycle-counter 4)
+      (setq org-agenda-cycle-counter 0))
+  (org-agenda-show-1 org-agenda-cycle-counter))
 
 (defun org-agenda-recenter (arg)
   "Display the Org-mode file which contains the item at point and recenter."

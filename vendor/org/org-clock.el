@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.22b
+;; Version: 6.23
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -41,19 +41,25 @@
   :tag "Org Clock"
   :group 'org-progress)
 
-(defcustom org-clock-into-drawer 2
+(defcustom org-clock-into-drawer org-log-into-drawer
   "Should clocking info be wrapped into a drawer?
-When t, clocking info will always be inserted into a :CLOCK: drawer.
+When t, clocking info will always be inserted into a :LOGBOOK: drawer.
 If necessary, the drawer will be created.
 When nil, the drawer will not be created, but used when present.
 When an integer and the number of clocking entries in an item
-reaches or exceeds this number, a drawer will be created."
+reaches or exceeds this number, a drawer will be created.
+When a string, it names the drawer to be used.
+
+The default for this variable is the value of `org-log-into-drawer',
+which see."
   :group 'org-todo
   :group 'org-clock
   :type '(choice
 	  (const :tag "Always" t)
 	  (const :tag "Only when drawer exists" nil)
-	  (integer :tag "When at least N clock entries")))
+	  (integer :tag "When at least N clock entries")
+	  (const :tag "Into LOGBOOK drawer" "LOGBOOK")
+	  (string :tag "Into Drawer named...")))
 
 (defcustom org-clock-out-when-done t
   "When non-nil, the clock will be stopped when the relevant entry is marked DONE.
@@ -354,8 +360,14 @@ the clocking selection, associated with the letter `d'."
 	      (sit-for 2)
 	      (throw 'abort nil))
 	     (t
-	      (insert "\n") (backward-char 1)
+	      (insert-before-markers "\n")
+	      (backward-char 1)
 	      (org-indent-line-function)
+	      (when (and (save-excursion
+			   (end-of-line 0)
+			   (org-in-item-p)))
+		(beginning-of-line 1)
+		(org-indent-line-to (- (org-get-indentation) 2)))
 	      (insert org-clock-string " ")
 	      (setq org-clock-start-time (current-time))
 	      (setq ts (org-insert-time-stamp org-clock-start-time 'with-hm 'inactive))))
@@ -380,12 +392,17 @@ the clocking selection, associated with the letter `d'."
 	  (end (progn (outline-next-heading) (point)))
 	  (re (concat "^[ \t]*" org-clock-string))
 	  (cnt 0)
-	  first last)
+	  (drawer (if (stringp org-clock-into-drawer)
+		      org-clock-into-drawer "LOGBOOK"))
+	  first last ind-last)
       (goto-char beg)
       (when (eobp) (newline) (setq end (max (point) end)))
-      (when (re-search-forward "^[ \t]*:CLOCK:" end t)
+      (when (re-search-forward (concat "^[ \t]*:" drawer ":") end t)
 	;; we seem to have a CLOCK drawer, so go there.
 	(beginning-of-line 2)
+	(or org-log-states-order-reversed
+	    (and (re-search-forward org-property-end-re nil t)
+		 (goto-char (match-beginning 0))))
 	(throw 'exit t))
       ;; Lets count the CLOCK lines
       (goto-char beg)
@@ -394,20 +411,27 @@ the clocking selection, associated with the letter `d'."
 	      last (match-beginning 0)
 	      cnt (1+ cnt)))
       (when (and (integerp org-clock-into-drawer)
+		 last
 		 (>= (1+ cnt) org-clock-into-drawer))
 	;; Wrap current entries into a new drawer
 	(goto-char last)
+	(setq ind-last (org-get-indentation))
 	(beginning-of-line 2)
-	(if (org-at-item-p) (org-end-of-item))
+	(if (and (>= (org-get-indentation) ind-last)
+		 (org-at-item-p))
+	    (org-end-of-item))
 	(insert ":END:\n")
 	(beginning-of-line 0)
-	(org-indent-line-function)
+	(org-indent-line-to ind-last)
 	(goto-char first)
-	(insert ":CLOCK:\n")
+	(insert ":" drawer ":\n")
 	(beginning-of-line 0)
 	(org-indent-line-function)
 	(org-flag-drawer t)
 	(beginning-of-line 2)
+	(or org-log-states-order-reversed
+	    (and (re-search-forward org-property-end-re nil t)
+		 (goto-char (match-beginning 0))))
 	(throw 'exit nil))
 
       (goto-char beg)
@@ -416,14 +440,20 @@ the clocking selection, associated with the letter `d'."
 	;; Planning info, skip to after it
 	(beginning-of-line 2)
 	(or (bolp) (newline)))
-      (when (eq t org-clock-into-drawer)
-	(insert ":CLOCK:\n:END:\n")
+      (when (or (eq org-clock-into-drawer t)
+		(stringp org-clock-into-drawer)
+		(and (integerp org-clock-into-drawer)
+		     (< org-clock-into-drawer 2)))
+	(insert ":" drawer ":\n:END:\n")
 	(beginning-of-line 0)
 	(org-indent-line-function)
 	(beginning-of-line 0)
 	(org-flag-drawer t)
 	(org-indent-line-function)
-	(beginning-of-line 2)))))
+	(beginning-of-line 2)
+	(or org-log-states-order-reversed
+	    (and (re-search-forward org-property-end-re nil t)
+		 (goto-char (match-beginning 0))))))))
 
 (defun org-clock-out (&optional fail-quietly)
   "Stop the currently running clock.
@@ -462,7 +492,7 @@ If there is no running clock, throw an error, unless FAIL-QUIETLY is set."
 	       (delete-char 1)))
 	(move-marker org-clock-marker nil)
 	(when org-log-note-clock-out
-	  (org-add-log-setup 'clock-out nil nil nil
+	  (org-add-log-setup 'clock-out nil nil nil nil
 			     (concat "# Task: " (org-get-heading t) "\n\n")))
 	(when org-clock-mode-line-timer
 	  (cancel-timer org-clock-mode-line-timer)
