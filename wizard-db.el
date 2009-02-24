@@ -37,11 +37,14 @@
 
 (defvar wizard-db-mode-map
   (let ((map (make-sparse-keymap)))
+    (define-key map "\C-ct" 'wizard-db-to-str-ref)
     map)
     "Keymap for `wizard-db-mode'.")
 
-(define-derived-mode wizard-db-mode xml-mode "Wizard DB"
-  "A major mode for editing wizard .xmd files.")
+(define-derived-mode wizard-db-mode
+  xml-mode "Wizard DB"
+  "A major mode for editing wizard .xmd files."
+  (auto-fill-mode 0))
 
-(provide 'wizard-db)
+(provide 'wizard-db-mode)
 ;;; wizard-db.el ends here.
