@@ -50,19 +50,24 @@
 (require 'xgtags)
 
 ;; mail setup
-(require 'smtpmail)
-(setq smtpmail-smtp-server "smtp.gmail.com")
-(setq smtpmail-smtp-service 587)
-(setq smtpmail-starttls-credentials
-      '(("smtp.gmail.com" 587 nil nil)))
-(setq smtpmail-auth-credentials
-      '(("smtp.gmail.com"
-	 587
-	 "phil@dixon.gen.nz"
-	 nil)))
+;; (require 'smtpmail)
+;; (setq starttls-use-gnutls t)
+;; (setq smtpmail-smtp-server "smtp.gmail.com")
+;; (setq smtpmail-smtp-service 587)
+;; (setq smtpmail-starttls-credentials
+;;       '(("smtp.gmail.com" 587 "phil@dixon.gen.nz" nil)))
+;; (setq smtpmail-auth-credentials
+;;       '(("smtp.gmail.com"
+;; 	 587
+;; 	 "phil@dixon.gen.nz"
+;; 	 nil)))
+;; (setq smtpmail-debug-info t)
+(setq sendmail-program "msmtp")
+(setq  message-sendmail-extra-arguments '("-a" "dixon.gen.nz"))
 
-(setq message-send-mail-function 'smtpmail-send-it)
-(setq send-mail-function 'smtpmail-send-it)
+
+;; (setq message-send-mail-function 'smtpmail-send-it)
+;; (setq send-mail-function 'smtpmail-send-it)
 
 ;; Project Root setup
 (require 'project-root)
