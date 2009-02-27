@@ -38,9 +38,9 @@
       ido-use-filename-at-point t)
 
 
-(setq w3m-command-arguments
-      (nconc w3m-command-arguments
-             '("-o" "http_proxy=http://192.168.12.79:3128/")))
+;(setq w3m-command-arguments
+;      (nconc w3m-command-arguments
+;             '("-o" "http_proxy=http://192.168.12.79:3128/")))
  	
 
 (setq w3m-no-proxy-domains '("sw"))

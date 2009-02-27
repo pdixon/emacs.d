@@ -9,6 +9,7 @@ cscope.out
 anything-c-adaptive-history
 tramp
 .org-id-locations
+usr
 
 syntax: regexp
 .*\#.*\#$

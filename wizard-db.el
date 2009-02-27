@@ -46,5 +46,5 @@
   "A major mode for editing wizard .xmd files."
   (auto-fill-mode 0))
 
-(provide 'wizard-db-mode)
+(provide 'wizard-db)
 ;;; wizard-db.el ends here.
