@@ -15,5 +15,8 @@ do tar xfz $D.tar.gz; done
 for D in ${DIRS[@]}
 do cd $D; python setup.py install; cd ..; done
 
+mv ropemode/ropemode usr/lib/python2.5/site-packages/
+mv ropemacs/ropemacs usr/lib/python2.5/site-packages/
+
 rm -f ./pymacs.el
-ln -s Pymacs-0.24/pymacs.el ./pymacs.el
+ln -s Pymacs-0.24-beta1/pymacs.el ./pymacs.el

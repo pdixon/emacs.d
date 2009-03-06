@@ -11,6 +11,8 @@
 (setq custom-file (concat dotfiles-dir "custom.el"))
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
 
+(setenv "PYMACS_PYTHON" "~/.emacs.d/usr/bin/python")
+
 ;; Load up my config stuff
 (setq tweaks-dir (concat dotfiles-dir "/tweaks"))
 (add-to-list 'load-path tweaks-dir)
