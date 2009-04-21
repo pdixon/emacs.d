@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.23
+;; Version: 6.26c
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -41,6 +41,7 @@
 ;;; Code:
 
 (require 'org-exp)
+(require 'org-html)
 
 (add-to-list 'org-export-inbuffer-options-extra '("INFOJS_OPT" :infojs-opt))
 (add-hook 'org-export-options-filters 'org-infojs-handle-options)

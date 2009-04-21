@@ -10,6 +10,10 @@ anything-c-adaptive-history
 tramp
 .org-id-locations
 usr
+Pymacs*
+pymacs*
+rope*
+pyflakes*
 
 syntax: regexp
 .*\#.*\#$

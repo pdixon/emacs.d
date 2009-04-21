@@ -1,12 +1,12 @@
-
-* Vendor Libraries
-** emacs-w3m
+# Vendor Libraries
+## emacs-w3m
 Version: 
-** Org mode
-Version: 6.22b
-Downloaded From:
-http://orgmode.org/index.html#sec-3
 
-** Remember
+## Org mode
+Version: 6.26c
+Downloaded From:
+[org-mode](http://orgmode.org/index.html#sec-3)
+
+## Remember
 Version: 2.0
-https://gna.org/p/remember-el
+[remember](https://gna.org/p/remember-el)
