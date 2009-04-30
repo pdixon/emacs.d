@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.26c
+;; Version: 6.26d
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -90,6 +90,11 @@ state to switch it to."
   "Number of clock tasks to remember in history."
   :group 'org-clock
   :type 'integer)
+
+(defcustom org-clock-goto-may-find-recent-task t
+  "Non-nil means, `org-clock-goto' can go to recent task if no active clock."
+  :group 'org-clock
+  :type 'boolean)
 
 (defcustom org-clock-heading-function nil
   "When non-nil, should be a function to create `org-clock-heading'.
@@ -538,7 +543,8 @@ With prefix arg SELECT, offer recently clocked tasks for selection."
 	      (or (org-clock-select-task "Select task to go to: ")
 		  (error "No task selected")))
 	     ((marker-buffer org-clock-marker) org-clock-marker)
-	     ((and (car org-clock-history)
+	     ((and org-clock-goto-may-find-recent-task
+		   (car org-clock-history)
 		   (marker-buffer (car org-clock-history)))
 	      (setq recent t)
 	      (car org-clock-history))
