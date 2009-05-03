@@ -72,8 +72,8 @@
 ;; Project Root setup
 (require 'project-root)
 (setq project-roots
-      '(("Hg Hosted Project"
-	 :root-contains-files (".hg")
+      '(("Xcode Project"
+	 :root-contains-files ("*.xcodeproj")
 	 :on-hit (lambda (p) (message (car p))))))
 
 (require 'zenburn)
