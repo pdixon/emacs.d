@@ -22,9 +22,10 @@
 (load custom-file 'noerror)
 
 ;; Work around a bug on OS X where system-name is FQDN
-(if (eq system-type 'darwin)
-    (setq system-name (car (split-string system-name "\\."))))
+;;(if (eq system-type 'darwin)
+;; This seems to be need on my linux box as well.
+(setq my-system-name (car (split-string system-name "\\.")))
 
 ;; You can keep system-specific customizations here
-(setq system-specific-config (concat dotfiles-dir system-name ".el"))
+(setq system-specific-config (concat dotfiles-dir my-system-name ".el"))
 (if (file-exists-p system-specific-config) (load system-specific-config))
