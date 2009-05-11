@@ -4,8 +4,8 @@
 (add-to-list 'load-path dotfiles-dir)
 (add-to-list 'load-path (concat dotfiles-dir "/vendor"))
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/w3m"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/org"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/org-contrib"))
+(add-to-list 'load-path (concat dotfiles-dir "/vendor/org/lisp"))
+(add-to-list 'load-path (concat dotfiles-dir "/vendor/org/contrib/lisp"))
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/remember"))
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
