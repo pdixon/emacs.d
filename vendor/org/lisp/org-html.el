@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.26d
+;; Version: 6.27
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -56,6 +56,13 @@ by the footnotes themselves."
 
 (defcustom org-export-html-extension "html"
   "The extension for exported HTML files."
+  :group 'org-export-html
+  :type 'string)
+
+(defcustom org-export-html-xml-declaration
+  "<?xml version=\"1.0\" encoding=\"%s\"?>"
+  "The extension for exported HTML files.
+%s will be replaced with the charset of the exported file."
   :group 'org-export-html
   :type 'string)
 
@@ -123,7 +130,7 @@ not be modified."
                                white-space:nowrap; }
   .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
                                  font-weight:bold; }
-  /*]]>*///-->
+  /*]]>*/-->
 </style>"
   "The default style specification for exported HTML files.
 Please use the variables `org-export-html-style' and
@@ -255,9 +262,11 @@ borders and spacing."
   :group 'org-export-html
   :type 'string)
 
-(defcustom org-export-table-header-tags '("<th>" . "</th>")
+(defcustom org-export-table-header-tags '("<th scope=\"%s\">" . "</th>")
   "The opening tag for table header fields.
-This is customizable so that alignment options can be specified."
+This is customizable so that alignment options can be specified.
+%s will be filled with the scope of the field, either row or col.
+See also the variable `org-export-html-table-use-header-tags-for-first-column'."
   :group 'org-export-tables
   :type '(cons (string :tag "Opening tag") (string :tag "Closing tag")))
 
@@ -266,6 +275,12 @@ This is customizable so that alignment options can be specified."
 This is customizable so that alignment options can be specified."
   :group 'org-export-tables
   :type '(cons (string :tag "Opening tag") (string :tag "Closing tag")))
+
+(defcustom org-export-html-table-use-header-tags-for-first-column nil
+  "Non-nil means, format column one in tables with header tags.
+When nil, also column one will use data tags."
+  :group 'org-export-tables
+  :type 'boolean)
 
 (defcustom org-export-html-validation-link nil
   "Non-nil means, add validationlink to postamble of HTML exported files."
@@ -316,6 +331,20 @@ in all modes you want.  Then, use the command
   :group 'org-export-htmlize
   :type 'string)
 
+(defcustom org-export-htmlized-org-css-url nil
+  "URL pointing to a CSS file defining text colors for htmlized Emacs buffers.
+Normally when creating an htmlized version of an Org buffer, htmlize will
+create CSS to define the font colors.  However, this does not work when
+converting in batch mode, and it also can look bad if different people
+with different fontification setup work on the same website.
+When this variable is non-nil, creating an htmlized version of an Org buffer
+using `org-export-as-org' will remove the internal CSS section and replace it
+with a link to this URL."
+  :group 'org-export-htmlize
+  :type '(choice
+	  (const :tag "Keep internal css" nil)
+	  (string :tag "URL or local href")))
+
 ;;; Variables, constants, and parameter plists
 
 (defvar org-export-html-preamble nil
@@ -326,6 +355,11 @@ in all modes you want.  Then, use the command
   "Should default preamble be inserted?  Set by publishing functions.")
 (defvar org-export-html-auto-postamble t
   "Should default postamble be inserted?  Set by publishing functions.")
+
+;;; Hooks
+
+(defvar org-export-html-after-blockquotes-hook nil
+  "Hook run during HTML export, after blockquote, verse, center are done.")
 
 ;;; HTML export
 
@@ -365,7 +399,8 @@ emacs   --batch
 No file is created.  The prefix ARG is passed through to `org-export-as-html'."
   (interactive "P")
   (org-export-as-html arg nil nil "*Org HTML Export*")
-  (switch-to-buffer-other-window "*Org HTML Export*"))
+  (when org-export-show-temporary-export-buffer
+    (switch-to-buffer-other-window "*Org HTML Export*")))
 
 ;;;###autoload
 (defun org-replace-region-by-html (beg end)
@@ -432,7 +467,7 @@ in a window.  A non-interactive call will only return the buffer."
 If there is an active region, export only the region.  The prefix
 ARG specifies how many levels of the outline should become
 headlines.  The default is 3.  Lower levels will become bulleted
-lists.  When HIDDEN is non-nil, don't display the HTML buffer.
+lists.  HIDDEN is obsolete and does nothing.
 EXT-PLIST is a property list with external parameters overriding
 org-mode's default settings, but still inferior to file-local
 settings.  When TO-BUFFER is non-nil, create a buffer with that
@@ -642,7 +677,8 @@ PUB-DIR is set, use this as the publishing directory."
       (unless body-only
 	;; File header
 	(insert (format
-		 "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"
+		 "%s
+<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"
                \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\"
 lang=\"%s\" xml:lang=\"%s\">
@@ -659,6 +695,8 @@ lang=\"%s\" xml:lang=\"%s\">
 <body>
 <div id=\"content\">
 "
+		 (format org-export-html-xml-declaration
+			 (or charset "iso-8859-1"))
 		 language language (org-html-expand title)
 		 (or charset "iso-8859-1")
 		 date author description keywords
@@ -840,6 +878,7 @@ lang=\"%s\" xml:lang=\"%s\">
 	    (insert "\n</div>")
 	    (org-open-par)
 	    (throw 'nextline nil))
+	  (run-hooks 'org-export-html-after-blockquotes-hook)
 	  (when inverse
 	    (let ((i (org-get-string-indentation line)))
 	      (if (> i 0)
@@ -959,7 +998,6 @@ lang=\"%s\" xml:lang=\"%s\">
 				"</a>")))
 
 	     ((string= type "coderef")
-
 	      (setq rpl (format "<a href=\"#coderef-%s\" class=\"coderef\" onmouseover=\"CodeHighlightOn(this, 'coderef-%s');\" onmouseout=\"CodeHighlightOff(this, 'coderef-%s');\">%s</a>"
 				path path path
 				(format (org-export-get-coderef-format path (and descp desc))
@@ -1330,7 +1368,8 @@ lang=\"%s\" xml:lang=\"%s\">
 			  (make-string n ?x)))))
       (or to-buffer (save-buffer))
       (goto-char (point-min))
-      (message "Exporting... done")
+      (or (org-export-push-to-kill-ring "HTML")
+	  (message "Exporting... done"))
       (if (eq to-buffer 'string)
 	  (prog1 (buffer-substring (point-min) (point-max))
 	    (kill-buffer (current-buffer)))
@@ -1473,11 +1512,20 @@ lang=\"%s\" xml:lang=\"%s\">
 			 (if (and (< i nlines)
 				  (string-match org-table-number-regexp x))
 			     (incf (aref fnum i)))
-			 (if head
-			     (concat (car org-export-table-header-tags) x
-				     (cdr org-export-table-header-tags))
+			 (cond
+			  (head
+			   (concat
+			    (format (car org-export-table-header-tags) "col")
+			    x
+			    (cdr org-export-table-header-tags)))
+			  ((and (= i 0) org-export-html-table-use-header-tags-for-first-column)
+			   (concat
+			    (format (car org-export-table-header-tags) "row")
+			    x
+			    (cdr org-export-table-header-tags)))
+			  (t
 			   (concat (car org-export-table-data-tags) x
-				   (cdr org-export-table-data-tags))))
+				   (cdr org-export-table-data-tags)))))
 		       fields "")
 		      "</tr>")
 	      html)))
@@ -1486,30 +1534,24 @@ lang=\"%s\" xml:lang=\"%s\">
     (setq html (nreverse html))
     (unless splice
       ;; Put in col tags with the alignment (unfortunately often ignored...)
-      (push (mapconcat
-	     (lambda (x)
-	       (setq gr (pop org-table-colgroup-info))
-	       (format "%s<col align=\"%s\"></col>%s"
-		       (if (memq gr '(:start :startend))
-			   (prog1
-			       (if colgropen "</colgroup>\n<colgroup>" "<colgroup>")
-			     (setq colgropen t))
-			 "")
-		       (if (> (/ (float x) nlines) org-table-number-fraction)
-			   "right" "left")
-		       (if (memq gr '(:end :startend))
-			   (progn (setq colgropen nil) "</colgroup>")
-			 "")))
-	     fnum "")
+      (push (concat
+	     "<colgroup>"
+	     (mapconcat
+	      (lambda (x)
+		(setq gr (pop org-table-colgroup-info))
+		(format "<col align=\"%s\" />"
+			(if (> (/ (float x) nlines) org-table-number-fraction)
+			    "right" "left")))
+	      fnum "")
+	     "</colgroup>")
 	    html)
-      (if colgropen (setq html (cons (car html) (cons "</colgroup>" (cdr html)))))
+      
       ;; Since the output of HTML table formatter can also be used in
       ;; DocBook document, we want to always include the caption to make
       ;; DocBook XML file valid.
       (push (format "<caption>%s</caption>" (or caption "")) html)
       (push html-table-tag html))
     (concat (mapconcat 'identity html "\n") "\n")))
-
 
 (defun org-export-splice-attributes (tag attributes)
   "Read attributes in string ATTRIBUTES, add and replace in HTML tag TAG."
@@ -1534,7 +1576,7 @@ This has the advantage that Org-mode's HTML conversions can be used.
 But it has the disadvantage, that no cell- or row-spanning is allowed."
   (let (line field-buffer
 	     (head org-export-highlight-first-table-line)
-	     fields html empty)
+	     fields html empty i)
     (setq html (concat html-table-tag "\n"))
     (while (setq line (pop lines))
       (setq empty "&nbsp;")
@@ -1552,8 +1594,10 @@ But it has the disadvantage, that no cell- or row-spanning is allowed."
 		       (lambda (x)
 			 (if (equal x "") (setq x empty))
 			 (if head
-			     (concat (car org-export-table-header-tags) x
-				     (cdr org-export-table-header-tags))
+			     (concat
+			      (format (car org-export-table-header-tags) "col")
+			      x
+			      (cdr org-export-table-header-tags))
 			   (concat (car org-export-table-data-tags) x
 				   (cdr org-export-table-data-tags))))
 		       field-buffer "\n")

@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.26d
+;; Version: 6.27
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -318,6 +318,7 @@ RET at beg-of-buf -> Append to file as level 2 headline
 				    (append (list (nth 1 x) (car x)) (cddr x))
 				  (append (list (car x) "") (cdr x))))
 			      (delq nil pre-selected-templates2)))
+	   msg
 	   (char (or use-char
 		     (cond
 		      ((= (length templates) 1)
@@ -328,22 +329,32 @@ RET at beg-of-buf -> Append to file as level 2 headline
 			   (string-to-char org-force-remember-template-char)
 			 org-force-remember-template-char))
 		      (t
-		       (message "Select template: %s"
-				(mapconcat
-				 (lambda (x)
-				   (cond
-				    ((not (string-match "\\S-" (nth 1 x)))
-				     (format "[%c]" (car x)))
-				    ((equal (downcase (car x))
-					    (downcase (aref (nth 1 x) 0)))
-				     (format "[%c]%s" (car x)
-					     (substring (nth 1 x) 1)))
-				    (t (format "[%c]%s" (car x) (nth 1 x)))))
-				 templates " "))
-		       (let ((inhibit-quit t) (char0 (read-char-exclusive)))
+		       (setq msg (format
+				  "Select template: %s"
+				  (mapconcat
+				   (lambda (x)
+				     (cond
+				      ((not (string-match "\\S-" (nth 1 x)))
+				       (format "[%c]" (car x)))
+				      ((equal (downcase (car x))
+					      (downcase (aref (nth 1 x) 0)))
+				       (format "[%c]%s" (car x)
+					       (substring (nth 1 x) 1)))
+				      (t (format "[%c]%s" (car x) (nth 1 x)))))
+				   templates " ")))
+		       (let ((inhibit-quit t) char0)
+			 (while (not char0)
+			   (message msg)
+			   (setq char0 (read-char-exclusive))
+			   (when (and (not (assoc char0 templates))
+				      (not (equal char0 ?\C-g)))
+			     (message "No suche template \"%c\"" char0)
+			     (ding) (sit-for 1)
+			     (setq char0 nil)))
 			 (when (equal char0 ?\C-g)
 			   (jump-to-register remember-register)
-			   (kill-buffer remember-buffer))
+			   (kill-buffer remember-buffer)
+			   (error "Abort"))
 			 char0))))))
       (cddr (assoc char templates)))))
 
@@ -596,12 +607,14 @@ to be run from that hook to function properly."
   (when org-remember-backup-directory
     (unless (file-directory-p org-remember-backup-directory)
       (make-directory org-remember-backup-directory))
+    (org-set-local 'auto-save-file-name-transforms nil)
     (setq buffer-file-name
 	  (expand-file-name
 	   (format-time-string "remember-%Y-%m-%d-%H-%M-%S")
 	   org-remember-backup-directory))
     (save-buffer)
-    (org-set-local 'auto-save-visited-file-name t))
+    (org-set-local 'auto-save-visited-file-name t)
+    (auto-save-mode 1))
   (when (save-excursion
 	  (goto-char (point-min))
 	  (re-search-forward "%!" nil t))

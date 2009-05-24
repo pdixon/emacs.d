@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.26d
+;; Version: 6.27
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -460,6 +460,13 @@ changes."
   (copy-face 'org-agenda-structure 'org-agenda-date)
   (set-face-doc-string 'org-agenda-date
 		       "Face used in agenda for normal days."))
+
+(unless (facep 'org-agenda-date-today)
+  (copy-face 'org-agenda-date 'org-agenda-date-today)
+  (set-face-doc-string 'org-agenda-date-today
+ 		       "Face used in agenda for today.")
+  (when (fboundp 'set-face-attribute)
+    (set-face-attribute 'org-agenda-date-today nil :weight 'bold :italic 't)))
 
 (unless (facep 'org-agenda-date-weekend)
   (copy-face 'org-agenda-date 'org-agenda-date-weekend)

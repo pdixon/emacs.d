@@ -7,7 +7,7 @@
 ;;	   Bastien Guerry <bzg AT altern DOT org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.26d
+;; Version: 6.27
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -49,6 +49,8 @@
 (declare-function org-timer-item "org-timer" (&optional arg))
 (declare-function org-combine-plists "org" (&rest plists))
 (declare-function org-entry-get "org" (pom property &optional inherit))
+(declare-function org-narrow-to-subtree "org" ())
+(declare-function org-show-subtree "org" ())
 
 (defgroup org-plain-lists nil
   "Options concerning plain lists in Org-mode."
@@ -110,6 +112,12 @@ with \\[org-ctrl-c-ctrl-c\\]."
   :group 'org-plain-lists
   :type 'boolean)
 
+(defcustom org-hierarchical-checkbox-statistics t
+  "Non-nil means, checkbox statistics counts only the state of direct children.
+When nil, all boxes below the cookie are counted."
+  :group 'org-plain-lists
+  :type 'boolean)
+
 (defcustom org-description-max-indent 20
   "Maximum indentation for the second line of a description list.
 When the indentation would be larger than this, it will become
@@ -160,7 +168,7 @@ list, obtained by prompting the user."
        (cond
 	((eq llt t)  "\\([ \t]*\\([-+]\\|\\([0-9]+[.)]\\)\\)\\|[ \t]+\\*\\)\\( \\|$\\)")
 	((= llt ?.)  "\\([ \t]*\\([-+]\\|\\([0-9]+\\.\\)\\)\\|[ \t]+\\*\\)\\( \\|$\\)")
-	((= llt ?\)) "\\([ \t]*\\([-+]\\|\\([0-9]+))\\)\\|[ \t]+\\*\\)\\( \\|$\\)")
+	((= llt ?\)) "\\([ \t]*\\([-+]\\|\\([0-9]+)\\)\\)\\|[ \t]+\\*\\)\\( \\|$\\)")
 	(t (error "Invalid value of `org-plain-list-ordered-item-terminator'")))))))
 
 (defun org-at-item-bullet-p ()
@@ -319,6 +327,21 @@ text below the heading."
 	  (beginning-of-line 2)))))
   (org-update-checkbox-count-maybe))
 
+(defun org-reset-checkbox-state-subtree ()
+  "Reset all checkboxes in an entry subtree."
+  (interactive "*")
+  (save-restriction
+    (save-excursion
+      (org-narrow-to-subtree)
+      (org-show-subtree)
+      (goto-char (point-min))
+      (let ((end (point-max)))
+	(while (< (point) end)
+	  (when (org-at-item-checkbox-p)
+	    (replace-match "[ ]" t t))
+	  (beginning-of-line 2))))
+    (org-update-checkbox-count-maybe)))
+
 (defun org-checkbox-blocked-p ()
   "Is the current checkbox blocked from for being checked now?
 A checkbox is blocked if all of the following conditions are fulfilled:
@@ -341,10 +364,16 @@ A checkbox is blocked if all of the following conditions are fulfilled:
 	      (org-current-line)
 	    nil))))))
 
+(defvar org-checkbox-statistics-hook nil
+  "Hook that is run whenever Org thinks checkbox statistics should be updated.
+This hook runs even if `org-provide-checkbox-statistics' is nil, to it can
+be used to implement alternative ways of collecting statistics information.")
+
 (defun org-update-checkbox-count-maybe ()
   "Update checkbox statistics unless turned off by user."
   (when org-provide-checkbox-statistics
-    (org-update-checkbox-count)))
+    (org-update-checkbox-count))
+  (run-hooks 'org-checkbox-statistics-hook))
 
 (defun org-update-checkbox-count (&optional all)
  "Update the checkbox statistics in the current section.
@@ -364,6 +393,10 @@ the whole buffer."
 	  (re-find (concat re "\\|" re-box))
 	  beg-cookie end-cookie is-percent c-on c-off lim
 	  eline curr-ind next-ind continue-from startsearch
+	  (recursive
+	   (or (not org-hierarchical-checkbox-statistics)
+	       (string-match "\\<recursive\\>"
+			     (or (org-entry-get nil "COOKIE_DATA") ""))))
 	  (cstat 0)
 	  )
      (when all
@@ -375,12 +408,11 @@ the whole buffer."
      (while (and (re-search-backward re-find beg t)
 		 (not (save-match-data
 			(and (org-on-heading-p)
-
-			     (equal (downcase
-				     (or (org-entry-get
-					  nil "COOKIE_DATA")
-					 ""))
-				    "todo")))))
+			     (string-match "\\<todo\\>"
+					   (downcase
+					    (or (org-entry-get
+						 nil "COOKIE_DATA")
+						"")))))))
        (setq beg-cookie (match-beginning 1)
 	     end-cookie (match-end 1)
 	     cstat (+ cstat (if end-cookie 1 0))
@@ -402,7 +434,10 @@ the whole buffer."
 	       (org-beginning-of-item)
 	       (setq curr-ind (org-get-indentation))
 	       (setq next-ind curr-ind)
-	       (while (and (bolp) (org-at-item-p) (= curr-ind next-ind))
+	       (while (and (bolp) (org-at-item-p)
+			   (if recursive
+			       (<= curr-ind next-ind)
+			     (= curr-ind next-ind)))
 		 (save-excursion (end-of-line) (setq eline (point)))
 		 (if (re-search-forward re-box eline t)
 		     (if (member (match-string 2) '("[ ]" "[-]"))
@@ -410,7 +445,11 @@ the whole buffer."
 		       (setq c-on (1+ c-on))
 		       )
 		   )
-		 (org-end-of-item)
+		 (if (not recursive)
+		     (org-end-of-item)
+		   (end-of-line)
+		   (when (re-search-forward org-list-beginning-re lim t)
+		     (beginning-of-line)))
 		 (setq next-ind (org-get-indentation))
 		 )))
 	 (goto-char continue-from)
@@ -859,7 +898,9 @@ I.e. to the text after the last item."
 	(catch 'next
 	  (beginning-of-line 2)
 	  (if (looking-at "[ \t]*$")
-	      (throw (if (eobp) 'exit 'next) t))
+	      (if (eobp)
+		  (progn (setq pos (point)) (throw 'exit t))
+		(throw 'next t)))
 	  (skip-chars-forward " \t") (setq ind1 (current-column))
 	  (if (or (< ind1 ind)
 		  (and (= ind1 ind)
