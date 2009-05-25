@@ -4,7 +4,7 @@
 ;;;;;;  org-open-link-from-string org-open-at-point-global org-insert-link-global
 ;;;;;;  org-store-link org-run-like-in-org-mode turn-on-orgstruct++
 ;;;;;;  turn-on-orgstruct orgstruct-mode org-global-cycle org-mode)
-;;;;;;  "org" "lisp/org.el" (18926 4113))
+;;;;;;  "org" "lisp/org.el" (18965 31439))
 ;;; Generated autoloads from lisp/org.el
 
 (autoload 'org-mode "org" "\
@@ -214,7 +214,7 @@ Call the customize function with org as argument.
 ;;;;;;  org-diary org-agenda-list-stuck-projects org-tags-view org-todo-list
 ;;;;;;  org-search-view org-agenda-list org-batch-store-agenda-views
 ;;;;;;  org-store-agenda-views org-batch-agenda-csv org-batch-agenda
-;;;;;;  org-agenda) "org-agenda" "lisp/org-agenda.el" (18926 4113))
+;;;;;;  org-agenda) "org-agenda" "lisp/org-agenda.el" (18967 36983))
 ;;; Generated autoloads from lisp/org-agenda.el
 
 (autoload 'org-agenda "org-agenda" "\
@@ -466,22 +466,63 @@ belonging to the \"Work\" category.
 
 ;;;***
 
-;;;### (autoloads (org-export-as-ascii) "org-ascii" "lisp/org-ascii.el"
-;;;;;;  (18926 4113))
+;;;### (autoloads (org-export-as-ascii org-export-region-as-ascii
+;;;;;;  org-replace-region-by-ascii org-export-as-ascii-to-buffer)
+;;;;;;  "org-ascii" "lisp/org-ascii.el" (18964 65023))
 ;;; Generated autoloads from lisp/org-ascii.el
+
+(autoload 'org-export-as-ascii-to-buffer "org-ascii" "\
+Call `org-export-as-ascii` with output to a temporary buffer.
+No file is created.  The prefix ARG is passed through to `org-export-as-ascii'.
+
+\(fn ARG)" t nil)
+
+(autoload 'org-replace-region-by-ascii "org-ascii" "\
+Assume the current region has org-mode syntax, and convert it to plain ASCII.
+This can be used in any buffer.  For example, you could write an
+itemized list in org-mode syntax in a Mail buffer and then use this
+command to convert it.
+
+\(fn BEG END)" t nil)
+
+(autoload 'org-export-region-as-ascii "org-ascii" "\
+Convert region from BEG to END in org-mode buffer to plain ASCII.
+If prefix arg BODY-ONLY is set, omit file header, footer, and table of
+contents, and only produce the region of converted text, useful for
+cut-and-paste operations.
+If BUFFER is a buffer or a string, use/create that buffer as a target
+of the converted ASCII.  If BUFFER is the symbol `string', return the
+produced ASCII as a string and leave not buffer behind.  For example,
+a Lisp program could call this function in the following way:
+
+  (setq ascii (org-export-region-as-ascii beg end t 'string))
+
+When called interactively, the output buffer is selected, and shown
+in a window.  A non-interactive call will only return the buffer.
+
+\(fn BEG END &optional BODY-ONLY BUFFER)" t nil)
 
 (autoload 'org-export-as-ascii "org-ascii" "\
 Export the outline as a pretty ASCII file.
 If there is an active region, export only the region.
 The prefix ARG specifies how many levels of the outline should become
-underlined headlines.  The default is 3.
+underlined headlines, default is 3.    Lower levels will become bulleted
+lists.  When HIDDEN is non-nil, don't display the ASCII buffer.
+EXT-PLIST is a property list with external parameters overriding
+org-mode's default settings, but still inferior to file-local
+settings.  When TO-BUFFER is non-nil, create a buffer with that
+name and export to that buffer.  If TO-BUFFER is the symbol
+`string', don't leave any buffer behind but just return the
+resulting ASCII as a string.  When BODY-ONLY is set, don't produce
+the file header and footer.  When PUB-DIR is set, use this as the
+publishing directory.
 
-\(fn ARG)" t nil)
+\(fn ARG &optional HIDDEN EXT-PLIST TO-BUFFER BODY-ONLY PUB-DIR)" t nil)
 
 ;;;***
 
 ;;;### (autoloads (org-attach) "org-attach" "lisp/org-attach.el"
-;;;;;;  (18926 4113))
+;;;;;;  (18939 56666))
 ;;; Generated autoloads from lisp/org-attach.el
 
 (autoload 'org-attach "org-attach" "\
@@ -493,7 +534,7 @@ Shows a list of commands and prompts for another key to execute a command.
 ;;;***
 
 ;;;### (autoloads (org-bbdb-anniversaries) "org-bbdb" "lisp/org-bbdb.el"
-;;;;;;  (18926 4113))
+;;;;;;  (18950 32403))
 ;;; Generated autoloads from lisp/org-bbdb.el
 
 (autoload 'org-bbdb-anniversaries "org-bbdb" "\
@@ -504,7 +545,7 @@ Extract anniversaries from BBDB for display in the agenda.
 ;;;***
 
 ;;;### (autoloads (org-clock-persistence-insinuate org-get-clocktable)
-;;;;;;  "org-clock" "lisp/org-clock.el" (18926 40855))
+;;;;;;  "org-clock" "lisp/org-clock.el" (18944 13281))
 ;;; Generated autoloads from lisp/org-clock.el
 
 (autoload 'org-get-clocktable "org-clock" "\
@@ -521,8 +562,9 @@ Set up hooks for clock persistence
 
 ;;;***
 
-;;;### (autoloads (org-insert-export-options-template org-export-visible
-;;;;;;  org-export) "org-exp" "lisp/org-exp.el" (18926 40573))
+;;;### (autoloads (org-insert-export-options-template org-export-as-org
+;;;;;;  org-export-visible org-export) "org-exp" "lisp/org-exp.el"
+;;;;;;  (18967 36983))
 ;;; Generated autoloads from lisp/org-exp.el
 
 (autoload 'org-export "org-exp" "\
@@ -549,6 +591,28 @@ command.
 
 \(fn TYPE ARG)" t nil)
 
+(autoload 'org-export-as-org "org-exp" "\
+Make a copy wiht not-exporting stuff removed.
+The purpose of this function is to provide a way to export the source
+Org file of a webpage in Org format, but with sensitive and/or irrelevant
+stuff removed.  This command will remove the following:
+
+- archived trees (if the variable `org-export-with-archived-trees' is nil)
+- comment blocks and trees starting with the COMMENT keyword
+- only trees that are consistent with `org-export-select-tags'
+  and `org-export-exclude-tags'.
+
+The only arguments that will be used are EXT-PLIST and PUB-DIR,
+all the others will be ignored (but are present so that the general
+mechanism to call publishing functions will work).
+
+EXT-PLIST is a property list with external parameters overriding
+org-mode's default settings, but still inferior to file-local
+settings.  When PUB-DIR is set, use this as the publishing
+directory.
+
+\(fn ARG &optional HIDDEN EXT-PLIST TO-BUFFER BODY-ONLY PUB-DIR)" t nil)
+
 (autoload 'org-insert-export-options-template "org-exp" "\
 Insert into the buffer a template with information for exporting.
 
@@ -559,7 +623,7 @@ Insert into the buffer a template with information for exporting.
 ;;;### (autoloads (org-export-as-docbook org-export-as-docbook-pdf-and-open
 ;;;;;;  org-export-as-docbook-pdf org-export-region-as-docbook org-replace-region-by-docbook
 ;;;;;;  org-export-as-docbook-to-buffer org-export-as-docbook-batch)
-;;;;;;  "org-docbook" "lisp/org-docbook.el" (18926 4113))
+;;;;;;  "org-docbook" "lisp/org-docbook.el" (18964 64103))
 ;;; Generated autoloads from lisp/org-docbook.el
 
 (autoload 'org-export-as-docbook-batch "org-docbook" "\
@@ -602,7 +666,7 @@ could call this function in the following way:
   (setq docbook (org-export-region-as-docbook beg end t 'string))
 
 When called interactively, the output buffer is selected, and shown
-in a window.  A non-interactive call will only retunr the buffer.
+in a window.  A non-interactive call will only return the buffer.
 
 \(fn BEG END &optional BODY-ONLY BUFFER)" t nil)
 
@@ -619,7 +683,7 @@ Export as DocBook XML file, generate PDF file, and open it.
 (autoload 'org-export-as-docbook "org-docbook" "\
 Export the current buffer as a DocBook file.
 If there is an active region, export only the region.  When
-HIDDEN is non-nil, don't display the HTML buffer.  EXT-PLIST is a
+HIDDEN is obsolete and does nothing.  EXT-PLIST is a
 property list with external parameters overriding org-mode's
 default settings, but still inferior to file-local settings.
 When TO-BUFFER is non-nil, create a buffer with that name and
@@ -635,8 +699,8 @@ publishing directory.
 ;;;***
 
 ;;;### (autoloads (org-feed-show-raw-feed org-feed-goto-inbox org-feed-update
-;;;;;;  org-feed-update-all) "org-feed" "lisp/org-feed.el" (18926
-;;;;;;  4113))
+;;;;;;  org-feed-update-all) "org-feed" "lisp/org-feed.el" (18939
+;;;;;;  56666))
 ;;; Generated autoloads from lisp/org-feed.el
 
 (autoload 'org-feed-update-all "org-feed" "\
@@ -664,7 +728,7 @@ Show the raw feed buffer of a feed.
 ;;;***
 
 ;;;### (autoloads (org-footnote-normalize org-footnote-action) "org-footnote"
-;;;;;;  "lisp/org-footnote.el" (18926 4113))
+;;;;;;  "lisp/org-footnote.el" (18939 56666))
 ;;; Generated autoloads from lisp/org-footnote.el
 
 (autoload 'org-footnote-action "org-footnote" "\
@@ -691,7 +755,7 @@ referenced sequence.
 ;;;### (autoloads (org-export-htmlize-generate-css org-export-as-html
 ;;;;;;  org-export-region-as-html org-replace-region-by-html org-export-as-html-to-buffer
 ;;;;;;  org-export-as-html-batch org-export-as-html-and-open) "org-html"
-;;;;;;  "lisp/org-html.el" (18926 4113))
+;;;;;;  "lisp/org-html.el" (18964 64564))
 ;;; Generated autoloads from lisp/org-html.el
 
 (put 'org-export-html-style 'safe-local-variable 'booleanp)
@@ -753,7 +817,7 @@ Export the outline as a pretty HTML file.
 If there is an active region, export only the region.  The prefix
 ARG specifies how many levels of the outline should become
 headlines.  The default is 3.  Lower levels will become bulleted
-lists.  When HIDDEN is non-nil, don't display the HTML buffer.
+lists.  HIDDEN is obsolete and does nothing.
 EXT-PLIST is a property list with external parameters overriding
 org-mode's default settings, but still inferior to file-local
 settings.  When TO-BUFFER is non-nil, create a buffer with that
@@ -784,7 +848,7 @@ that uses these same face definitions.
 
 ;;;### (autoloads (org-export-icalendar-combine-agenda-files org-export-icalendar-all-agenda-files
 ;;;;;;  org-export-icalendar-this-file) "org-icalendar" "lisp/org-icalendar.el"
-;;;;;;  (18926 4113))
+;;;;;;  (18958 50996))
 ;;; Generated autoloads from lisp/org-icalendar.el
 
 (autoload 'org-export-icalendar-this-file "org-icalendar" "\
@@ -811,7 +875,7 @@ The file is stored under the name `org-combined-agenda-icalendar-file'.
 
 ;;;### (autoloads (org-id-find-id-file org-id-find org-id-goto org-id-get-with-outline-drilling
 ;;;;;;  org-id-get-with-outline-path-completion org-id-get org-id-copy
-;;;;;;  org-id-get-create) "org-id" "lisp/org-id.el" (18926 4113))
+;;;;;;  org-id-get-create) "org-id" "lisp/org-id.el" (18939 56666))
 ;;; Generated autoloads from lisp/org-id.el
 
 (autoload 'org-id-get-create "org-id" "\
@@ -875,7 +939,7 @@ Query the id database for the file in which this ID is located.
 ;;;***
 
 ;;;### (autoloads (org-irc-store-link) "org-irc" "lisp/org-irc.el"
-;;;;;;  (18926 4113))
+;;;;;;  (18939 56666))
 ;;; Generated autoloads from lisp/org-irc.el
 
 (autoload 'org-irc-store-link "org-irc" "\
@@ -888,7 +952,7 @@ Dispatch to the appropriate function to store a link to an IRC session.
 ;;;### (autoloads (org-export-as-pdf-and-open org-export-as-pdf org-export-as-latex
 ;;;;;;  org-export-region-as-latex org-replace-region-by-latex org-export-as-latex-to-buffer
 ;;;;;;  org-export-as-latex-batch) "org-latex" "lisp/org-latex.el"
-;;;;;;  (18926 4113))
+;;;;;;  (18967 37726))
 ;;; Generated autoloads from lisp/org-latex.el
 
 (autoload 'org-export-as-latex-batch "org-latex" "\
@@ -924,13 +988,13 @@ contents, and only produce the region of converted text, useful for
 cut-and-paste operations.
 If BUFFER is a buffer or a string, use/create that buffer as a target
 of the converted LaTeX.  If BUFFER is the symbol `string', return the
-produced LaTeX as a string and leave not buffer behind.  For example,
+produced LaTeX as a string and leave no buffer behind.  For example,
 a Lisp program could call this function in the following way:
 
   (setq latex (org-export-region-as-latex beg end t 'string))
 
 When called interactively, the output buffer is selected, and shown
-in a window.  A non-interactive call will only retunr the buffer.
+in a window.  A non-interactive call will only return the buffer.
 
 \(fn BEG END &optional BODY-ONLY BUFFER)" t nil)
 
@@ -940,8 +1004,9 @@ If there is an active region, export only the region.  The prefix
 ARG specifies how many levels of the outline should become
 headlines.  The default is 3.  Lower levels will be exported
 depending on `org-export-latex-low-levels'.  The default is to
-convert them as description lists.  When HIDDEN is non-nil, don't
-display the LaTeX buffer.  EXT-PLIST is a property list with
+convert them as description lists.
+HIDDEN is obsolete and does nothing.
+EXT-PLIST is a property list with
 external parameters overriding org-mode's default settings, but
 still inferior to file-local settings.  When TO-BUFFER is
 non-nil, create a buffer with that name and export to that
@@ -968,7 +1033,7 @@ Export as LaTeX, then process through to PDF, and open.
 
 ;;;### (autoloads (org-publish-current-project org-publish-current-file
 ;;;;;;  org-publish-all org-publish) "org-publish" "lisp/org-publish.el"
-;;;;;;  (18926 4113))
+;;;;;;  (18962 54212))
 ;;; Generated autoloads from lisp/org-publish.el
 
 (defalias 'org-publish-project 'org-publish)
@@ -1000,7 +1065,7 @@ the project.
 ;;;***
 
 ;;;### (autoloads (org-plot/gnuplot) "org-plot" "lisp/org-plot.el"
-;;;;;;  (18926 4113))
+;;;;;;  (18939 56667))
 ;;; Generated autoloads from lisp/org-plot.el
 
 (autoload 'org-plot/gnuplot "org-plot" "\
@@ -1014,7 +1079,7 @@ line directly before or after the table.
 
 ;;;### (autoloads (org-remember-handler org-remember org-remember-apply-template
 ;;;;;;  org-remember-annotation org-remember-insinuate) "org-remember"
-;;;;;;  "lisp/org-remember.el" (18926 4113))
+;;;;;;  "lisp/org-remember.el" (18942 62960))
 ;;; Generated autoloads from lisp/org-remember.el
 
 (autoload 'org-remember-insinuate "org-remember" "\
@@ -1089,7 +1154,7 @@ See also the variable `org-reverse-note-order'.
 ;;;***
 
 ;;;### (autoloads (org-table-to-lisp orgtbl-mode turn-on-orgtbl)
-;;;;;;  "org-table" "lisp/org-table.el" (18926 4113))
+;;;;;;  "org-table" "lisp/org-table.el" (18939 56667))
 ;;; Generated autoloads from lisp/org-table.el
 
 (autoload 'turn-on-orgtbl "org-table" "\
@@ -1114,7 +1179,7 @@ The table is taken from the parameter TXT, or from the buffer at point.
 
 ;;;### (autoloads (org-timer-item org-timer-change-times-in-region
 ;;;;;;  org-timer org-timer-start) "org-timer" "lisp/org-timer.el"
-;;;;;;  (18926 4113))
+;;;;;;  (18939 56667))
 ;;; Generated autoloads from lisp/org-timer.el
 
 (autoload 'org-timer-start "org-timer" "\
@@ -1153,7 +1218,7 @@ Insert a description-type item with the current timer value.
 ;;;***
 
 ;;;### (autoloads (org-export-as-xoxo) "org-xoxo" "lisp/org-xoxo.el"
-;;;;;;  (18926 4113))
+;;;;;;  (18939 56667))
 ;;; Generated autoloads from lisp/org-xoxo.el
 
 (autoload 'org-export-as-xoxo "org-xoxo" "\

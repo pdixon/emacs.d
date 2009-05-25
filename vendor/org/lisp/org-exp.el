@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.26d
+;; Version: 6.27
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -38,6 +38,7 @@
 (declare-function org-agenda-skip "org-agenda" ())
 (declare-function org-infojs-options-inbuffer-template "org-jsinfo" ())
 (declare-function org-export-htmlize-region-for-paste "org-html" (beg end))
+(declare-function htmlize-buffer "htmlize" (&optional buffer))
 
 (defgroup org-export nil
   "Options for exporting org-listings."
@@ -51,6 +52,20 @@
 
 ;; FIXME
 (defvar org-export-publishing-directory nil)
+
+(defcustom org-export-show-temporary-export-buffer t
+  "Non-nil means, show buffer after exporting to temp buffer.
+When Org exports to a file, the buffer visiting that file is ever
+shown, but remains buried.  However, when exporting to a temporary
+buffer, that buffer is popped up in a second window.  When this variable
+is nil, the buffer remains buried also in these cases."
+  :group 'org-export-general
+  :type 'boolean)
+
+(defcustom org-export-copy-to-kill-ring t
+  "Non-nil means, exported stuff will also be pushed onto the kill ring."
+  :group 'org-export-general
+  :type 'boolean)
 
 (defcustom org-export-run-in-background nil
   "Non-nil means export and publishing commands will run in background.
@@ -66,7 +81,6 @@ If this option is t, the double prefix can be used to exceptionally
 force an export command into the current process."
   :group 'org-export-general
   :type 'boolean)
-
 
 (defcustom org-export-select-tags '("export")
   "Tags that select a tree for export.
@@ -344,6 +358,11 @@ This is run after selection of trees to be exported has happened.
 This selection includes tags-based selection, as well as removal
 of commented and archived trees.")
 
+(defvar org-export-preprocess-after-blockquote-hook nil
+  "Hook for preprocessing an export buffer.
+This is run after blockquote/quote/verse/center have been marked
+with cookies.")
+
 (defvar org-export-preprocess-before-backend-specifics-hook nil
   "Hook run before backend-specific functions are called during preprocessing.")
 
@@ -425,7 +444,10 @@ the first non-white thing on a line.  It will also find the math delimiters
 like $a=b$ and \\( a=b \\) for inline math,  $$a=b$$ and \\[ a=b \\] for
 display math.
 
-This option can also be set with the +OPTIONS line, e.g. \"LaTeX:t\"."
+This option can also be set with the +OPTIONS line, e.g. \"LaTeX:t\".
+
+The default is nil, because this option needs the `dvipng' program which
+is not available on all systems."
   :group 'org-export-translation
   :group 'org-export-latex
   :type 'boolean)
@@ -557,6 +579,7 @@ much faster."
     (:convert-org-links	      nil	  org-export-html-link-org-files-as-html)
     (:inline-images	      nil	  org-export-html-inline-images)
     (:html-extension	      nil	  org-export-html-extension)
+    (:xml-declaration         nil	  org-export-html-xml-declaration)
     (:html-table-tag	      nil	  org-export-html-table-tag)
     (:expand-quoted-html      "@"	  org-export-html-expand)
     (:timestamp		      nil	  org-export-html-with-timestamp)
@@ -568,7 +591,9 @@ much faster."
     (:author		      nil	  user-full-name)
     (:email		      nil	  user-mail-address)
     (:select-tags	      nil	  org-export-select-tags)
-    (:exclude-tags	      nil	  org-export-exclude-tags))
+    (:exclude-tags	      nil	  org-export-exclude-tags)
+
+    (:latex-image-options     nil	  org-export-latex-image-default-option))
   "List of properties that represent export/publishing variables.
 Each element is a list of 3 items:
 1. The property that is used internally, and also for org-publish-project-alist
@@ -675,6 +700,20 @@ modified) list.")
 	(when options
 	  (setq p (org-export-add-options-to-plist p options)))
 	;; Add macro definitions
+	(setq p (plist-put p :macro-date "(eval (format-time-string \"$1\"))"))
+	(setq p (plist-put p :macro-time "(eval (format-time-string \"$1\"))"))
+	(setq p (plist-put
+		 p :macro-modification-time
+		 (and (buffer-file-name)
+		      (file-exists-p (buffer-file-name))
+		      (concat
+		       "(eval (format-time-string \"$1\" '"
+		       (prin1-to-string (nth 5 (file-attributes
+						(buffer-file-name))))
+		       "))"))))
+	(setq p (plist-put p :macro-input-file (and (buffer-file-name)
+						    (file-name-nondirectory
+						     (buffer-file-name)))))
 	(goto-char (point-min))
 	(while (re-search-forward
 		"^#\\+macro:[ \t]+\\([-a-zA-Z0-9_]+\\)[ \t]+\\(.*?[ \t]*$\\)"
@@ -746,7 +785,7 @@ value of `org-export-run-in-background'."
 	 (help "[t]   insert the export option template
 \[v]   limit export to visible part of outline tree
 
-\[a] export as ASCII
+\[a] export as ASCII   [A] to temporary buffer
 
 \[h] export as HTML    [H] to temporary buffer   [R] export region
 \[b] export as HTML and open in browser
@@ -765,11 +804,12 @@ value of `org-export-run-in-background'."
 \[c] export agenda files into combined iCalendar file
 
 \[F] publish current file          [P] publish current project
-\[X] publish a project...          [A] publish all projects")
+\[X] publish a project...          [E] publish every projects")
 	 (cmds
 	  '((?t org-insert-export-options-template nil)
 	    (?v org-export-visible nil)
 	    (?a org-export-as-ascii t)
+	    (?A org-export-as-ascii-to-buffer t)
 	    (?h org-export-as-html t)
 	    (?b org-export-as-html-and-open t)
 	    (?H org-export-as-html-to-buffer nil)
@@ -787,7 +827,7 @@ value of `org-export-run-in-background'."
 	    (?F org-publish-current-file t)
 	    (?P org-publish-current-project t)
 	    (?X org-publish t)
-	    (?A org-publish-all t)))
+	    (?E org-publish-all t)))
 	 r1 r2 ass)
     (save-excursion
       (save-window-excursion
@@ -844,6 +884,7 @@ value of `org-export-run-in-background'."
     ("reg")
     ("macr")
     ("deg")
+    ("pm" . "&plusmn;")
     ("plusmn")
     ("sup2")
     ("sup3")
@@ -1246,6 +1287,7 @@ on this string to produce the exported version."
 
       ;; Blockquotes, verse, and center
       (org-export-mark-blockquote-verse-center)
+      (run-hooks 'org-export-preprocess-after-blockquote-hook)
 
       ;; Remove timestamps, if the user has requested so
       (unless (plist-get parameters :timestamps)
@@ -1783,9 +1825,7 @@ When it is nil, all comments will be removed."
 		  "]"
 		  (if (match-end 3)
 		      (match-string 2)
-		    (concat "[" (org-add-props
-				    (copy-sequence xx)
-				    '(org-protected t))
+		    (concat "[" (copy-sequence xx)
 			    "]"))
 		  "]")))
 	 (put-text-property 0 (length s) 'face 'org-link s)
@@ -1963,13 +2003,37 @@ TYPE must be a string, any of:
 (defun org-export-preprocess-apply-macros ()
   "Replace macro references."
   (goto-char (point-min))
-  (let (sy val key)
-    (while (re-search-forward "{{{\\([a-zA-Z][-a-zA-Z0-9_]*\\)}}}" nil t)
-      (setq key (downcase (match-string 1)))
+  (let (sy val key args args2 s n)
+    (while (re-search-forward
+	    "{{{\\([a-zA-Z][-a-zA-Z0-9_]*\\)\\((\\(.*?\\))\\)?}}}"
+	    nil t)
+      (setq key (downcase (match-string 1))
+	    args (match-string 3))
       (when (setq val (or (plist-get org-export-opt-plist
 				     (intern (concat ":macro-" key)))
 			  (plist-get org-export-opt-plist
 				     (intern (concat ":" key)))))
+	(save-match-data
+	  (when args
+	    (setq args (org-split-string args ";") args2 nil)
+	    (while args
+	      (while (string-match "\\\\\\'" (car args))
+		;; repair bad splits
+		(setcar (cdr args) (concat (substring (car args) 0 -1)
+					   ";" (nth 1 args)))
+		(pop args))
+	      (push (pop args) args2))
+	    (setq args (nreverse args2))
+	    (setq s 0)
+	    (while (string-match "\\$\\([0-9]+\\)" val s)
+	      (setq s (1+ (match-beginning 0))
+		    n (string-to-number (match-string 1 val)))
+	      (and (>= (length args) n)
+		   (setq val (replace-match (nth (1- n) args) t t val)))))
+	  (when (string-match "\\`(eval\\>" val)
+	    (setq val (eval (read val))))
+	  (if (and val (not (stringp val)))
+	      (setq val (format "%s" val))))
 	(and (stringp val)
 	     (replace-match val t t))))))
 
@@ -2296,6 +2360,7 @@ command."
       (error "Invalid export key"))
   (let* ((binding (cdr (assoc type
 			      '((?a . org-export-as-ascii)
+				(?A . org-export-as-ascii-to-buffer)
 				(?\C-a . org-export-as-ascii)
 				(?b . org-export-as-html-and-open)
 				(?\C-b . org-export-as-html-and-open)
@@ -2353,6 +2418,94 @@ command."
     (while (and (not (= (point-max) (setq s (next-overlay-change s))))
 		(not (get-char-property s 'invisible))))
     s))
+
+(defvar org-export-htmlized-org-css-url) ;; defined in org-html.el
+
+;;;###autoload
+(defun org-export-as-org (arg &optional hidden ext-plist
+			      to-buffer body-only pub-dir)
+  "Make a copy wiht not-exporting stuff removed.
+The purpose of this function is to provide a way to export the source
+Org file of a webpage in Org format, but with sensitive and/or irrelevant
+stuff removed.  This command will remove the following:
+
+- archived trees (if the variable `org-export-with-archived-trees' is nil)
+- comment blocks and trees starting with the COMMENT keyword
+- only trees that are consistent with `org-export-select-tags'
+  and `org-export-exclude-tags'.
+
+The only arguments that will be used are EXT-PLIST and PUB-DIR,
+all the others will be ignored (but are present so that the general
+mechanism to call publishing functions will work).
+
+EXT-PLIST is a property list with external parameters overriding
+org-mode's default settings, but still inferior to file-local
+settings.  When PUB-DIR is set, use this as the publishing
+directory."
+  (interactive "P")
+  (let* ((opt-plist (org-combine-plists (org-default-export-plist)
+					ext-plist
+					(org-infile-export-plist)))
+	 (bfname (buffer-file-name (or (buffer-base-buffer) (current-buffer))))
+	 (filename (concat (file-name-as-directory
+			    (or pub-dir
+				(org-export-directory :org opt-plist)))
+			   (file-name-sans-extension
+			    (file-name-nondirectory bfname))
+			     ".org"))
+	 (filename (and filename
+			(if (equal (file-truename filename)
+				   (file-truename bfname))
+			    (concat filename "-source")
+			  filename)))
+	 (backup-inhibited t)
+	 (buffer (find-file-noselect filename))
+	 (region (buffer-string)))
+    (save-excursion
+      (switch-to-buffer buffer)
+      (erase-buffer)
+      (insert region)
+      (let ((org-inhibit-startup t)) (org-mode))
+      
+      ;; Get rid of archived trees
+      (org-export-remove-archived-trees (plist-get opt-plist :archived-trees))
+      
+      ;; Remove comment environment and comment subtrees
+      (org-export-remove-comment-blocks-and-subtrees)
+      
+      ;; Get rid of excluded trees
+      (org-export-handle-export-tags (plist-get opt-plist :select-tags)
+				     (plist-get opt-plist :exclude-tags))
+      
+      (when (or (plist-get opt-plist :plain-source)
+		(not (or (plist-get opt-plist :plain-source)
+			 (plist-get opt-plist :htmlized-source))))
+	;; Either nothing special is requested (default call)
+	;; or the plain source is explicitly requested
+	;; so: save it
+	(save-buffer))
+      (when (plist-get opt-plist :htmlized-source)
+	;; Make the htmlized version
+	(require 'htmlize)
+	(require 'org-html)
+	(font-lock-fontify-buffer)
+	(let* ((htmlize-output-type 'css)
+	       (newbuf (htmlize-buffer)))
+	  (with-current-buffer newbuf
+	    (when org-export-htmlized-org-css-url
+	      (goto-char (point-min))
+	      (and (re-search-forward
+		    "<style type=\"text/css\">[^\000]*?\n[ \t]*</style>.*"
+		    nil t)
+		   (replace-match
+		    (format
+		     "<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">"
+		     org-export-htmlized-org-css-url)
+		    t t)))
+	    (write-file (concat filename ".html")))
+	  (kill-buffer newbuf)))
+      (set-buffer-modified-p nil)
+      (kill-buffer (current-buffer)))))
 
 (defvar org-archive-location)  ;; gets loaded with the org-archive require.
 (defun org-get-current-options ()
@@ -2564,7 +2717,17 @@ stacked delimiters is N.  Escaping delimiters is not possible."
 		   (regexp-quote (concat "(" path ")"))
 		   desc))
 	(replace-match "%s" t t desc)
-      "%s")))
+      (or desc "%s"))))
+
+(defun org-export-push-to-kill-ring (format)
+  "Push buffer content to kill ring.
+The depends on the variable `org-export-copy-to-kill'."
+  (when org-export-copy-to-kill-ring
+    (kill-new (buffer-string))
+    (when (fboundp 'x-set-selection)
+      (ignore-errors (x-set-selection 'PRIMARY (buffer-string)))
+      (ignore-errors (x-set-selection 'CLIPBOARD (buffer-string))))
+    (message "%s export done, pushed to kill ring and clipboard" format)))
 
 (provide 'org-exp)
 

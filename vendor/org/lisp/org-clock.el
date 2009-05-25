@@ -6,7 +6,7 @@
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
 ;; Homepage: http://orgmode.org
-;; Version: 6.26d
+;; Version: 6.27
 ;;
 ;; This file is part of GNU Emacs.
 ;;
@@ -238,8 +238,11 @@ of a different task.")
        (t (error "Invalid task choice %c" rpl))))))
 
 (defun org-clock-insert-selection-line (i marker)
+  "Insert a line for the clock selection menu.
+And return a cons cell with the selection character integer and the marker
+pointing to it."
   (when (marker-buffer marker)
-    (let (file cat task)
+    (let (file cat task heading prefix)
       (with-current-buffer (org-base-buffer (marker-buffer marker))
 	(save-excursion
 	  (save-restriction
@@ -249,7 +252,16 @@ of a different task.")
 		  cat (or (org-get-category)
 			  (progn (org-refresh-category-properties)
 				 (org-get-category)))
-		  task (org-get-heading 'notags)))))
+		  heading (org-get-heading 'notags)
+		  prefix (save-excursion
+			  (org-back-to-heading t)
+			  (looking-at "\\*+ ")
+			  (match-string 0))
+		  task (substring
+			(org-fontify-like-in-org-mode 
+			 (concat prefix heading)
+			 org-odd-levels-only)
+			(length prefix))))))
       (when (and cat task)
 	(insert (format "[%c] %-15s %s\n" i cat task))
 	(cons i marker)))))

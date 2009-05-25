@@ -4,7 +4,7 @@
 ;;
 ;; Emacs Lisp Archive Entry
 ;; Filename: org-latex.el
-;; Version: 6.26d
+;; Version: 6.27
 ;; Author: Bastien Guerry <bzg AT altern DOT org>
 ;; Maintainer: Carsten Dominik <carsten.dominik AT gmail DOT com>
 ;; Keywords: org, wp, tex
@@ -56,6 +56,9 @@
 (defvar org-export-latex-append-header nil)
 (defvar org-export-latex-options-plist nil)
 (defvar org-export-latex-todo-keywords-1 nil)
+(defvar org-export-latex-complex-heading-re nil)
+(defvar org-export-latex-not-done-keywords nil)
+(defvar org-export-latex-done-keywords nil)
 (defvar org-export-latex-display-custom-times nil)
 (defvar org-export-latex-all-targets-re nil)
 (defvar org-export-latex-add-level 0)
@@ -197,6 +200,23 @@ For example \orgTITLE for #+TITLE."
   :group 'org-export-latex
   :type 'string)
 
+(defcustom org-export-latex-todo-keyword-markup "\\textbf{%s}"
+  "Markup for TODO keywords, as a printf format.
+This can be a single format for all keywords, a cons cell with separate
+formats for not-done and done states, or an association list with setup
+for individual keywords.  If a keyword shows up for which there is no
+markup defined, the first one in the association list will be used."
+  :group 'org-export-latex
+  :type '(choice 
+	  (string :tag "Default")
+	  (cons :tag "Distinguish undone and done"
+		(string :tag "Not-DONE states")
+		(string :tag "DONE states"))
+	  (repeat :tag "Per keyword markup"
+		  (cons
+		   (string :tag "Keyword")
+		   (string :tag "Markup")))))
+	   
 (defcustom org-export-latex-timestamp-markup "\\textit{%s}"
   "A printf format string to be applied to time stamps."
   :group 'org-export-latex
@@ -209,6 +229,11 @@ For example \orgTITLE for #+TITLE."
 
 (defcustom org-export-latex-tables-verbatim nil
   "When non-nil, tables are exported verbatim."
+  :group 'org-export-latex
+  :type 'boolean)
+
+(defcustom org-export-latex-tables-centered t
+  "When non-nil, tables are exported in a center environment."
   :group 'org-export-latex
   :type 'boolean)
 
@@ -235,9 +260,9 @@ a string to be used instead of \\section{%s}.  In this latter case,
 the %s stands here for the inserted headline and is mandatory."
   :group 'org-export-latex
   :type '(choice (const :tag "Ignore" nil)
-		 (symbol :tag "Convert as descriptive list" description)
-		 (symbol :tag "Convert as itemized list" itemize)
-		 (symbol :tag "Convert as enumerated list" enumerate)
+		 (const :tag "Convert as descriptive list" description)
+		 (const :tag "Convert as itemized list" itemize)
+		 (const :tag "Convert as enumerated list" enumerate)
 		 (string :tag "Use a section string" :value "\\subparagraph{%s}")))
 
 (defcustom org-export-latex-list-parameters
@@ -274,7 +299,7 @@ Note that this depends on the way the LaTeX file is processed.
 The default setting (pdf and jpg) assumes that pdflatex is doing the
 processing.  If you are using latex and dvips or something similar,
 only postscript files can be included."
-  :group 'org-export-html
+  :group 'org-export-latex
   :type '(repeat (string :tag "Extension")))
 
 (defcustom org-export-latex-coding-system nil
@@ -288,11 +313,36 @@ only postscript files can be included."
   :group 'org-export-latex
   :group 'org-export)
 
+(defcustom org-latex-to-pdf-process
+  '("pdflatex -interaction nonstopmode %s"
+    "pdflatex -interaction nonstopmode %s")
+  "Commands to process a LaTeX file to a PDF file.
+This is a list of strings, each of them will be given to the shell
+as a command.  %s in the command will be replaced by the full file name, %b
+by the file base name (i.e. without extension).
+The reason why this is a list is that it usually takes several runs of
+pdflatex, maybe mixed with a call to bibtex.  Org does not have a clever
+mechanism to detect whihc of these commands have to be run to get to a stable
+result, and it also does not do any error checking.
+
+Alternatively, this may be a Lisp function that does the processing, so you
+could use this to apply the machinery of AUCTeX or the Emacs LaTeX mode.
+THis function should accept the file name as its single argument."
+  :group 'org-export-latex
+  :type '(choice (repeat :tag "Shell command sequence"
+		  (string :tag "Shell command"))
+		 (function)))
+
 (defcustom org-export-pdf-remove-logfiles t
   "Non-nil means, remove the logfiles produced by PDF production.
 These are the .aux, .log, .out, and .toc files."
-  :group 'org-export-latex
+  :group 'org-export-pdf
   :type 'boolean)
+
+;;; Hooks
+
+(defvar org-export-latex-after-blockquotes-hook nil
+  "Hook run during LaTeX export, after blockquote, verse, center are done.")
 
 ;;; Autoload functions:
 
@@ -313,7 +363,8 @@ emacs   --batch
 No file is created.  The prefix ARG is passed through to `org-export-as-latex'."
   (interactive "P")
   (org-export-as-latex arg nil nil "*Org LaTeX Export*")
-  (switch-to-buffer-other-window "*Org LaTeX Export*"))
+  (when org-export-show-temporary-export-buffer
+    (switch-to-buffer-other-window "*Org LaTeX Export*")))
 
 ;;;###autoload
 (defun org-replace-region-by-latex (beg end)
@@ -349,23 +400,24 @@ contents, and only produce the region of converted text, useful for
 cut-and-paste operations.
 If BUFFER is a buffer or a string, use/create that buffer as a target
 of the converted LaTeX.  If BUFFER is the symbol `string', return the
-produced LaTeX as a string and leave not buffer behind.  For example,
+produced LaTeX as a string and leave no buffer behind.  For example,
 a Lisp program could call this function in the following way:
 
   (setq latex (org-export-region-as-latex beg end t 'string))
 
 When called interactively, the output buffer is selected, and shown
-in a window.  A non-interactive call will only retunr the buffer."
+in a window.  A non-interactive call will only return the buffer."
   (interactive "r\nP")
   (when (interactive-p)
     (setq buffer "*Org LaTeX Export*"))
   (let ((transient-mark-mode t) (zmacs-regions t)
-	rtn)
+	ext-plist rtn)
+    (setq ext-plist (plist-put ext-plist :ignore-subree-p t))
     (goto-char end)
     (set-mark (point)) ;; to activate the region
     (goto-char beg)
     (setq rtn (org-export-as-latex
-	       nil nil nil
+	       nil nil ext-plist
 	       buffer body-only))
     (if (fboundp 'deactivate-mark) (deactivate-mark))
     (if (and (interactive-p) (bufferp rtn))
@@ -380,8 +432,9 @@ If there is an active region, export only the region.  The prefix
 ARG specifies how many levels of the outline should become
 headlines.  The default is 3.  Lower levels will be exported
 depending on `org-export-latex-low-levels'.  The default is to
-convert them as description lists.  When HIDDEN is non-nil, don't
-display the LaTeX buffer.  EXT-PLIST is a property list with
+convert them as description lists.
+HIDDEN is obsolete and does nothing.
+EXT-PLIST is a property list with
 external parameters overriding org-mode's default settings, but
 still inferior to file-local settings.  When TO-BUFFER is
 non-nil, create a buffer with that name and export to that
@@ -413,11 +466,13 @@ when PUB-DIR is set, use this as the publishing directory."
 	 (rbeg (and region-p (region-beginning)))
 	 (rend (and region-p (region-end)))
 	 (subtree-p
-	  (when region-p
-	    (save-excursion
-	      (goto-char rbeg)
-	      (and (org-at-heading-p)
-		   (>= (org-end-of-subtree t t) rend)))))
+	  (if (plist-get opt-plist :ignore-subree-p)
+	      nil
+	    (when region-p
+	      (save-excursion
+		(goto-char rbeg)
+		(and (org-at-heading-p)
+		     (>= (org-end-of-subtree t t) rend))))))
 	 (opt-plist (setq org-export-opt-plist
 			  (if subtree-p
 			      (org-export-add-subtree-options opt-plist rbeg)
@@ -456,8 +511,19 @@ when PUB-DIR is set, use this as the publishing directory."
 		     (region-p nil)
 		     (t (plist-get opt-plist :skip-before-1st-heading))))
 	 (text (plist-get opt-plist :text))
+	 (org-export-preprocess-hook
+	  (cons
+	   `(lambda () (org-set-local 'org-complex-heading-regexp
+				      ,org-export-latex-complex-heading-re))
+	   org-export-preprocess-hook))
 	 (first-lines (if skip "" (org-export-latex-first-lines
-				   opt-plist rbeg)))
+				   opt-plist
+				   (if subtree-p
+				       (save-excursion
+					 (goto-char rbeg)
+					 (point-at-bol 2))
+				     rbeg)
+				   (if region-p rend))))
 	 (coding-system (and (boundp 'buffer-file-coding-system)
 			     buffer-file-coding-system))
 	 (coding-system-for-write (or org-export-latex-coding-system
@@ -501,7 +567,7 @@ when PUB-DIR is set, use this as the publishing directory."
 	       "\n\n"))
 
     ;; insert lines before the first headline
-    (unless (or skip (eq to-buffer 'string))
+    (unless skip
       (insert first-lines))
 
     ;; export the content of headlines
@@ -520,7 +586,8 @@ when PUB-DIR is set, use this as the publishing directory."
     (unless body-only (insert "\n\\end{document}"))
     (or to-buffer (save-buffer))
     (goto-char (point-min))
-    (message "Exporting to LaTeX...done")
+    (or (org-export-push-to-kill-ring "LaTeX")
+	(message "Exporting to LaTeX...done"))
     (prog1
 	(if (eq to-buffer 'string)
 	    (prog1 (buffer-substring (point-min) (point-max))
@@ -539,13 +606,26 @@ when PUB-DIR is set, use this as the publishing directory."
 				    to-buffer body-only pub-dir))
 	 (file (buffer-file-name lbuf))
 	 (base (file-name-sans-extension (buffer-file-name lbuf)))
-	 (pdffile (concat base ".pdf")))
+	 (pdffile (concat base ".pdf"))
+	 (cmds org-latex-to-pdf-process)
+	 (outbuf (get-buffer-create "*Org PDF LaTeX Output*"))
+	 (bibtex-p (with-current-buffer lbuf
+		     (save-excursion
+		       (goto-char (point-min))
+		       (re-search-forward "\\\\bibliography{" nil t))))
+	 cmd)
+    (with-current-buffer outbuf (erase-buffer))
     (and (file-exists-p pdffile) (delete-file pdffile))
     (message "Processing LaTeX file...")
-    (shell-command (format "pdflatex -interaction nonstopmode %s"
-			   (shell-quote-argument file)))
-    (shell-command (format "pdflatex -interaction nonstopmode %s"
-			   (shell-quote-argument file)))
+    (if (and cmds (symbolp cmds))
+	(funcall cmds file)
+      (while cmds
+	(setq cmd (pop cmds))
+	(while (string-match "%b" cmd)
+	  (setq cmd (replace-match (shell-quote-argument base) t t cmd)))
+	(while (string-match "%s" cmd)
+	  (setq cmd (replace-match (shell-quote-argument file) t t cmd)))
+	(shell-command cmd outbuf outbuf)))
     (message "Processing LaTeX file...done")
     (if (not (file-exists-p pdffile))
 	(error "PDF file was not produced")
@@ -723,6 +803,9 @@ If NUM, export sections as numerical sections."
 EXT-PLIST is an optional additional plist.
 LEVEL indicates the default depth for export."
   (setq org-export-latex-todo-keywords-1 org-todo-keywords-1
+	org-export-latex-done-keywords org-done-keywords
+	org-export-latex-not-done-keywords org-not-done-keywords
+	org-export-latex-complex-heading-re org-complex-heading-regexp
 	org-export-latex-display-custom-times org-display-custom-times
 	org-export-latex-all-targets-re
 	(org-make-target-link-regexp (org-all-targets))
@@ -814,14 +897,14 @@ OPT-PLIST is the options plist for current buffer."
 	     (toc (format "\\setcounter{tocdepth}{%s}\n\\tableofcontents\n\\vspace*{1cm}\n"
 			  (plist-get opt-plist :headline-levels))))))))
 
-(defun org-export-latex-first-lines (opt-plist &optional beg)
+(defun org-export-latex-first-lines (opt-plist &optional beg end)
   "Export the first lines before first headline.
-If BEG is non-nil, the is the beginning of he region."
+If BEG is non-nil, it is the beginning of the region.
+If END is non-nil, it is the end of the region."
   (save-excursion
     (goto-char (or beg (point-min)))
-    (if (org-at-heading-p) (beginning-of-line 2))
     (let* ((pt (point))
-	   (end (if (re-search-forward "^\\*+ " nil t)
+	   (end (if (re-search-forward "^\\*+ " end t)
 		    (goto-char (match-beginning 0))
 		  (goto-char (point-max)))))
       (prog1
@@ -896,12 +979,21 @@ links, keywords, lists, tables, fixed-width"
   "Maybe remove keywords depending on rules in REMOVE-LIST."
   (goto-char (point-min))
   (let ((re-todo (mapconcat 'identity org-export-latex-todo-keywords-1 "\\|"))
-	(case-fold-search nil))
+	(case-fold-search nil)
+	(todo-markup org-export-latex-todo-keyword-markup)
+	fmt)
     ;; convert TODO keywords
     (when (re-search-forward (concat "^\\(" re-todo "\\)") nil t)
       (if (plist-get remove-list :todo)
 	  (replace-match "")
-	(replace-match (format "\\textbf{%s}" (match-string 1)) t t)))
+	(setq fmt (cond
+		   ((stringp todo-markup) todo-markup)
+		   ((and (consp todo-markup) (stringp (car todo-markup)))
+		    (if (member (match-string 1) org-export-latex-done-keywords)
+			(cdr todo-markup) (car todo-markup)))
+		   (t (cdr (or (assoc (match-string 1) todo-markup)
+			       (car todo-markup))))))
+	(replace-match (format fmt (match-string 1)) t t)))
     ;; convert priority string
     (when (re-search-forward "\\[\\\\#.\\]" nil t)
       (if (plist-get remove-list :priority)
@@ -1213,7 +1305,8 @@ The conversion is made depending of STRING-BEFORE and STRING-AFTER."
 			   (if label (concat "\\\label{" label "}") "")
 			   (or caption "")))
 		      (if longtblp "\\\\\n" "\n")
-		      (if (not longtblp) "\\begin{center}\n")
+		      (if (and org-export-latex-tables-centered (not longtblp))
+			  "\\begin{center}\n")
 		      (if (not longtblp) (concat "\\begin{tabular}{" align "}\n"))
 		      (orgtbl-to-latex
 		       lines
@@ -1227,7 +1320,8 @@ The conversion is made depending of STRING-BEFORE and STRING-AFTER."
 \\endlastfoot" (length org-table-last-alignment))
 					   nil)))
 		      (if (not longtblp) (concat "\n\\end{tabular}"))
-		      (if longtblp "\n" "\n\\end{center}\n")
+		      (if longtblp "\n" (if org-export-latex-tables-centered
+					    "\n\\end{center}\n" "\n"))
 		      (if longtblp
 			  "\\end{longtable}"
 			(if floatp "\\end{table}"))))
@@ -1297,7 +1391,8 @@ The conversion is made depending of STRING-BEFORE and STRING-AFTER."
 			  "file")))
 	    (coderefp (equal type "coderef"))
 	    (caption (org-find-text-property-in-string 'org-caption raw-path))
-	    (attr (org-find-text-property-in-string 'org-attributes raw-path))
+	    (attr (or (org-find-text-property-in-string 'org-attributes raw-path)
+		      (plist-get org-export-latex-options-plist :latex-image-options)))
 	    (label (org-find-text-property-in-string 'org-label raw-path))
 	    (floatp (or label caption))
 	    imgp radiop
@@ -1332,7 +1427,7 @@ The conversion is made depending of STRING-BEFORE and STRING-AFTER."
 	       (concat
 		(if floatp "\\begin{figure}[htb]\n")
 		(format "\\centerline{\\includegraphics[%s]{%s}}\n"
-			(or attr org-export-latex-image-default-option)
+			attr
 			(if (file-name-absolute-p raw-path)
 			    (expand-file-name raw-path)
 			  raw-path))
@@ -1366,10 +1461,12 @@ The conversion is made depending of STRING-BEFORE and STRING-AFTER."
 
   ;; Preserve latex environments
   (goto-char (point-min))
-  (while (re-search-forward "^[ \t]*\\\\begin{\\([a-zA-Z]+\\)}" nil t)
+  (while (re-search-forward "^[ \t]*\\\\begin{\\([a-zA-Z]+\\*?\\)}" nil t)
     (let* ((start (progn (beginning-of-line) (point)))
 	   (end (or (and (re-search-forward
-			  (concat "^[ \t]*\\\\end{" (match-string 1) "}") nil t)
+			  (concat "^[ \t]*\\\\end{" 
+				  (regexp-quote (match-string 1))
+				  "}") nil t)
 			 (point-at-eol))
 		    (point-max))))
       (add-text-properties start end '(org-protected t))))
@@ -1432,6 +1529,8 @@ The conversion is made depending of STRING-BEFORE and STRING-AFTER."
   (goto-char (point-min))
   (while (search-forward "ORG-CENTER-END" nil t)
     (replace-match "\\end{center}" t t))
+
+  (run-hooks 'org-export-latex-after-blockquotes-hook)
 
   ;; Convert horizontal rules
   (goto-char (point-min))
