@@ -1,0 +1,11 @@
+#contributor : Phillip DIXON <phil@dixon.gen.nz>
+#name : \begin{figure} ... \end{figure}
+# --
+
+\begin{figure}
+  \begin{center}
+    \includegraphics{$1}
+  \end{center}
+  \caption{$0}
+  \label{fig:$1}
+\end{figure}
