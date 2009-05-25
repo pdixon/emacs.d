@@ -1,2 +1,2 @@
-(setq mac-option-modifier 'meta)
-(setq mac-command-modifier 'hyper)
+(setq mac-option-modifier 'hyper)
+(setq mac-command-modifier 'meta)
