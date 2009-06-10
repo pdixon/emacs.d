@@ -28,3 +28,5 @@
 	  (todo "TODO")
 	  (todo "WAITING")))))
 	  
+
+(require 'org-protocol)
