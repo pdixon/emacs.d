@@ -13,6 +13,10 @@
       '((sequence "TODO(t)" "WAITING(w@)" "|" "DONE(d!)")
 	(sequence "|" "CANCELED")))
 (setq org-log-into-drawer "LOGBOOK")
+(setq org-tag-alist
+      '((:startgroup . nil)
+	("@call" . ?c) ("@office" . ?o) ("@home" . ?h) ("@computer" . ?m)
+	(:endgroup . nil)))
 
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
