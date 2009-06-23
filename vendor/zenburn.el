@@ -732,6 +732,8 @@ static char *gnus-pointer[] = {
        ((t (:inherit nxml-attribute-colon))))
 
      ;; Zenburn colors for org-mode
+     '(org-agenda-date ((t (:forground zeburn-blue))) t)
+     '(org-agenda-date-weekend ((t (:forground zeburn-blue-1))) t)
      '(org-agenda-date-today ((t (:foreground "white" 
                                :slant italic :weight bold))) t)       ;; white
      '(org-agenda-structure ((t (:inherit font-lock-comment-face))))  ;; zenburn-green
@@ -1040,6 +1042,8 @@ static char *gnus-pointer[] = {
        org-archived-face
        org-column-face
        ;org-checkbox-face
+       org-agenda-date-face
+       org-agenda-date-weekend-face
        org-date-face
        org-deadline-announce-face
        org-done-face
