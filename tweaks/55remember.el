@@ -1,9 +1,11 @@
 ;; Setup for Org Remember
+(require 'org-install)
 (require 'remember)
+(org-remember-insinuate)
 
-(setq remember-annotation-functions '(org-remember-annotation))
-(setq remember-handler-functions '(org-remember-handler))
-(add-hook 'remember-mode-hook 'org-remember-apply-template)
+;; (setq remember-annotation-functions '(org-remember-annotation))
+;; (setq remember-handler-functions '(org-remember-handler))
+;; (add-hook 'remember-mode-hook 'org-remember-apply-template)
 
 (setq org-remember-templates
       '(("Todo" ?t "* TODO %?\n  %i\n  %a" "master.org" "Tasks")

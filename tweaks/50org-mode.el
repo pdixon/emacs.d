@@ -34,3 +34,43 @@
 	  
 
 (require 'org-protocol)
+
+;; Website and Blog setup
+(require 'org-blog)
+(setq org-publish-project-alist
+      '(("blog"
+	 :base-directory "~/blog/"
+         :base-extension "org"
+	 :publishing-directory "~/Sites/blog/"
+	 :publishing-function org-publish-org-to-html
+	 :auto-index t
+	 :blog-base-url "http://localhost/~pjd67/"
+	 :blog-title "e?macs"
+	 :blog-description "Phil Dixon on emacs and macs"
+	 :blog-export-rss t
+	 :index-function org-publish-blog-index
+	 :index-filename "index.org"
+	 :index-title "Clever Title Here"
+	 :index-posts 2
+	 :auto-preamble t
+	 :postamble my-footer-html)))
+(org-publish-all)
+
+;; 	("static"
+;; 	 :bash-directory "~/website/"
+;; 	 :base-extension "css\\|js\\|png\\|jpg\\|pdf"
+;; 	 :publishing-directory "~/Sites/"
+;; 	 :recursive t
+;; 	 :publishing-function org-publish-attachment
+;; 	 )
+
+;; 	("web"
+;; 	 :bash-directory "~/website/"
+;; 	 :base-extension "org"
+;; 	 :publishing-directory "~/Sites/"
+;; 	 :recursive t
+;; 	 :publishing-function org-publish-org-to-html
+;; 	 :auto-preamble t
+;; 	 )
+
+
