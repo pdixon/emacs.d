@@ -169,25 +169,27 @@ Follow up with org-publish-all to upload to the site."
   (write-file (org-blog-new-post-file)))
 
 ;; pluggable index generation function for org-publish.
-
+(defun org-blog-plist (plist)
+  (cdr plist))
+  
 (defun org-publish-blog-index (plist &optional index-filename)
   "Publish an index of all finished blog posts.
 This function is suitable for use in the :index-function keyword
 of org-publish-project-alist."
-  (let* (((posts (nreverse (sort (org-publish-get-base-files plist "*~") 'string<)))
-	 (base-directory (file-name-as-directory (or org-blog-directory (plist-get plist :base-directory))))
-	 (blog-base-url (file-name-as-directory (plist-get plist :blog-base-url)))
-	 (blog-title (plist-get plist :blog-title))
+  (let* ((posts (nreverse (sort (org-publish-get-base-files plist "*~") 'string<)))
+	 (base-directory (file-name-as-directory (or org-blog-directory (plist-get (org-blog-plist plist) :base-directory))))
+	 (blog-base-url (file-name-as-directory (plist-get (org-blog-plist plist) :blog-base-url)))
+	 (blog-title (plist-get (org-blog-plist plist) :blog-title))
 	 (publishing-directory (file-name-as-directory 
-				(plist-get plist :publishing-directory)))
-	 (blog-description (plist-get plist :blog-description))
+				(plist-get (org-blog-plist plist) :publishing-directory)))
+	 (blog-description (plist-get (org-blog-plist plist) :blog-description))
 	 (blog-rss-feed nil)
-	 (rss (plist-get plist :blog-export-rss))
+	 (rss (plist-get (org-blog-plist plist) :blog-export-rss))
 	 (post-content nil)
 	 (index-file (concat base-directory (or index-filename "index.org")))
 	 (index-buffer (find-buffer-visiting index-file))
-	 (num-posts (or (plist-get plist :index-posts) 5))
-	 (index-title (plist-get plist :index-title))
+	 (num-posts (or (plist-get (org-blog-plist plist) :index-posts) 5))
+	 (index-title (plist-get (org-blog-plist plist) :index-title))
 	 (count 0)
 	 (p nil))
 

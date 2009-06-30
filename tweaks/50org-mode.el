@@ -54,7 +54,6 @@
 	 :index-posts 2
 	 :auto-preamble t
 	 :postamble my-footer-html)))
-(org-publish-all)
 
 ;; 	("static"
 ;; 	 :bash-directory "~/website/"
