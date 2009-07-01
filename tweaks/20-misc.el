@@ -24,6 +24,9 @@
 ;; Save a list of recent files visited.
 (recentf-mode 1)
 
+(require 'pair-mode)
+(global-pair-mode)
+
 (require 'mercurial)
 (require 'outline-magic)
 
