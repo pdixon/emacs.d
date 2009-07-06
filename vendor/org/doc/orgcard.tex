@@ -1,5 +1,5 @@
 % Reference Card for Org Mode
-\def\orgversionnumber{6.27}
+\def\orgversionnumber{6.28e}
 \def\versionyear{2009}          % latest update
 \def\year{2009}                 % latest copyright year
 
@@ -453,6 +453,7 @@ formula, \kbd{:=} a field formula.
 \key{find next link}{C-c C-x C-n}
 \key{find previous link}{C-c C-x C-p}
 \key{edit code snippet of file at point}{C-c '}
+
 {\bf Internal Links}
 
 \key{\kbd{<<My Target>>}}{\rm target}
@@ -555,11 +556,10 @@ after  ``{\tt :}'', and dictionary words elsewhere.
 \key{capture columns view in dynamic block}{C-c C-x i}
 
 \key{quit column view}{q}
-\key{next/previous allowed value}{S-left/right}
-\key{next/previous allowed value}{n / p}
+\key{show full value}{v}
 \key{edit value}{e}
+\metax{next/previous allowed value}{n/p or S-left/right}
 \key{edit allowed values list}{a}
-\key{show value}{v}
 \key{make column wider/narrower}{> / <}
 \key{move column left/right}{M-left/right}
 \key{add new column}{M-S-right}
@@ -633,7 +633,7 @@ after  ``{\tt :}'', and dictionary words elsewhere.
 {\bf Change display}
 
 \key{delete other windows}{o}
-\key{switch to day/week/month/year view}{d w m y}
+\key{switch to day/week/month/year view}{d w vm vy}
 \key{toggle inclusion of diary entries}{D}
 \key{toggle time grid for daily schedule}{G}
 \key{toggle display of logbook entries}{l}
@@ -650,20 +650,20 @@ after  ``{\tt :}'', and dictionary words elsewhere.
 \key{change state of current TODO item}{t}
 \key{kill item and source}{C-k}
 \key{archive the subtree (file/tag/sibling)}{\$ / a / A}
+\key{refile the subtree}{C-c C-w}
 \key{show tags of current headline}{T}
 \key{set tags for current headline/region}{:}
-\key{set priority of current item}{p}
+\key{set / compute priority of current item}{p / P}
 \key{raise/lower priority of current item}{S-UP/DOWN$^3$}
-\key{display weighted priority of current item}{P}
 \key{run an attachment command}{C-c C-a}
 \key{schedule/set deadline for this item}{C-c C-s/d}
 \key{change timestamp to one day earlier/later}{S-LEFT/RIGHT$^3$}
 \key{change timestamp to today}{>}
 \key{insert new entry into diary}{i}
-
 \newcolumn
 \key{start/stop/cancel the clock on current item}{I / O / X}
 \key{jump to running clock entry}{J}
+\key{mark / unmark / execute bulk action}{m / u / B}
 
 {\bf Misc}
 
@@ -699,7 +699,7 @@ some other place.
 \key{export/publish dispatcher}{C-c C-e}
 
 \key{export visible part only}{C-c C-e v}
-\key{insert template of export options}{C-c C-x t}
+\key{insert template of export options}{C-c C-e t}
 \key{toggle fixed width for entry or region}{C-c :}
 
 %{\bf HTML formatting}
