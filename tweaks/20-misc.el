@@ -5,6 +5,7 @@
 (set-default 'sentence-end-double-space nil)
 (setq inhibit-startup-message t)
 (server-start)
+(customize-set-variable 'indent-tabs-mode nil)
 
 (setq user-mail-address "phil@dixon.gen.nz")
 (setq user-full-name "Phillip Dixon")
@@ -23,6 +24,12 @@
  
 ;; Save a list of recent files visited.
 (recentf-mode 1)
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'reverse)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t)
+(setq uniquify-ignore-buffers-re "^\\*")
 
 (require 'pair-mode)
 (global-pair-mode)
