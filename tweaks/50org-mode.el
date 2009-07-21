@@ -32,7 +32,6 @@
 	  (todo "TODO")
 	  (todo "WAITING")))))
 	  
-
 (require 'org-protocol)
 
 ;; Website and Blog setup
