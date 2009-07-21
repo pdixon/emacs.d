@@ -767,6 +767,14 @@ static char *gnus-pointer[] = {
      '(org-todo ((t (:bold t :foreground "#cc9393" :weight bold))))   ;; zenburn-red
      '(org-upcoming-deadline ((t (:inherit font-lock-keyword-face)))) ;; zenburn-fg
      '(org-warning ((t (:bold t :foreground "#cc9393" :weight bold))));; zenburn-red
+     
+     ;; Zenburn colors for rst-mode
+     '(rst-level-1-face ((t (:foreground "#dfaf8f"))))
+     '(rst-level-2-face ((t (:foreground "#f0dfaf"))))
+     '(rst-level-3-face ((t (:foreground "#8cd0d3"))))
+     '(rst-level-4-face ((t (:foreground "#93e0e3"))))
+     '(rst-level-5-face ((t (:foreground "#7cb8bb"))))
+     '(rst-level-6-face ((t (:foreground "#6ca0a3"))))
 
      ;; TODO
      '(outline-8 ((t (:inherit default))))
@@ -1070,6 +1078,12 @@ static char *gnus-pointer[] = {
        org-todo-face
        org-upcoming-deadline-face
        org-warning-face
+       rst-level-1-face
+       rst-level-2-face
+       rst-level-3-face
+       rst-level-4-face
+       rst-level-5-face
+       rst-level-6-face
        paren-face
        plain-widget-button-face
        plain-widget-button-pressed-face
