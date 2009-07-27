@@ -15,6 +15,7 @@ pymacs*
 rope*
 pyflakes*
 url
+*.html
 
 syntax: regexp
 .*\#.*\#$
