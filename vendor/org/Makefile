@@ -11,7 +11,7 @@
 ##----------------------------------------------------------------------
 
 # Name of your emacs binary
-EMACS=emacs
+EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
 
 # Where local software is found
 prefix=/usr/local
