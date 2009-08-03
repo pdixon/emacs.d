@@ -20,13 +20,15 @@
 (setq org-use-fast-todo-selection t)
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAITING(w@)" "|" "DONE(d!)")
-	(sequence "|" "CANCELED")))
+	(sequence "|" "CANCELED" "DELEGATED(e@)")))
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-tag-alist
       '((:startgroup . nil)
 	("@call" . ?c) ("@office" . ?o) ("@home" . ?h) ("@computer" . ?m)
-	(:endgroup . nil)))
+	(:endgroup . nil)
+        ("REFILE" . ?r)))
 
+(setq org-enforce-todo-depedencies t)
 (defun org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
   (let (org-log-done org-log-states)   ; turn off logging
