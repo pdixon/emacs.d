@@ -8,6 +8,15 @@
 
 (setq org-hide-leading-stars t)
 
+;; Keep tasks with dates off the global todo lists
+(setq org-agenda-todo-ignore-with-date t)
+
+;; Remove completed deadline tasks from the agenda view
+(setq org-agenda-skip-deadline-if-done t)
+
+;; Remove completed scheduled tasks from the agenda view
+(setq org-agenda-skip-scheduled-if-done t)
+
 (setq org-use-fast-todo-selection t)
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAITING(w@)" "|" "DONE(d!)")
