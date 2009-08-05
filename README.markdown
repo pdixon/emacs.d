@@ -26,8 +26,9 @@ Easy management of color schemes.
 ### [Zenburn](http://www.brockman.se/software/zenburn/)
 The most important part of Vim.
 
-I've applied this [patch](http://sysphere.org/~anrxc/local/scr/sources/color-theme-zenburn-orgmode.patch) to add support for org-mode. I've also added
-colors for rst mode.
+I've applied this
+[patch](http://sysphere.org/~anrxc/local/scr/sources/color-theme-zenburn-orgmode.patch)
+to add support for org-mode. I've also added colors for rst mode.
 
 ## magit 
 Git front end.
@@ -66,4 +67,13 @@ from [here](http://luaforge.net/projects/lua-mode/).
 ### markdown-mode
 Get it from [here](http://jblevins.org/projects/markdown-mode/).
 
-### js2
+### AuCTex
+Version 11.85 from [here](http://www.gnu.org/software/auctex/)
+
+Installing on Mac OSX in a portable way is... interesting.
+I ended up using the following:
+
+    ./configure --prefix=/Users/pdixon/.emacs.d/vendor/ \\
+    --with-lispdir=/Users/pdixon/.emacs.d/vendor/ \\
+    --with-emacs="/Applications/Emacs.app/Contents/MacOS/Emacs" \\
+    --without-texmf-dir

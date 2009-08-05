@@ -16,7 +16,7 @@ rope*
 pyflakes*
 url
 *.html
-
+vendor/auctex*
 syntax: regexp
 .*\#.*\#$
 .*\#
