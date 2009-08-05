@@ -77,3 +77,19 @@ I ended up using the following:
     --with-lispdir=/Users/pdixon/.emacs.d/vendor/ \\
     --with-emacs="/Applications/Emacs.app/Contents/MacOS/Emacs" \\
     --without-texmf-dir
+
+# Key-bindings
+
+Based on [Xahlee's Dvorak Ergo
+Keybindings](http://xahlee.org/emacs/ergonomic_emacs_keybinding.html).
+
+I've made some changes.
+
+# External Programs
+## Aspell
+This is essential for flyspell. When I was Carbon Emacs this was
+bundled in the package. Since I've changed to Emacs 23 nightly builds
+I don't get this convenience. After spending hours trying various
+ports and binary builds I finally hit upon the easy solution. Build it
+from source. It has not non-standard dependencies, so 5 minutes later
+it was all done.
