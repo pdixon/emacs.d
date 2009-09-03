@@ -17,9 +17,6 @@ Paths:
 # Vendor Libraries
 All third party packages live under `vendor`.
 
-## Anything
-The super auto thingy.
-
 ## Color Theme
 Easy management of color schemes.
 
@@ -29,11 +26,6 @@ The most important part of Vim.
 I've applied this
 [patch](http://sysphere.org/~anrxc/local/scr/sources/color-theme-zenburn-orgmode.patch)
 to add support for org-mode. I've also added colors for rst mode.
-
-## magit 
-Git front end.
-
-Version: ??
 
 ## Org mode
 Version: 6.28e
@@ -51,6 +43,10 @@ Version: 2.0
 ## yasnippet
 Version: 0.5.10
 [yasnippet](http://code.google.com/p/yasnippet/)
+
+## company mode
+Version: 0.4.3
+[company-mode](http://nschum.de/src/emacs/company-mode/)
 
 ## File modes
 

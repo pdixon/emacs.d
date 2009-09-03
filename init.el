@@ -8,6 +8,7 @@
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/remember"))
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/lilypond"))
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/auctex"))
+(add-to-list 'load-path (concat dotfiles-dir "/vendor/company"))
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
