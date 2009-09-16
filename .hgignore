@@ -17,6 +17,11 @@ pyflakes*
 url
 *.html
 vendor/auctex*
+vendor/share/*
+vendor/var/*
+vendor/preview-latex.el
+vendor/tex-site.el
+
 syntax: regexp
 .*\#.*\#$
 .*\#

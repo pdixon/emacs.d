@@ -74,6 +74,9 @@ I ended up using the following:
     --with-emacs="/Applications/Emacs.app/Contents/MacOS/Emacs" \\
     --without-texmf-dir
 
+### Haskell
+Version 2.4 from [here](http://www.iro.umontreal.ca/~monnier/elisp/#haskell-mode)
+
 # Key-bindings
 
 Based on [Xahlee's Dvorak Ergo
