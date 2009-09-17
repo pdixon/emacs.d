@@ -47,7 +47,7 @@
 
 ;; Refile setup
 (setq org-completion-use-ido t)
-(setq org-refile-targets (quote ((org-agenda-files :maxlevel . 3) (nil :maxlevel . 5))))
+(setq org-refile-targets (quote ((org-agenda-files :maxlevel . 3) (nil :maxlevel . 3))))
 (setq org-refile-use-outline-path (quote file))
 (setq org-outline-path-complete-in-steps t)
 
