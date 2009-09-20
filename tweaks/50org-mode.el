@@ -51,6 +51,12 @@
 (setq org-refile-use-outline-path (quote file))
 (setq org-outline-path-complete-in-steps t)
 
+;; Babel mode
+(require 'org-babel-init)
+(require 'org-babel-python)
+
+(org-babel-load-library-of-babel)
+
 ;; Website and Blog setup
 (require 'org-blog)
 (setq org-blog-directory "~/website/blog/")

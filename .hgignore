@@ -21,6 +21,7 @@ vendor/share/*
 vendor/var/*
 vendor/preview-latex.el
 vendor/tex-site.el
+vendor/org/*
 
 syntax: regexp
 .*\#.*\#$
