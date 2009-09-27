@@ -3,7 +3,7 @@
 
 (setq org-directory "~/org/")
 
-(setq org-default-notes-file (concat org-directory "master.org"))
+(setq org-default-notes-file (concat org-directory "inbox.org"))
 (setq org-agenda-files (list org-directory (concat org-directory "projects/")))
 
 (setq org-hide-leading-stars t)
@@ -39,9 +39,11 @@
 
 (setq org-agenda-custom-commands
       '(("w" "Week's Agenda and Tasks"
-	 ((agenda "")
+	 ((agenda)
 	  (todo "TODO")
-	  (todo "WAITING")))))
+	  (todo "WAITING"))
+         nil
+         ("~/org/output/weekly.org"))))
 	  
 (require 'org-protocol)
 
@@ -56,6 +58,10 @@
 (require 'org-babel-python)
 
 (org-babel-load-library-of-babel)
+
+;; MobileOrg Support
+(setq org-mobile-directory "/Volumes/pjdixon/org")
+(setq org-mobile-inbox-for-pull "~/org/inbox.org")
 
 ;; Website and Blog setup
 (require 'org-blog)
