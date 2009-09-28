@@ -44,8 +44,29 @@
 	  (todo "WAITING"))
          nil
          ("~/org/output/weekly.org"))))
-	  
+
+;; Setup for Org Remember  
 (require 'org-protocol)
+(require 'remember)
+(org-remember-insinuate)
+(require 'org-mac-protocol)
+
+;; Start clock if a remember buffer includes :CLOCK-IN:
+(add-hook 'remember-mode-hook 'my-start-clock-if-needed 'append)
+
+(defun my-start-clock-if-needed ()
+  (save-excursion
+    (goto-char (point-min))
+    (when (re-search-forward " *:CLOCK-IN: *" nil t)
+      (replace-match "")
+      (org-clock-in))))
+
+(add-to-list 'org-remember-templates 
+	     '("Todo" ?t "* TODO %?\n  %i\n  %a" "inbox.org"))
+(add-to-list 'org-remember-templates
+             '("Notes" ?n "* %^{Title}\n  %i\n  %a" "inbox.org"))
+(add-to-list 'org-remember-templates
+             '("Interuption" ?i "* %^{Title}\n :CLOCK-IN: \n %?" "inbox.org"))
 
 ;; Refile setup
 (setq org-completion-use-ido t)
