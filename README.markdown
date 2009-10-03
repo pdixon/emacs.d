@@ -41,7 +41,7 @@ Version: 2.0
 ### org-blog
 
 ## yasnippet
-Version: 0.5.10
+Version: 0.6.1c
 [yasnippet](http://code.google.com/p/yasnippet/)
 
 ## company mode

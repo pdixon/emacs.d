@@ -1,9 +1,0 @@
-#contributor: pdixon@dynamiccontrols.com
-# --
-.$1
-%%%%%
-Type:: ${2:Functional}
-Source:: ${3:PRS}
-
-$0
-%%%%%

@@ -11,6 +11,7 @@
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/auctex"))
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/company"))
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/haskell"))
+(add-to-list 'load-path (concat dotfiles-dir "/vendor/yasnippet"))
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
