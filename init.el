@@ -9,7 +9,8 @@
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/company"))
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/haskell"))
 (add-to-list 'load-path (concat dotfiles-dir "/vendor/yasnippet"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/org-mode"))
+(add-to-list 'load-path (concat dotfiles-dir "/vendor/org-mode/lisp"))
+(add-to-list 'load-path (concat dotfiles-dir "/vendor/org-mode/contrib/lisp"))
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
