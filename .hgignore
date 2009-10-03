@@ -22,6 +22,8 @@ vendor/var/*
 vendor/preview-latex.el
 vendor/tex-site.el
 vendor/org/*
+vendor/org-mode/*
+*.tar.gz
 
 syntax: regexp
 .*\#.*\#$

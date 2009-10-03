@@ -84,6 +84,11 @@
 (setq org-mobile-directory "/Volumes/pjdixon/org")
 (setq org-mobile-inbox-for-pull "~/org/inbox.org")
 
+;; org-track
+(require 'org-install)
+(require 'org-track)
+(setq org-track-directory (concat dotfiles-dir "/vendor"))
+
 ;; Website and Blog setup
 (require 'org-blog)
 (setq org-blog-directory "~/website/blog/")
