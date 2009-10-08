@@ -93,3 +93,11 @@ I don't get this convenience. After spending hours trying various
 ports and binary builds I finally hit upon the easy solution. Build it
 from source. It has not non-standard dependencies, so 5 minutes later
 it was all done.
+
+## Mac OSX `PATH`
+On Mac OSX Emacs.app doesn't inherit the `PATH` from the shell.
+Instead it looks in the Defaults system, specifically
+`.MacOSX\environment.plist`. Create this using:
+
+    defaults write $HOME/.MacOSX/environment PATH "$PATH"
+    
