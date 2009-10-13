@@ -34,7 +34,7 @@
 (require 'pair-mode)
 (global-pair-mode)
 
-(require 'mercurial)
+;; (require 'mercurial)
 (require 'outline-magic)
 
 ;; Setup for better printing
