@@ -26,7 +26,12 @@
       '((:startgroup . nil)
 	("@call" . ?c) ("@office" . ?o) ("@home" . ?h) ("@computer" . ?m)
 	(:endgroup . nil)
-        ("REFILE" . ?r)))
+        ("REFILE" . ?r)
+        ("PROJECT" . ?p)))
+(setq org-use-tag-inheritance nil)
+
+(setq org-stuck-projects
+           '("+PROJECT/-CANCELED-DONE" ("TODO")))
 
 (setq org-enforce-todo-depedencies t)
 (defun org-summary-todo (n-done n-not-done)
