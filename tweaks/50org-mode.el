@@ -86,7 +86,7 @@
 (org-babel-load-library-of-babel)
 
 ;; MobileOrg Support
-(setq org-mobile-directory "/Volumes/pjdixon/org")
+(setq org-mobile-directory "/Volumes/pdixon/org")
 (setq org-mobile-inbox-for-pull "~/org/inbox.org")
 
 ;; org-track
