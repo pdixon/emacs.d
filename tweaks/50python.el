@@ -5,33 +5,33 @@
 (autoload 'python-mode "python-mode" "Python Mode." t)
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-to-list 'interpreter-mode-alist '("python" . python-mode))
- 
-;; Initialize Pymacs                                                                                           
+
+;; Initialize Pymacs
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
 (autoload 'pymacs-eval "pymacs" nil t)
 (autoload 'pymacs-exec "pymacs" nil t)
 (autoload 'pymacs-load "pymacs" nil t)
-;; Initialize Rope                                                                                             
+;; Initialize Rope
 (pymacs-load "ropemacs" "rope-")
 (setq ropemacs-enable-autoimport t)
- 
-;; Initialize Yasnippet                                                                                        
-;Don't map TAB to yasnippet                                                                                    
-;In fact, set it to something we'll never use because                                                          
-;we'll only ever trigger it indirectly.                                                                        
+
+;; Initialize Yasnippet
+;Don't map TAB to yasnippet
+;In fact, set it to something we'll never use because
+;we'll only ever trigger it indirectly.
 (setq yas/trigger-key (kbd "C-c <kp-multiply>"))
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/snippets")
- 
- 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                         
-;;; Auto-completion                                                                                            
-;;;  Integrates:                                                                                               
-;;;   1) Rope                                                                                                  
-;;;   2) Yasnippet                                                                                             
-;;;   all with AutoComplete.el                                                                                 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                         
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Auto-completion
+;;;  Integrates:
+;;;   1) Rope
+;;;   2) Yasnippet
+;;;   all with AutoComplete.el
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun prefix-list-elements (list prefix)
   (let (value)
     (nreverse
@@ -80,25 +80,25 @@
                  (set (make-local-variable 'ac-find-function) 'ac-python-find)
                  (set (make-local-variable 'ac-candidate-function) 'ac-python-candidate)
                  (set (make-local-variable 'ac-auto-start) nil)))
- 
-;;Ryan's python specific tab completion                                                                        
+
+;;Ryan's python specific tab completion
 (defun my-python-tab ()
-  ; Try the following:                                                                                         
-  ; 1) Do a yasnippet expansion                                                                                
-  ; 2) Do a Rope code completion                                                                               
-  ; 3) Do an indent                                                                                            
+  ; Try the following:
+  ; 1) Do a yasnippet expansion
+  ; 2) Do a Rope code completion
+  ; 3) Do an indent
   (interactive)
   (if (eql (ac-start) 0)
       (indent-for-tab-command)))
- 
+
 (defadvice ac-start (before advice-turn-on-auto-start activate)
   (set (make-local-variable 'ac-auto-start) t))
 (defadvice ac-cleanup (after advice-turn-off-auto-start activate)
   (set (make-local-variable 'ac-auto-start) nil))
- 
+
 (define-key python-mode-map "\t" 'my-python-tab)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                         
-;;; End Auto Completion                                                                                        
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; End Auto Completion
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Set up Flymake to use PyFlakes.
@@ -111,7 +111,7 @@
                         temp-file
                         (file-name-directory buffer-file-name))))
       (list "/home/pdixon/.emacs.d/usr/bin/pyflakes" (list local-file))))
-  
+
   (add-to-list 'flymake-allowed-file-name-masks
                '("\\.py\\'" flymake-pyflakes-init)))
 
