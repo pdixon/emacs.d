@@ -72,8 +72,8 @@
 ;; 	 "phil@dixon.gen.nz"
 ;; 	 nil)))
 ;; (setq smtpmail-debug-info t)
-(setq sendmail-program "msmtp")
-(setq  message-sendmail-extra-arguments '("-a" "dixon.gen.nz"))
+;; (setq sendmail-program "msmtp")
+;; (setq  message-sendmail-extra-arguments '("-a" "dixon.gen.nz"))
 
 
 ;; (setq message-send-mail-function 'smtpmail-send-it)
