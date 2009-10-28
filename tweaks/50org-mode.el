@@ -24,9 +24,14 @@
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-tag-alist
       '((:startgroup . nil)
-	("@call" . ?c) ("@office" . ?o) ("@home" . ?h) ("@computer" . ?m)
+	("@call" . ?c) ("@office" . ?o) ("@home" . ?h) ("@computer" . ?m) ("@shops" . ?s)
 	(:endgroup . nil)
-        ("REFILE" . ?r)))
+        ("REFILE" . ?r)
+        ("PROJECT" . ?p)))
+(setq org-use-tag-inheritance nil)
+
+(setq org-stuck-projects
+           '("+PROJECT/-CANCELED-DONE" ("TODO")))
 
 (setq org-enforce-todo-depedencies t)
 (defun org-summary-todo (n-done n-not-done)
@@ -49,7 +54,6 @@
 (require 'org-protocol)
 (require 'remember)
 (org-remember-insinuate)
-(require 'org-mac-protocol)
 
 ;; Start clock if a remember buffer includes :CLOCK-IN:
 (add-hook 'remember-mode-hook 'my-start-clock-if-needed 'append)
@@ -62,11 +66,11 @@
       (org-clock-in))))
 
 (add-to-list 'org-remember-templates 
-	     '("Todo" ?t "* TODO %?\n  %i\n  %a" "inbox.org"))
+	     '("Todo" ?t "* TODO %?\n%U\n%i\n%a" nil bottom nil))
 (add-to-list 'org-remember-templates
-             '("Notes" ?n "* %^{Title}\n  %i\n  %a" "inbox.org"))
+             '("Notes" ?n "* %?\n%U\n%i\n%a" nil bottom nil))
 (add-to-list 'org-remember-templates
-             '("Interuption" ?i "* %^{Title}\n :CLOCK-IN: \n %?" "inbox.org"))
+             '("Interuption" ?i "\n* %?\n :CLOCK-IN: \n" nil bottom nil))
 
 ;; Refile setup
 (setq org-completion-use-ido t)
@@ -74,14 +78,8 @@
 (setq org-refile-use-outline-path (quote file))
 (setq org-outline-path-complete-in-steps t)
 
-;; Babel mode
-(require 'org-babel-init)
-(require 'org-babel-python)
-
-(org-babel-load-library-of-babel)
-
 ;; MobileOrg Support
-(setq org-mobile-directory "/Volumes/pjdixon/org")
+(setq org-mobile-directory "/Volumes/pdixon/org")
 (setq org-mobile-inbox-for-pull "~/org/inbox.org")
 
 ;; org-track
@@ -89,31 +87,9 @@
 (require 'org-track)
 (setq org-track-directory (concat dotfiles-dir "/vendor"))
 
-;; Website and Blog setup
-(require 'org-blog)
-(setq org-blog-directory "~/website/blog/")
-(setq org-blog-directory "~/website/blog/unfinished/")
-
 (setq org-publish-project-alist
-      '(("blog"
-	 :base-directory "~/website/blog/"
-         :base-extension "org"
-	 :publishing-directory "~/Sites/blog/"
-	 :publishing-function org-publish-org-to-html
-	 :auto-index t
-	 :blog-base-url "http://localhost/~pjd67/blog/"
-	 :blog-title "e?macs"
-	 :blog-description "Phil Dixon on emacs and macs"
-	 :blog-export-rss nil
-	 :index-function org-publish-blog-index
-	 :index-filename "index.org"
-	 :index-title "Clever Title Here"
-	 :index-posts 2
-	 :auto-preamble t
-	 :auto-postamble t)
-
-	("static"
-	 :bash-directory "~/website/static"
+      '(("static"
+	 :base-directory "~/website/static"
 	 :base-extension "css\\|js\\|png\\|jpg\\|pdf"
 	 :publishing-directory "~/Sites/"
 	 :recursive t
@@ -121,7 +97,7 @@
 	 )
 
 	("web"
-	 :bash-directory "~/website/"
+	 :base-directory "~/website/"
 	 :base-extension "org"
 	 :publishing-directory "~/Sites/"
 	 :recursive t

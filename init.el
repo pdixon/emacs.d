@@ -34,3 +34,6 @@
 ;; You can keep system-specific customizations here
 (setq system-specific-config (concat dotfiles-dir my-system-name ".el"))
 (if (file-exists-p system-specific-config) (load system-specific-config))
+(put 'set-goal-column 'disabled nil)
+
+(put 'narrow-to-region 'disabled nil)
