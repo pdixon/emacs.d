@@ -64,8 +64,8 @@
 ;; (setq  message-sendmail-extra-arguments '("-a" "dixon.gen.nz"))
 
 
-;; (setq message-send-mail-function 'smtpmail-send-it)
-;; (setq send-mail-function 'smtpmail-send-it)
+(setq message-send-mail-function 'sendmail-send-it)
+(setq send-mail-function 'sendmail-send-it)
 
 ;; Project Root setup
 (require 'project-root)
