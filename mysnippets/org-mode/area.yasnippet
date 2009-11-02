@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: area
+# key: area
+# --
+* $1
+   :PROPERTIES:
+   :CATEGORY: ${2:`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`}
+   :ARCHIVE:  %s_archive::* $1
+   :END:
+ $0

@@ -105,4 +105,7 @@
 	 :auto-preamble t
 	 )))
 
-
+(add-hook 'org-mode-hook
+          (lambda ()
+            (org-set-local 'yas/trigger-key [tab])
+            (define-key yas/keymap [tab] 'yas/next-field-group)))
