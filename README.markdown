@@ -32,13 +32,11 @@ Version: 6.28e
 Downloaded From:
 [org-mode](http://orgmode.org/index.html#sec-3)
 
+### org-blog
+
 ### Remember
 Version: 2.0
 [remember](https://gna.org/p/remember-el)
-
-### org-mac-protocol
-
-### org-blog
 
 ## yasnippet
 Version: 0.6.1c
@@ -84,6 +82,10 @@ Based on [Xahlee's Dvorak Ergo
 Keybindings](http://xahlee.org/emacs/ergonomic_emacs_keybinding.html).
 
 I've made some changes.
+
+Actually I don't use this anymore. Enough other programs (i.e all
+standard text fields in Cocoa) use Emacs style key bindings that it's
+worth learning the stand bindings.
 
 # External Programs
 ## Aspell

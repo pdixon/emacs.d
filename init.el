@@ -2,15 +2,13 @@
 		    (or (buffer-file-name) load-file-name)))
 
 (add-to-list 'load-path dotfiles-dir)
-(add-to-list 'load-path (concat dotfiles-dir "/vendor"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/remember"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/lilypond"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/auctex"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/company"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/haskell"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/yasnippet"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/org-mode/lisp"))
-(add-to-list 'load-path (concat dotfiles-dir "/vendor/org-mode/contrib/lisp"))
+
+(let* ((my-lisp-dir (concat dotfiles-dir "vendor"))
+       (default-directory my-lisp-dir)
+       (orig-load-path load-path))
+  (setq load-path (cons my-lisp-dir nil))
+  (normal-top-level-add-subdirs-to-load-path)
+  (nconc load-path orig-load-path))
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
