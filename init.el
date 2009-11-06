@@ -14,7 +14,7 @@
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
 
 ;; (add-to-list 'Info-directory-list (concat dotfiles-dir "vendor/share/info"))
-(setenv "PYMACS_PYTHON" "~/.emacs.d/usr/bin/python")
+;; (setenv "PYMACS_PYTHON" "~/.emacs.d/usr/bin/python")
 
 ;; Load up my config stuff
 (setq tweaks-dir (concat dotfiles-dir "/tweaks"))

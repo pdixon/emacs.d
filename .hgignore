@@ -9,11 +9,6 @@ cscope.out
 anything-c-adaptive-history
 tramp
 .org-id-locations
-usr
-Pymacs*
-pymacs*
-rope*
-pyflakes*
 url
 *.html
 vendor/auctex*
@@ -23,6 +18,9 @@ vendor/preview-latex.el
 vendor/tex-site.el
 vendor/org/*
 vendor/org-mode/*
+vendor/pysmell.el
+vendor/pymacs.el
+tmp/*
 *.tar.gz
 
 syntax: regexp

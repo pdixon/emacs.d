@@ -1,54 +1,27 @@
 #! /bin/bash
 
-cd $(dirname "$0")
-
-virtualenv ./usr
-source ./usr/bin/activate
-
-## PYMACS INSTALLATION
-cd vendor
-# download pymacs 0.23 tarball into vendor directory
-curl -O http://pymacs.progiciels-bpi.ca/archives/Pymacs.tar.gz
-# expand pymacs
-tar xzvf Pymacs.tar.gz
-# step into the pymacs directory
-cd Pymacs-0.23
-# install the pymacs proper
-python setup.py install
-# copy the pymacs lisp file into the vendor directory
-cp pymacs.el ../pymacs.el
-cd ..
-# cleanup. we don't need these anymore
-rm Pymacs.tar.gz
-rm -rf Pymacs-0.23/
- 
- 
-## ROPE, ROPEMACS INSTALLATION
-# we assume you already have mercurial installed
-# clone the necessary files (rope, ropemacs and ropemode)
-hg clone http://bitbucket.org/agr/rope
-hg clone http://bitbucket.org/agr/ropemacs
-hg clone http://bitbucket.org/agr/ropemode
-cd rope
-# install Rope
-python setup.py install
-cd ..
-# symlink ropemode which is needed for the ropemacs install
-ln -s ../ropemode/ropemode ropemacs/
-cd ropemacs
-# install ropemacs
-python setup.py install
-cd ..
-rm -rf rope
-rm -rf ropemacs
-rm -rf ropemode
-
-## PYFLAKES & FLYMAKE INSTALL
-cd ..
+## PYFLAKES INSTALLATION
 mkdir tmp
 cd tmp
-svn co http://divmod.org/svn/Divmod/trunk/Pyflakes PyFlakes
-cd PyFlakes
-python setup.py install
+curl -O http://pypi.python.org/packages/source/p/pyflakes/pyflakes-0.3.0.tar.gz
+tar xzvf pyflakes-0.3.0.tar.gz
+cd pyflakes-0.3.0
+sudo python setup.py install
 cd ..
-rm -rf PyFlakes
+
+## PYMACS INSTALLATION
+curl -O http://pymacs.progiciels-bpi.ca/archives/Pymacs.tar.gz
+tar xzvf Pymacs.tar.gz
+cd Pymacs-0.23
+sudo python setup.py install
+cp pymacs.el ../../vendor/
+cd ..
+
+## PYSMELL INSTALLATION
+curl -O http://pypi.python.org/packages/source/p/pysmell/pysmell-0.7.3.zip
+unzip pysmell-0.7.3.zip
+cd pysmell-0.7.3
+sudo python setup.py install
+cp pysmell.el ../../vendor/
+
+
