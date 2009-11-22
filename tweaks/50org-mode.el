@@ -4,6 +4,7 @@
 (setq org-directory "~/org/")
 
 (setq org-default-notes-file (concat org-directory "inbox.org"))
+(setq org-agenda-diary-file (concat org-directory "diary.org"))
 (setq org-agenda-files (list org-directory (concat org-directory "projects/")))
 
 (setq org-hide-leading-stars t)
