@@ -31,8 +31,8 @@
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
 
-(require 'pair-mode)
-(global-pair-mode)
+(require 'autopair)
+(autopair-global-mode)
 
 ;; Setup for better printing
 (require 'printing)
