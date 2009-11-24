@@ -4,6 +4,7 @@
 (setq org-directory "~/org/")
 
 (setq org-default-notes-file (concat org-directory "inbox.org"))
+(setq org-agenda-diary-file (concat org-directory "diary.org"))
 (setq org-agenda-files (list org-directory (concat org-directory "projects/")))
 
 (setq org-hide-leading-stars t)
@@ -86,6 +87,30 @@
 (require 'org-install)
 (require 'org-track)
 (setq org-track-directory (concat dotfiles-dir "/vendor"))
+
+;; LaTeX Class setup.
+(unless (boundp 'org-export-latex-classes)
+  (setq org-export-latex-classes nil))
+(add-to-list 'org-export-latex-classes
+             ;; beamer class for presentations.
+             '("beamer"
+               "\\documentclass[11pt]{beamer}\n
+                \\mode<{{{beamermode}}}>\n
+                \\usetheme{{{{beamertheme}}}}\n
+                \\usecolortheme{{{{beamercolortheme}}}}\n
+                \\beamertemplateballitem\n
+                \\setbeameroption{show notes}\n
+                \\usepackage[utf8]{inputenc}\n
+                \\usepackage{hyperref}\n
+                \\usepackage{color}\n
+                \\usepackage{verbatim}\n
+                \\institute{{{{beamerinstitute}}}}\n
+                \\subject{{{{beamersubject}}}}\n"
+                ("\\section{%s}" . "\\section*{%s}")
+                ("\\begin{frame}[fragile]\\frametitle{%s}"
+                 "\\end{frame}"
+                 "\\begin{frame}[fragile]\\frametitle{%s}"
+                 "\\end{frame}")))
 
 (setq org-publish-project-alist
       '(("static"
