@@ -89,12 +89,11 @@
 (setq org-track-directory (concat dotfiles-dir "/vendor"))
 
 ;; LaTeX Class setup.
-(unless (boundp 'org-export-latex-classes)
-  (setq org-export-latex-classes nil))
-(add-to-list 'org-export-latex-classes
-             ;; beamer class for presentations.
-             '("beamer"
-               "\\documentclass[11pt]{beamer}\n
+(eval-after-load "org-latex" 
+  '(add-to-list 'org-export-latex-classes
+                ;; beamer class for presentations.
+                '("beamer"
+                  "\\documentclass[11pt]{beamer}\n
                 \\mode<{{{beamermode}}}>\n
                 \\usetheme{{{{beamertheme}}}}\n
                 \\usecolortheme{{{{beamercolortheme}}}}\n
@@ -106,11 +105,11 @@
                 \\usepackage{verbatim}\n
                 \\institute{{{{beamerinstitute}}}}\n
                 \\subject{{{{beamersubject}}}}\n"
-                ("\\section{%s}" . "\\section*{%s}")
-                ("\\begin{frame}[fragile]\\frametitle{%s}"
-                 "\\end{frame}"
-                 "\\begin{frame}[fragile]\\frametitle{%s}"
-                 "\\end{frame}")))
+                  ("\\section{%s}" . "\\section*{%s}")
+                  ("\\begin{frame}[fragile]\\frametitle{%s}"
+                   "\\end{frame}"
+                   "\\begin{frame}[fragile]\\frametitle{%s}"
+                   "\\end{frame}"))))
 
 (setq org-publish-project-alist
       '(("static"
