@@ -1,4 +1,4 @@
-(show-paren-mode 1)
+(show-paren-mode 1)    
 (setq-default x-stretch-cursor t)
 (put 'dired-find-alternate-file 'disabled nil)
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -32,7 +32,7 @@
 (setq uniquify-ignore-buffers-re "^\\*")
 
 (require 'autopair)
-(autopair-global-mode)
+;; (autopair-global-mode)
 
 ;; Setup for better printing
 (require 'printing)
