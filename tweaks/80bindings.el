@@ -12,6 +12,7 @@
 (global-set-key (kbd "M-SPC") 'shrink-whitespaces)
 (global-set-key (kbd "C-'") 'select-text-in-quote)
 (global-set-key (kbd "M-'") 'extend-selection)
+(global-set-key (kbd "C-t") 'transpose-dwim)
 
 ;;;; Helper functions from Xahlee's ergo bindings (http://xahlee.org).
 ;;; TEXT SELECTION RELATED
@@ -219,3 +220,16 @@ EOL chars by space when the EOL char is not inside string.
       (put this-command 'stateIsCompact-p (if currentStateIsCompact
                                               nil t)) ) ) )
 
+;;;; And some I've put together myself.
+
+(defun transpose-dwim (arg)
+ "Execute the appropriate transpose based on where the point is. 
+
+If the point is in a word do a transpose character. If it is between
+words do a transpose word. If it is on the start of a line, do a
+transpose line.
+"
+ (interactive "*p")
+ (cond ((bolp) (transpose-lines arg))
+       ((looking-at "[[:space:]]") (transpose-words arg))
+       (t (transpose-chars arg))))
