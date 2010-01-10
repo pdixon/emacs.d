@@ -25,7 +25,7 @@
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-tag-alist
       '((:startgroup . nil)
-	("@call" . ?c) ("@office" . ?o) ("@home" . ?h) ("@computer" . ?m) ("@shops" . ?s)
+	("@call" . ?c) ("@office" . ?o) ("@home" . ?h) ("@computer" . ?m) ("@shops" . ?s) ("@dev" . ?d) ("@write" . ?w)
 	(:endgroup . nil)
         ("REFILE" . ?r)
         ("PROJECT" . ?p)))
