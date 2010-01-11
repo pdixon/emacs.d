@@ -12,3 +12,7 @@
 
 (dir-locals-set-directory-class
  (expand-file-name "~/Documents/work/") 'work-directory)
+
+(setq org-feed-alist
+      '(("iChair Trac" "http://ichair.sw/report/7?format=rss&USER=pdixon"
+         "~/org/inbox.org" "iChair Assigned Issues")))
