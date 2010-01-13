@@ -130,6 +130,8 @@
 	 )))
 
 (add-hook 'org-mode-hook
-          (lambda ()
-            (org-set-local 'yas/trigger-key [tab])
-            (define-key yas/keymap [tab] 'yas/next-field-group)))
+          (let ((original-command (lookup-key org-mode-map [tab])))
+            `(lambda ()
+               (setq yas/fallback-behavior
+                     '(apply ,original-command))
+               (local-set-key [tab] 'yas/expand))))
