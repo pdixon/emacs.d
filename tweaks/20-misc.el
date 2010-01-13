@@ -6,6 +6,7 @@
 (setq inhibit-startup-message t)
 (server-start)
 (customize-set-variable 'indent-tabs-mode nil)
+(global-auto-revert-mode 1)
 
 (setq user-mail-address "phil@dixon.gen.nz")
 (setq user-full-name "Phillip Dixon")
