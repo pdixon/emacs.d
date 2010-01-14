@@ -60,3 +60,9 @@
                (setq dir (concat (file-name-as-directory dir) "..")))
              (unless (null files) (concat " -project " (file-name-as-directory dir) (car files))))))
     (compile (read-string "Compile command: " (concat command " ")))))
+
+;; Compilation mode stuff
+(defun pd/compilation-hook ()
+  (setq truncate-lines t))
+
+(add-hook 'compilation-mode-hook 'pd/compilation-hook)
