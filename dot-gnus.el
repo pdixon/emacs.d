@@ -13,4 +13,6 @@
 				  (nnimap-server-port 993)
 				  (nnimap-stream ssl)))
 
-(setq imap-log t)
+;; (setq imap-log t)
+
+(gnus-group-list-all-groups)
