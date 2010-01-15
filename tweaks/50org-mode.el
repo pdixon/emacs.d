@@ -49,7 +49,10 @@
 	  (todo "TODO")
 	  (todo "WAITING"))
          nil
-         ("~/org/output/weekly.org"))))
+         ("~/org/output/weekly.org"))
+        ("e" "Errand List" tags-todo "@shops"
+         ((org-agenda-prefix-format "[ ]")
+          (org-agenda-todo-keyword-format "")))))
 
 ;; Setup for Org Remember  
 (require 'org-protocol)
