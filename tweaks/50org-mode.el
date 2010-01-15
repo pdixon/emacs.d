@@ -49,7 +49,10 @@
 	  (todo "TODO")
 	  (todo "WAITING"))
          nil
-         ("~/org/output/weekly.org"))))
+         ("~/org/output/weekly.org"))
+        ("c" todo "TODO" 
+         ((org-agenda-sorting-strategy '(tag-up priority-down))
+          (org-agenda-todo-keyword-format "")))))
 
 ;; Setup for Org Remember  
 (require 'org-protocol)
