@@ -52,7 +52,9 @@
          ("~/org/output/weekly.org"))
         ("e" "Errand List" tags-todo "@shops"
          ((org-agenda-prefix-format "[ ]")
-          (org-agenda-todo-keyword-format "")))))
+          (org-agenda-todo-keyword-format "")))
+        ("c" todo "TODO" 
+         ((org-agenda-sorting-strategy '(tag-up priority-down))))))
 
 ;; Setup for Org Remember  
 (require 'org-protocol)
