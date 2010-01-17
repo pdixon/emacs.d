@@ -24,15 +24,18 @@
 (defvar xcode-compile-sdks nil)
 (defvar xcode-compile-sdk-history nil)
 
-(dolist (line
-         (split-string
-          (with-temp-buffer
-            (call-process "xcodebuild" nil t nil "-showsdks")
-            (buffer-string))
-          "\n" t))
-  (let ((comps (split-string line "-sdk " t)))
-    (if (> (length comps) 1)
-        (add-to-list 'xcode-compile-sdks (car (last comps))))))
+(defun my-objc-hook ()
+  (dolist (line
+           (split-string
+            (with-temp-buffer
+              (call-process "xcodebuild" nil t nil "-showsdks")
+              (buffer-string))
+            "\n" t))
+    (let ((comps (split-string line "-sdk " t)))
+      (if (> (length comps) 1)
+          (add-to-list 'xcode-compile-sdks (car (last comps)))))))
+
+(add-hook `objc-mode-hook `my-objc-hook)
 
 (defun xcode-compile ()
   (interactive)
