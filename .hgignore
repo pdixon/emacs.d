@@ -20,6 +20,7 @@ vendor/org/*
 vendor/org-mode/*
 vendor/pysmell.el
 vendor/pymacs.el
+vendor/nxhtml/*
 tmp/*
 *.tar.gz
 
