@@ -1,5 +1,7 @@
-(setq gnus-invalid-group-regexp "")
+
 (setq mail-sources nil)
+(setq gnus-auto-subscribed-groups "^nnimap//")
+(setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
 
 ;; I'm not using gnus as a news reader so I don't need any news stuff.
 (setq gnus-nntp-server nil
@@ -14,5 +16,4 @@
 				  (nnimap-stream ssl)))
 
 ;; (setq imap-log t)
-
-(gnus-group-list-all-groups)
+(setq gnus-permanently-visible-groups "\.*")
