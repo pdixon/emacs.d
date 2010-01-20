@@ -23,6 +23,7 @@ vendor/pymacs.el
 vendor/nxhtml/*
 tmp/*
 *.tar.gz
+semanticdb/*
 
 syntax: regexp
 .*\#.*\#$
