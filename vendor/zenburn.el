@@ -791,7 +791,7 @@ static char *gnus-pointer[] = {
                                :slant italic :weight bold))) t)       ;; white
      '(org-agenda-structure ((t (:inherit font-lock-comment-face))))  ;; zenburn-green
      '(org-archived ((t (:foreground "#8f8f8f"))))                    ;; zenburn-bg slight lighter
-     '(org-column ((t (:height 98 :family "DejaVu Sans Mono"))))      ;; n/a
+     '(org-column ((t (:inherit default ))))      ;; n/a
      '(org-checkbox ((t (:background "#5f5f5f" :foreground "white"    ;; zenburn-fg on zenburn-bg+2
                       :box (:line-width 1 :style released-button))))) ;;   - turn checkboxes into buttons
      '(org-date ((t (:foreground "#8cd0d3" :underline t))))           ;; zenburn-blue
