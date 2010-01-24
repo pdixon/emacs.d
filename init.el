@@ -1,8 +1,10 @@
+(require 'cl) ; a rare necessary use of REQUIRE
+(defvar *emacs-load-start* (current-time))
+
 (setq dotfiles-dir (file-name-directory
 		    (or (buffer-file-name) load-file-name)))
 
 (add-to-list 'load-path dotfiles-dir)
-
 (let* ((my-lisp-dir (concat dotfiles-dir "vendor"))
        (default-directory my-lisp-dir)
        (orig-load-path load-path))
@@ -35,3 +37,5 @@
 (put 'set-goal-column 'disabled nil)
 
 (put 'narrow-to-region 'disabled nil)
+(message "My .emacs loaded in %ds" (destructuring-bind (hi lo ms) (current-time)
+                           (- (+ hi lo) (+ (first *emacs-load-start*) (second *emacs-load-start*)))))
