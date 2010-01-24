@@ -88,34 +88,6 @@
 (setq org-mobile-directory "/Volumes/pdixon/org")
 (setq org-mobile-inbox-for-pull "~/org/inbox.org")
 
-;; org-track
-(require 'org-install)
-(require 'org-track)
-(setq org-track-directory (concat dotfiles-dir "/vendor"))
-
-;; LaTeX Class setup.
-(eval-after-load "org-latex" 
-  '(add-to-list 'org-export-latex-classes
-                ;; beamer class for presentations.
-                '("beamer"
-                  "\\documentclass[11pt]{beamer}\n
-                \\mode<{{{beamermode}}}>\n
-                \\usetheme{{{{beamertheme}}}}\n
-                \\usecolortheme{{{{beamercolortheme}}}}\n
-                \\beamertemplateballitem\n
-                \\setbeameroption{show notes}\n
-                \\usepackage[utf8]{inputenc}\n
-                \\usepackage{hyperref}\n
-                \\usepackage{color}\n
-                \\usepackage{verbatim}\n
-                \\institute{{{{beamerinstitute}}}}\n
-                \\subject{{{{beamersubject}}}}\n"
-                  ("\\section{%s}" . "\\section*{%s}")
-                  ("\\begin{frame}[fragile]\\frametitle{%s}"
-                   "\\end{frame}"
-                   "\\begin{frame}[fragile]\\frametitle{%s}"
-                   "\\end{frame}"))))
-
 (setq org-publish-project-alist
       '(("static"
 	 :base-directory "~/website/static"
@@ -151,7 +123,7 @@
 (add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt)
 
 ; This is at the end of my .emacs - so appointments are set up when Emacs starts
-(bh/org-agenda-to-appt)
+;;(bh/org-agenda-to-appt)
 
 ; Activate appointments so we get notifications
 (appt-activate t)
