@@ -20,8 +20,8 @@
 
 (setq org-use-fast-todo-selection t)
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "WAITING(w@)" "|" "DONE(d!)")
-	(sequence "|" "CANCELED" "DELEGATED(e@)")))
+      '((sequence "TODO(t)" "STARTED(s!)" "|" "DONE(d!)")
+	(sequence "WAITING(w@)" "|" "CANCELED" "DELEGATED(e@)")))
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-tag-alist
       '((:startgroup . nil)
@@ -42,11 +42,16 @@
 
 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
+;; Effort estimation.
+; Set default column view headings: Task Effort Clock_Summary
+(setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
+; global Effort estimate values
+(setq org-global-properties (quote (("Effort_ALL" . "1:00 2:00 4:00 8:00 16:00 40:00"))))
 
 (setq org-agenda-custom-commands
       '(("w" "Week's Agenda and Tasks"
 	 ((agenda)
-	  (todo "TODO")
+	  (todo "TODO|STARTED")
 	  (todo "WAITING"))
          nil
          ("~/org/output/weekly.org"))
