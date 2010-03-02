@@ -12,6 +12,18 @@
 (setq user-full-name "Phillip Dixon")
 
 (defalias 'list-buffers 'ibuffer)
+(setq ibuffer-saved-filter-groups
+      (quote (("default"
+               ("Org"
+                (or
+                 (mode . org-mode)
+                 (name . "^\\*Org Agenda\\*$")))))))
+             ;;  (".emacs"
+               ;; ((filename . ".emacs.d/")))))))
+(add-hook 'ibuffer-mode-hook
+          (lambda ()
+            (ibuffer-switch-to-saved-filter-groups "default")))
+
 
 ;; Don't clutter up directories with files~
 (setq backup-directory-alist `(("." . ,(expand-file-name
