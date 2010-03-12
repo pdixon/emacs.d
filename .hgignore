@@ -21,6 +21,7 @@ vendor/org-mode/*
 vendor/pysmell.el
 vendor/pymacs.el
 vendor/nxhtml/*
+vendor/eproject/*
 tmp/*
 *.tar.gz
 semanticdb/*
