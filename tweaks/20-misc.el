@@ -8,8 +8,20 @@
 (customize-set-variable 'indent-tabs-mode nil)
 (global-auto-revert-mode 1)
 
+
+(setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
 (setq user-full-name "Phillip Dixon")
+
+(setq send-mail-function 'smtpmail-send-it 
+      message-send-mail-function 'smtpmail-send-it
+      starttls-use-gnutls t
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "phil@dixon.gen.nz" nil))
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
+(setq message-kill-buffer-on-exit t)
 
 (defalias 'list-buffers 'ibuffer)
 (setq ibuffer-saved-filter-groups
@@ -58,27 +70,7 @@
       ido-use-filename-at-point t)
 
 ;; Setup for xgtags
-(require 'xgtags)
-
-;; mail setup
-;; (require 'smtpmail)
-;; (setq starttls-use-gnutls t)
-;; (setq smtpmail-smtp-server "smtp.gmail.com")
-;; (setq smtpmail-smtp-service 587)
-;; (setq smtpmail-starttls-credentials
-;;       '(("smtp.gmail.com" 587 "phil@dixon.gen.nz" nil)))
-;; (setq smtpmail-auth-credentials
-;;       '(("smtp.gmail.com"
-;; 	 587
-;; 	 "phil@dixon.gen.nz"
-;; 	 nil)))
-;; (setq smtpmail-debug-info t)
-;; (setq sendmail-program "msmtp")
-;; (setq  message-sendmail-extra-arguments '("-a" "dixon.gen.nz"))
-
-
-(setq message-send-mail-function 'sendmail-send-it)
-(setq send-mail-function 'sendmail-send-it)
+;; (require 'xgtags)
 
 ;; Project Root setup
 (require 'project-root)
