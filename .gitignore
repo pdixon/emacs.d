@@ -3,3 +3,5 @@
 *~
 
 *.elc
+tramp
+url/
