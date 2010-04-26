@@ -1,6 +1,6 @@
 [submodule "vendor/eproject"]
 	path = vendor/eproject
-	url = git://github.com/jrockway/eproject
+	url = http://github.com/jrockway/eproject
 [submodule "vendor/org-mode"]
 	path = vendor/org-mode
-	url = git://repo.or.cz/org-mode.git
+	url = http://repo.or.cz/org-mode.git

@@ -69,3 +69,5 @@
   (setq truncate-lines t))
 
 (add-hook 'compilation-mode-hook 'pd/compilation-hook)
+
+;; (define-project-type kernel (generic-git) (look-for "Kbuild"))
