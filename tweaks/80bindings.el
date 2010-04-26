@@ -14,6 +14,7 @@
 (global-set-key (kbd "M-'") 'extend-selection)
 (global-set-key (kbd "C-t") 'transpose-dwim)
 (global-set-key (kbd "M-c") 'toggle-letter-case)
+(global-set-key (kbd "<f11>") 'my-toggle-fullscreen)
 
 ;;;; Helper functions from Xahlee's ergo bindings (http://xahlee.org).
 ;;; TEXT SELECTION RELATED

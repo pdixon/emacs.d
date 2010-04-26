@@ -86,3 +86,7 @@
 (color-theme-initialize)
 ; (color-theme-zenburn)
 
+(setq browse-url-browser-function
+      'browse-url-generic)
+(setq browse-url-generic-program
+      "google-chrome") 
