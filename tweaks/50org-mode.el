@@ -17,6 +17,7 @@
 
 ;; Remove completed scheduled tasks from the agenda view
 (setq org-agenda-skip-scheduled-if-done t)
+(setq org-agenda-tags-todo-honor-ignore-options t)
 
 (setq org-use-fast-todo-selection t)
 (setq org-todo-keywords
@@ -51,7 +52,7 @@
 (setq org-agenda-custom-commands
       '(("w" "Week's Agenda and Tasks"
 	 ((agenda)
-	  (todo "TODO|STARTED")
+	  (tags-todo "-SOMEDAY/+TODO|+STARTED")
 	  (todo "WAITING"))
          nil
          ("~/org/output/weekly.org"))
