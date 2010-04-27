@@ -136,3 +136,5 @@
 
 ; If we leave Emacs running overnight - reset the appointments one minute after midnight
 (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
+; Make sure any org buffers get saved, ready for the the auto commit just after the hour.
+(run-at-time "00:59" 3600 'org-save-all-org-buffers)
