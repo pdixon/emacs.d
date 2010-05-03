@@ -72,13 +72,6 @@
 ;; Setup for xgtags
 ;; (require 'xgtags)
 
-;; Project Root setup
-(require 'project-root)
-(setq project-roots
-      '(("Xcode Project"
-	 :root-contains-files ("*.xcodeproj")
-	 :on-hit (lambda (p) (message (car p))))))
-
 (require 'zenburn)
 (unless (zenburn-format-spec-works-p)
   (zenburn-define-format-spec))
