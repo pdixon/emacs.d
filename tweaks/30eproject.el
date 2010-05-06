@@ -25,9 +25,15 @@
 ;;; Code:
 
 (require 'eproject)
+(require 'eproject-extras)
 
 (define-project-type qt (generic)
   (look-for "*.pro" :glob)
   :relevant-files ("\\.cpp" "\\.h"))
+
+
+(define-project-type python (generic)
+  (look-for "setup.py")
+  :relevant-files ("\\.py"))
 
 ;;; 30eproject.el ends here
