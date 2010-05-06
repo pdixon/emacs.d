@@ -3,4 +3,4 @@
 	url = http://github.com/jrockway/eproject.git
 [submodule "vendor/org-mode"]
 	path = vendor/org-mode
-	url = http://repo.or.cz/org-mode.git
+	url = http://repo.or.cz/r/org-mode.git
