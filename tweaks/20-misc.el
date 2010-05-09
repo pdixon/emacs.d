@@ -50,6 +50,8 @@
 (setq message-kill-buffer-on-exit t)
 
 (defalias 'list-buffers 'ibuffer)
+(setq ibuffer-expert 1)
+(setq ibuffer-show-empty-filter-groups nil)
 (setq ibuffer-saved-filter-groups
       (quote (("default"
                ("Org"
@@ -60,7 +62,7 @@
                ;; ((filename . ".emacs.d/")))))))
 (add-hook 'ibuffer-mode-hook
           (lambda ()
-            (ibuffer-switch-to-saved-filter-groups "default")))
+            (ibuffer-auto-mode 1)))
 
 
 ;; Don't clutter up directories with files~
