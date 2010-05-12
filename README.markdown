@@ -5,13 +5,17 @@ file set up the paths where everything else is found.
 Paths:
 
 `tweaks`
-:  This is where all my setup and configuration lives.
+:   This is where all my setup and configuration lives.
 
-`snippets`
-:  Text snippets for yasnippets.
+`mysnippets`
+:   Text snippets for yasnippets.
+
+`mytemplates`
+:   Autoinsert file templates.
 
 `vendor`
-:  Third party packages.
+:   Third party packages. Where possible I'm moving to using submodules
+    to track these from upstream.
 
 
 # Vendor Libraries
@@ -28,23 +32,32 @@ I've applied this
 to add support for org-mode. I've also added colors for rst mode.
 
 ## Org mode
-Version: 6.28e
+Version: git
 Downloaded From:
 [org-mode](http://orgmode.org/index.html#sec-3)
-
-### org-blog
 
 ### Remember
 Version: 2.0
 [remember](https://gna.org/p/remember-el)
 
+## Auto Typing
+I like to make the computer do as much of my work as I possibly can.
+Hence I've spend a bit of time on the various auto typing features.
+
 ## yasnippet
 Version: 0.6.1c
 [yasnippet](http://code.google.com/p/yasnippet/)
 
-## company mode
-Version: 0.4.3
-[company-mode](http://nschum.de/src/emacs/company-mode/)
+## autopair
+Version: 0.3
+[autopair](http://code.google.com/p/autopair/)
+
+## autocomplete
+Version: git
+[autocomplete](http://cx4a.org/software/auto-complete/)
+
+## autoinsert
+As bundled with emacs.
 
 ## File modes
 
