@@ -43,6 +43,11 @@
              (add-to-list 'ac-sources 'ac-source-features)
              (add-to-list 'ac-sources 'ac-source-variables)))
 
+(ac-ropemacs-initialize)
+(add-hook 'python-mode-hook
+          '(lambda ()
+             (add-to-list 'ac-sources 'ac-source-ropemacs)))
+
 (provide '50autocomplete)
 ;;; 50autocomplete.el ends here
 
