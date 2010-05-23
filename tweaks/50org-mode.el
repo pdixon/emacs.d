@@ -30,7 +30,16 @@
 	(:endgroup . nil)
         ("REFILE" . ?f)
         ("PROJECT" . ?p)))
-(setq org-use-tag-inheritance nil)
+(setq org-use-tag-inheritance t)
+(setq org-tags-exclude-from-inheritance '("@call"
+                                          "@office"
+                                          "@home"
+                                          "@read"
+                                          "@computer"
+                                          "@shops"
+                                          "@dev"
+                                          "@write"
+                                          "PROJECT"))
 
 (setq org-stuck-projects
            '("+PROJECT/-CANCELED-DONE" ("TODO")))
