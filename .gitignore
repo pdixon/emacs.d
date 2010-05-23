@@ -3,7 +3,8 @@
 *~
 .#*
 #*
-
+*.dat
 *.elc
+
 tramp
 url/
