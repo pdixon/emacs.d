@@ -7,3 +7,6 @@
 [submodule "vendor/auto-complete"]
 	path = vendor/auto-complete
 	url = http://github.com/m2ym/auto-complete.git
+[submodule "vendor/magit"]
+	path = vendor/magit
+	url = http://github.com/philjackson/magit.git
