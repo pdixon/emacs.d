@@ -85,7 +85,7 @@
 (setq uniquify-ignore-buffers-re "^\\*")
 
 (require 'autopair)
-(autopair-global-mode)
+;(autopair-global-mode)
 
 ;; Setup for better printing
 (require 'printing)
