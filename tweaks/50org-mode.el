@@ -68,10 +68,10 @@
         ("e" "Errand List" tags-todo "@shops"
          ((org-agenda-prefix-format "[ ]")
           (org-agenda-todo-keyword-format "")))
-        ("c" todo "TODO" 
+        ("c" todo "TODO"
          ((org-agenda-sorting-strategy '(tag-up priority-down))))))
 
-;; Setup for Org Remember  
+;; Setup for Org Remember
 (require 'org-protocol)
 (require 'remember)
 (org-remember-insinuate)
@@ -86,12 +86,25 @@
       (replace-match "")
       (org-clock-in))))
 
-(add-to-list 'org-remember-templates 
+(add-to-list 'org-remember-templates
 	     '("Todo" ?t "* TODO %?\n%U\n%i\n%a" nil bottom nil))
 (add-to-list 'org-remember-templates
              '("Notes" ?n "* %?\n%U\n%i\n%a" nil bottom nil))
 (add-to-list 'org-remember-templates
              '("Interuption" ?i "\n* %?\n :CLOCK-IN: \n" nil bottom nil))
+
+;; Org Capture (Replaces org-remember once debugged.)
+(setq org-capture-templates
+      '(("i" "Interruption" entry
+        (file "~/org/inbox.org")
+        "* %?\n"
+        :clock-in t)
+       ("n" "Notes" entry
+        (file "~/org/inbox.org")
+        "* %?\n%U\n%i\n%a")
+       ("t" "Todo" entry
+        (file "~/org/inbox.org")
+        "* TODO %?\n%U\n%i\n%a")))
 
 ;; Refile setup
 (setq org-completion-use-ido t)
