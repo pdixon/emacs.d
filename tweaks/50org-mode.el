@@ -100,7 +100,7 @@
 (setq org-outline-path-complete-in-steps t)
 
 ;; MobileOrg Support
-(setq org-mobile-directory "/Volumes/pdixon/org")
+(setq org-mobile-directory "~/Dropbox/MobileOrg")
 (setq org-mobile-inbox-for-pull "~/org/inbox.org")
 
 (setq org-publish-project-alist
