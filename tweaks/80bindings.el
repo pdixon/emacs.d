@@ -8,7 +8,7 @@
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-x C-p") 'find-file-at-point)
 (global-set-key (kbd "C-c y") 'bury-buffer)
-(global-set-key "\C-cr" 'org-remember)
+(global-set-key "\C-cr" 'org-capture)
 (global-set-key (kbd "M-SPC") 'shrink-whitespaces)
 (global-set-key (kbd "C-'") 'select-text-in-quote)
 (global-set-key (kbd "M-'") 'extend-selection)
