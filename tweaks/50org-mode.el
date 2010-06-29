@@ -66,6 +66,10 @@
 	  (todo "WAITING"))
          nil
          ("~/org/output/weekly.org"))
+        ("p" "Project Lists"
+         ((tags-todo "+PROJECT-SOMEDAY/!")
+          (stuck "")
+          (tags-todo "+PROJECT+SOMEDAY/!")))
         ("e" "Errand List" tags-todo "@shops"
          ((org-agenda-prefix-format "[ ]")
           (org-agenda-todo-keyword-format "")))
