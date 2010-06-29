@@ -61,7 +61,8 @@
 (setq org-agenda-custom-commands
       '(("w" "Week's Agenda and Tasks"
 	 ((agenda)
-	  (tags-todo "-SOMEDAY/+TODO|+STARTED")
+          (tags-todo "+PROJECT-SOMEDAY/!")
+	  (tags-todo "-SOMEDAY-PROJECT/!+TODO|+STARTED")
 	  (todo "WAITING"))
          nil
          ("~/org/output/weekly.org"))
