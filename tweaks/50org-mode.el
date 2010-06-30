@@ -69,7 +69,7 @@
         ("p" "Project Lists"
          ((tags-todo "+PROJECT-SOMEDAY/!")
           (stuck "")
-          (tags-todo "+PROJECT+SOMEDAY/!")))
+          (tags "+PROJECT+SOMEDAY")))
         ("e" "Errand List" tags-todo "@shops"
          ((org-agenda-prefix-format "[ ]")
           (org-agenda-todo-keyword-format "")))
