@@ -33,8 +33,7 @@
 
 (setq-default ac-sources
               '(ac-source-yasnippet
-                ac-source-abbrev
-                ac-source-words-in-buffer))
+                ac-source-abbrev))
 
 (add-hook 'emacs-lisp-mode-hook
           '(lambda ()
@@ -47,6 +46,11 @@
 (add-hook 'python-mode-hook
           '(lambda ()
              (add-to-list 'ac-sources 'ac-source-ropemacs)))
+
+(add-hook 'c-mode-common-hook
+          '(lambda ()
+             (add-to-list 'ac-sources 'ac-source-semantic)
+             (add-to-list 'ac-sources 'ac-source-semantic-raw)))
 
 (provide '50autocomplete)
 ;;; 50autocomplete.el ends here
