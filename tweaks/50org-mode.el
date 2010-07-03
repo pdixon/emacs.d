@@ -29,7 +29,8 @@
 	("@call" . ?c) ("@office" . ?o) ("@home" . ?h) ("@read" . ?r) ("@computer" . ?m) ("@shops" . ?s) ("@dev" . ?d) ("@write" . ?w)
 	(:endgroup . nil)
         ("REFILE" . ?f)
-        ("PROJECT" . ?p)))
+        ("PROJECT" . ?p)
+        ("SOMEDAY" . ?s)))
 (setq org-use-tag-inheritance t)
 (setq org-tags-exclude-from-inheritance '("@call"
                                           "@office"
