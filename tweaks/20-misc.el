@@ -54,15 +54,13 @@
 (setq ibuffer-show-empty-filter-groups nil)
 (setq ibuffer-saved-filter-groups
       (quote (("default"
-               ("Org"
-                (or
-                 (mode . org-mode)
-                 (name . "^\\*Org Agenda\\*$")))))))
-             ;;  (".emacs"
-               ;; ((filename . ".emacs.d/")))))))
+               ("org" (or (mode . org-mode)
+                          (name . "^\\*Org Agenda\\*$")))
+               (".emacs" (filename . ".emacs.d/"))))))
 (add-hook 'ibuffer-mode-hook
           (lambda ()
-            (ibuffer-auto-mode 1)))
+            (ibuffer-auto-mode 1)
+            (ibuffer-switch-to-saved-filter-groups "default")))
 
 
 ;; Don't clutter up directories with files~
