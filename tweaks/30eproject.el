@@ -31,9 +31,15 @@
   (look-for "*.pro" :glob)
   :relevant-files ("\\.cpp" "\\.h"))
 
-
 (define-project-type python (generic)
   (look-for "setup.py")
   :relevant-files ("\\.py"))
+
+(define-project-type haskell (generic)
+  (look-for "*?.cabal" :glob)
+  :relevant-files ("\\.hs" "\\.cabal" "\\.lhs" "\\.chs")
+  :local-variables (lambda (root)
+                     (list 'compile-command
+                           (format "cd %s; cabal configure; cabal build" root))))
 
 ;;; 30eproject.el ends here
