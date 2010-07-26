@@ -34,6 +34,6 @@
 
 (define-project-type python (generic)
   (look-for "setup.py")
-  :relevant-files ("\\.py"))
+  :relevant-files ("\\.py" "\\.h" "\\.c"))
 
 ;;; 30eproject.el ends here
