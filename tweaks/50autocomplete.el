@@ -38,9 +38,7 @@
 (add-hook 'emacs-lisp-mode-hook
           '(lambda ()
              (add-to-list 'ac-sources 'ac-source-symbols)
-             (add-to-list 'ac-sources 'ac-source-functions)
-             (add-to-list 'ac-sources 'ac-source-features)
-             (add-to-list 'ac-sources 'ac-source-variables)))
+             (add-to-list 'ac-sources 'ac-source-functions)))
 
 (ac-ropemacs-initialize)
 (add-hook 'python-mode-hook

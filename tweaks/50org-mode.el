@@ -79,27 +79,8 @@
 
 ;; Setup for Org Remember
 (require 'org-protocol)
-(require 'remember)
-(org-remember-insinuate)
 
-;; Start clock if a remember buffer includes :CLOCK-IN:
-(add-hook 'remember-mode-hook 'my-start-clock-if-needed 'append)
-
-(defun my-start-clock-if-needed ()
-  (save-excursion
-    (goto-char (point-min))
-    (when (re-search-forward " *:CLOCK-IN: *" nil t)
-      (replace-match "")
-      (org-clock-in))))
-
-(add-to-list 'org-remember-templates
-	     '("Todo" ?t "* TODO %?\n%U\n%i\n%a" nil bottom nil))
-(add-to-list 'org-remember-templates
-             '("Notes" ?n "* %?\n%U\n%i\n%a" nil bottom nil))
-(add-to-list 'org-remember-templates
-             '("Interuption" ?i "\n* %?\n :CLOCK-IN: \n" nil bottom nil))
-
-;; Org Capture (Replaces org-remember once debugged.)
+;; Org Capture 
 (setq org-capture-templates
       '(("i" "Interruption" entry
         (file "~/org/inbox.org")
@@ -110,7 +91,13 @@
         "* %?\n%U\n%i\n%a")
        ("t" "Todo" entry
         (file "~/org/inbox.org")
-        "* TODO %?\n%U\n%i\n%a")))
+        "* TODO %?\n%U\n%i\n%a")
+       ("w"
+         "Default template"
+         entry
+         (file "~/org/inbox.org")
+         "* %^{Title}\n\n  Source: %u, %c\n\n  %i"
+         :empty-lines 1)))
 
 ;; Refile setup
 (setq org-completion-use-ido t)
