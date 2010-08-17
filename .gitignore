@@ -5,6 +5,7 @@
 #*
 *.dat
 *.elc
+.DS_Store
 
 tramp
 url/
