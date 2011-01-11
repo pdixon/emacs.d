@@ -29,7 +29,7 @@
 
 (define-project-type cmake (generic)
   (look-for "build")
-  :relvant-files ("\\.cpp" "\\.h" "\\.txt")
+  :relevant-files ("\\.cpp" "\\.h" "\\.txt")
   :irrelevant-files ("build/")
   :local-variables (lambda (root)
                      (list 'compile-command
