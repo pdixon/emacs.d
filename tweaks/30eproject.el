@@ -27,6 +27,14 @@
 (require 'eproject)
 (require 'eproject-extras)
 
+(define-project-type cmake (generic)
+  (look-for "build")
+  :relvant-files ("\\.cpp" "\\.h" "\\.txt")
+  :irrelevant-files ("build/")
+  :local-variables (lambda (root)
+                     (list 'compile-command
+                           (format "cd %s/build; make" root))))
+
 (define-project-type qt (generic)
   (look-for "*.pro" :glob)
   :relevant-files ("\\.cpp" "\\.h"))
