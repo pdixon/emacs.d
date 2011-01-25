@@ -1,9 +1,6 @@
 [submodule "vendor/eproject"]
 	path = vendor/eproject
 	url = http://github.com/jrockway/eproject.git
-[submodule "vendor/org-mode"]
-	path = vendor/org-mode
-	url = http://repo.or.cz/r/org-mode.git
 [submodule "vendor/auto-complete"]
 	path = vendor/auto-complete
 	url = http://github.com/m2ym/auto-complete.git
