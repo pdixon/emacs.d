@@ -33,7 +33,7 @@
   :irrelevant-files ("build/")
   :local-variables (lambda (root)
                      (list 'compile-command
-                           (format "cd %s/build; make" root))))
+                           (format "cd %s/build; make && make test" root))))
 
 (define-project-type qt (generic)
   (look-for "*.pro" :glob)
@@ -50,4 +50,11 @@
                      (list 'compile-command
                            (format "cd %s; cabal configure; cabal build" root))))
 
+
+(defun all-projects-ibuffer (prefix)
+  "Open an IBuffer window showing all buffers by project."
+  (interactive "p")
+  (ibuffer nil "*Projects*" nil nil nil 
+           (mapcar (lambda (project)
+                     (list (car project) (cons 'eproject-root (cdr project)))) (eproject-projects))))
 ;;; 30eproject.el ends here
