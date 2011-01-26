@@ -35,6 +35,15 @@
                      (list 'compile-command
                            (format "cd %s/build; make && make test" root))))
 
+;; (defun eproject-cmake-ede-binding ()
+;;   "Use the information we have from eproject to setup ede."
+;;   (cond ((string= (eproject-type) "cmake")
+;;          (message (format "Setting up ede cpp project in %s" (eproject-root)))
+;;          (ede-cpp-root-project (eproject-name) :file (format "%sCMakeLists.txt" (eproject-root))))
+;;         (t (message (format "No cmake project here, instead we have a %s" (eproject-type))))))
+
+;; (add-hook 'eproject-first-buffer-hook 'eproject-cmake-ede-binding)
+
 (define-project-type qt (generic)
   (look-for "*.pro" :glob)
   :relevant-files ("\\.cpp" "\\.h"))
