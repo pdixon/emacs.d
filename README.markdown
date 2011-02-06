@@ -68,8 +68,6 @@ from [here](http://luaforge.net/projects/lua-mode/).
 
 ### rst
 
-### taskpaper
-
 ### markdown-mode
 Version: 1.7
 Get it from [here](http://jblevins.org/projects/markdown-mode/).
