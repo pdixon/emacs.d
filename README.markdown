@@ -32,7 +32,7 @@ I've applied this
 to add support for org-mode. I've also added colors for rst mode.
 
 ## Org mode
-Version: git
+Version: As bundled with emacs 24.
 Downloaded From:
 [org-mode](http://orgmode.org/index.html#sec-3)
 
