@@ -36,9 +36,8 @@ Version: git
 Downloaded From:
 [org-mode](http://orgmode.org/index.html#sec-3)
 
-### Remember
-Version: 2.0
-[remember](https://gna.org/p/remember-el)
+I used to use Remember with org-mode, since org-capture was released
+I've been using that.
 
 ## Auto Typing
 I like to make the computer do as much of my work as I possibly can.
