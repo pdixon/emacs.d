@@ -59,6 +59,10 @@
                      (list 'compile-command
                            (format "cd %s; cabal configure; cabal build" root))))
 
+(define-project-type hg (generic)
+  (look-for ".hg")
+  :irelevant-files (".hg/"))
+
 
 (defun all-projects-ibuffer (prefix)
   "Open an IBuffer window showing all buffers by project."
