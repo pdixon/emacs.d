@@ -14,12 +14,12 @@
 ;;(add-hook 'find-file-hook 'flymake-find-file-hook)
 
 
-(defvar ac-source-pysmell
-  '((candidates
-     . (lambda ()
-         (require 'pysmell)
-         (pysmell-get-all-completions))))
-  "Source for PySmell")
+;; (defvar ac-source-pysmell
+;;   '((candidates
+;;      . (lambda ()
+;;          (require 'pysmell)
+;;          (pysmell-get-all-completions))))
+;;   "Source for PySmell")
 
 (add-hook 'python-mode-hook
           '(lambda ()             
