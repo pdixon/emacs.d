@@ -27,6 +27,10 @@
 (require 'eproject)
 (require 'eproject-extras)
 
+(define-project-type hg (generic)
+  (look-for ".hg")
+  :irelevant-files (".hg/"))
+
 (define-project-type cmake (generic)
   (look-for "build")
   :relevant-files ("\\.cpp" "\\.h" "\\.txt")
@@ -58,10 +62,6 @@
   :local-variables (lambda (root)
                      (list 'compile-command
                            (format "cd %s; cabal configure; cabal build" root))))
-
-(define-project-type hg (generic)
-  (look-for ".hg")
-  :irelevant-files (".hg/"))
 
 
 (defun all-projects-ibuffer (prefix)
