@@ -101,8 +101,8 @@
 (require 'zenburn)
 (unless (zenburn-format-spec-works-p)
   (zenburn-define-format-spec))
-(require 'color-theme)
-(color-theme-initialize)
+;(require 'color-theme)
+;(color-theme-initialize)
 ; (color-theme-zenburn)
 
 (provide '20-misc)

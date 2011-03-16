@@ -1,4 +1,4 @@
-(color-theme-zenburn)
+;(color-theme-zenburn)
 (setq user-mail-address "pdixon@dynamiccontrols.com")
 
 (setq org-feed-alist
