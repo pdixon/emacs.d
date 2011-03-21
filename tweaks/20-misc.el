@@ -33,7 +33,7 @@
 (server-start)
 (customize-set-variable 'indent-tabs-mode nil)
 (global-auto-revert-mode 1)
-
+(setq vc-handled-backends nil)
 
 (setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
