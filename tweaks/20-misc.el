@@ -98,9 +98,9 @@
 ;; Setup for xgtags
 ;; (require 'xgtags)
 
-(require 'zenburn)
-(unless (zenburn-format-spec-works-p)
-  (zenburn-define-format-spec))
+;; (require 'zenburn)
+;; (unless (zenburn-format-spec-works-p)
+;;   (zenburn-define-format-spec))
 ;(require 'color-theme)
 ;(color-theme-initialize)
 ; (color-theme-zenburn)
