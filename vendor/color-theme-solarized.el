@@ -114,8 +114,8 @@ Ported to Emacs by Greg Pfeil, http://ethanschoonover.com/solarized."
        (font-lock-function-name-face ((t (:foreground ,blue))))
        (font-lock-keyword-face ((t (:foreground ,green))))
        (font-lock-string-face ((t (:foreground ,cyan))))
-       (font-lock-type-face ((t (:foregound ,yellow))))
-       (font-lock-variable-name-face ((t (:foregound ,blue))))
+       (font-lock-type-face ((t (:foreground ,yellow))))
+       (font-lock-variable-name-face ((t (:foreground ,blue))))
        (font-lock-warning-face ((t (:foreground ,red :bold t))))
        ;; info
        (info-xref ((t (:foreground ,blue :underline t))))
@@ -124,6 +124,7 @@ Ported to Emacs by Greg Pfeil, http://ethanschoonover.com/solarized."
        (org-hide ((t (:foreground ,base03))))
        (org-todo ((t (:foreground ,red :bold t))))
        (org-done ((t (:foreground ,green :bold t))))
+       (org-agenda-structure ((t (:foreground ,blue))))
        ;; show-paren
        (show-paren-match-face ((t (:background ,cyan :foreground ,base3))))
        (show-paren-mismatch-face ((t (:background ,red :foreground ,base3))))))))
