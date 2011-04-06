@@ -40,15 +40,15 @@
              (add-to-list 'ac-sources 'ac-source-symbols)
              (add-to-list 'ac-sources 'ac-source-functions)))
 
-(ac-ropemacs-initialize)
-(add-hook 'python-mode-hook
-          '(lambda ()
-             (add-to-list 'ac-sources 'ac-source-ropemacs)))
+;; (ac-ropemacs-initialize)
+;; (add-hook 'python-mode-hook
+;;           '(lambda ()
+;;              (add-to-list 'ac-sources 'ac-source-ropemacs)))
 
-(add-hook 'c-mode-common-hook
-          '(lambda ()
-             (add-to-list 'ac-sources 'ac-source-semantic)
-             (add-to-list 'ac-sources 'ac-source-semantic-raw)))
+;; (add-hook 'c-mode-common-hook
+;;           '(lambda ()
+;;              (add-to-list 'ac-sources 'ac-source-semantic)
+;;              (add-to-list 'ac-sources 'ac-source-semantic-raw)))
 
 (provide '50autocomplete)
 ;;; 50autocomplete.el ends here
