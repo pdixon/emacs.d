@@ -31,7 +31,8 @@
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (defvar pd-packages (list 'magit
-                          'gist))
+                          'gist
+                          'auto-complete))
 
 (defun starter-kit-elpa-install ()
   "Install all starter-kit packages that aren't installed."
