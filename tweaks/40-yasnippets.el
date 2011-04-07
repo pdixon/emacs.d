@@ -1,9 +1,7 @@
 ;; Setup for yasnippets
-(require 'yasnippet)
-(yas/initialize)
+(require 'yasnippet-bundle)
 
-(setq yas/root-directory  (list (concat dotfiles-dir "mysnippets/")
-                                (concat dotfiles-dir "vendor/yasnippet/snippets/")))
+(setq yas/root-directory  (list (concat dotfiles-dir "mysnippets/")))
 
 (mapc 'yas/load-directory yas/root-directory)
 
