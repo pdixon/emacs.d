@@ -33,7 +33,8 @@
 (defvar pd-packages (list 'magit
                           'gist
                           'auto-complete
-                          'yasnippet-bundle))
+                          'yasnippet-bundle
+                          'autopair))
 
 (defun starter-kit-elpa-install ()
   "Install all starter-kit packages that aren't installed."
