@@ -18,6 +18,8 @@
 ;; (add-to-list 'Info-directory-list (concat dotfiles-dir "vendor/share/info"))
 ;; (setenv "PYMACS_PYTHON" "~/.emacs.d/usr/bin/python")
 
+(add-to-list 'custom-theme-load-path (concat dotfiles-dir "vendor/solarized"))
+
 ;; Load up my config stuff
 (setq tweaks-dir (concat dotfiles-dir "/tweaks"))
 (add-to-list 'load-path tweaks-dir)
