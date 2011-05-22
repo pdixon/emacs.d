@@ -24,6 +24,12 @@
 
 ;;; Code:
 
+(when window-system
+  (setq frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
+  (tooltip-mode -1)
+  (mouse-wheel-mode t)
+  (blink-cursor-mode -1))
+
 (show-paren-mode 1)    
 (setq-default x-stretch-cursor t)
 (put 'dired-find-alternate-file 'disabled nil)
