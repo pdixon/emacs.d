@@ -1,6 +1,7 @@
 [submodule "vendor/eproject"]
 	path = vendor/eproject
-	url = http://github.com/jrockway/eproject.git
+	url = http://github.com/pdixon/eproject.git
+	pushurl = ssh://github.com/pdixon/eproject.git
 [submodule "vendor/solarized"]
 	path = vendor/solarized
-	url = https://github.com/sellout/emacs-color-theme-solarized.git
+	url = http://github.com/sellout/emacs-color-theme-solarized.git
