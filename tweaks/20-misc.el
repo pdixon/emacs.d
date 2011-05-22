@@ -95,15 +95,7 @@
 (setq ido-enable-flex-matching t
       ido-use-filename-at-point t)
 
-;; Setup for xgtags
-;; (require 'xgtags)
-
-;; (require 'zenburn)
-;; (unless (zenburn-format-spec-works-p)
-;;   (zenburn-define-format-spec))
-;(require 'color-theme)
-;(color-theme-initialize)
-; (color-theme-zenburn)
+(require 'solarized-light-theme)
 
 (provide '20-misc)
 ;;; 20-misc.el ends here
