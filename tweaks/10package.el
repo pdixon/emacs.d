@@ -35,7 +35,8 @@
                           'auto-complete
                           'yasnippet-bundle
                           'autopair
-                          'haskell-mode))
+                          'haskell-mode
+                          'lua-mode))
 
 (defun starter-kit-elpa-install ()
   "Install all starter-kit packages that aren't installed."
