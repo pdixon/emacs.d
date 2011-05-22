@@ -21,19 +21,11 @@ Paths:
 # Vendor Libraries
 All third party packages live under `vendor`.
 
-## Color Theme
-Easy management of color schemes.
-
-### [Zenburn](http://www.brockman.se/software/zenburn/)
-The most important part of Vim.
-
-I've applied this
-[patch](http://sysphere.org/~anrxc/local/scr/sources/color-theme-zenburn-orgmode.patch)
-to add support for org-mode. I've also added colors for rst mode.
+Since I've move to emacs 24 where I'm using the include package
+support rather than bundling libraries directly.
 
 ## Org mode
 Version: As bundled with emacs 24.
-Downloaded From:
 [org-mode](http://orgmode.org/index.html#sec-3)
 
 I used to use Remember with org-mode, since org-capture was released
@@ -100,11 +92,11 @@ worth learning the stand bindings.
 # External Programs
 ## Aspell
 This is essential for flyspell. When I was Carbon Emacs this was
-bundled in the package. Since I've changed to Emacs 23 nightly builds
-I don't get this convenience. After spending hours trying various
-ports and binary builds I finally hit upon the easy solution. Build it
-from source. It has not non-standard dependencies, so 5 minutes later
-it was all done.
+bundled in the package. Since I've changed to Emacs 23 (now 24)
+nightly builds I don't get this convenience. After spending hours
+trying various ports and binary builds I finally hit upon the easy
+solution. Build it from source. It has not non-standard dependencies,
+so 5 minutes later it was all done.
 
 ## Mac OSX `PATH`
 On Mac OSX Emacs.app doesn't inherit the `PATH` from the shell.
@@ -113,3 +105,4 @@ Instead it looks in the Defaults system, specifically
 
     defaults write $HOME/.MacOSX/environment PATH "$PATH"
     
+## pyflakes
