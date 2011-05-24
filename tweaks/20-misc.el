@@ -40,7 +40,8 @@
 (customize-set-variable 'indent-tabs-mode nil)
 (global-auto-revert-mode 1)
 (setq vc-handled-backends nil)
-
+(setq whitespace-style '(face trailing lines-tail tabs)
+      whitespace-line-column 80)
 (setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
 (setq user-full-name "Phillip Dixon")

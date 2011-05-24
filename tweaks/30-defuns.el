@@ -164,10 +164,9 @@
    nil '(("\\<\\(FIX\\|TODO\\|FIXME\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
           1 font-lock-warning-face t))))
 
-(add-hook 'prog-mode-hook 'esk-local-column-number-mode)
 (add-hook 'prog-mode-hook 'esk-local-comment-auto-fill)
-(add-hook 'prog-mode-hook 'esk-turn-on-hl-line-mode)
 (add-hook 'prog-mode-hook 'esk-turn-on-save-place-mode)
+(add-hook 'prog-mode-hook 'esk-turn-on-whitespace)
 (add-hook 'prog-mode-hook 'esk-add-watchwords)
 
 (defun esk-sudo-edit (&optional arg)
