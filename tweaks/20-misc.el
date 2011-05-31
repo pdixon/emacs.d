@@ -114,6 +114,10 @@
 
 (add-hook 'server-switch-hook 'my-remap-server-edit)
 
+;; Default to unified diffs
+(setq diff-switches "-u")
+
+
 (require 'solarized-light-theme)
 
 (provide '20-misc)
