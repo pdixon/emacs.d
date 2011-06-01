@@ -36,7 +36,8 @@
                           'yasnippet-bundle
                           'autopair
                           'haskell-mode
-                          'lua-mode))
+                          'lua-mode
+                          'graphviz-dot-mode))
 
 (defun starter-kit-elpa-install ()
   "Install all starter-kit packages that aren't installed."
