@@ -24,30 +24,72 @@
 
 ;;; Code:
 
+(defface commit-msg-text-face
+  '((t (:inherit default)))
+  "Face used to highlight body text in commit messages.")
+
+(defface commit-msg-comment-face
+  '((t (:inherit font-lock-comment-face)))
+  "Face used to highlight comments in commit messages.")
+
+(defface commit-msg-summary-face
+  '((t (:inherit default)))
+  "Face used to highlight the summary of a commit message.")
+
+(defface commit-msg-summary-overlength-face
+  '((t (:inherit font-lock-warning-face)))
+  "Face used to highlight that overlength part of the summary of a commit message.")
+
+(defface commit-msg-non-empty-second-line-face
+  '((t (:inherit font-lock-warning-face)))
+  "Face used to highlight the the second line of a commit message isn't empty.")
+
+(defvar commit-msg-font-lock-keywords
+  '(("\\`\\(.\\{,50\\}\\)\\(.*?\\)\n\\(.*\\)$"
+     (1 'commit-msg-summary-face)
+     (2 'commit-msg-summary-overlength-face)
+     (3 'commit-msg-non-empty-second-line-face))
+    ("^\\(\\(HG:\\)\\|\\(#\\)\\).*$"
+     (0 'commit-msg-comment-face))
+    (".*"
+     (0 'commit-msg-text-face))))
+
 (defun commit-msg-commit ()
   "Save the commit message and commit it."
   (interactive)
   (save-buffer)
-  (if (server-buffer-clients)
-      (server-edit)
-    (kill-buffer)))
+  (kill-buffer))
 
 (defun commit-msg-cancel ()
-  "Throw away the current message (and thus commit)."
+  "Throw away the current message (and thus throw away the commit)."
   (interactive)
-  (if (server-buffer-clients)
-      (server-edit)
-    (kill-buffer)))
+  (kill-buffer))
 
 (define-derived-mode commit-msg-mode text-mode "Commit-Msg"
   "Major mode for editting git and hg commit messages.
+
 \\{commit-msg-mode-map}"
+  (setq font-lock-multiline t)
+  (setq font-lock-defaults '(commit-msg-font-lock-keywords t))
+  (set (make-local-variable 'comment-start-skip) "^\\(\\(HG:\\)\\|\\(#\\)\\)\s")
+  (set (make-local-variable 'comment-start) "HG:\|#")
+  (set (make-local-variable 'comment-end) "")
 )
 
 (define-key commit-msg-mode-map
   (kbd "C-c C-c") 'commit-msg-commit)
 (define-key commit-msg-mode-map
   (kbd "C-c C-k") 'commit-msg-cancel)
+
+;;;###autoload
+(when (boundp 'session-mode-disable-list)
+  (add-to-list 'session-mode-disable-list 'commit-msg-mode))
+
+;;;###autoload
+(add-to-list 'auto-mode-alist
+             '("COMMIT_EDITMSG" . commit-msg-mode))
+(add-to-list 'auto-mode-alist
+             '("hg-editor-.*\\.txt" . commit-msg-mode))
 
 (provide 'commit-msg-mode)
 ;;; commit-msg-mode.el ends here
