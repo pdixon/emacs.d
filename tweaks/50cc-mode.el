@@ -35,7 +35,7 @@
       (if (> (length comps) 1)
           (add-to-list 'xcode-compile-sdks (car (last comps)))))))
 
-(add-hook `objc-mode-hook `my-objc-hook)
+;(add-hook `objc-mode-hook `my-objc-hook)
 
 (defun xcode-compile ()
   (interactive)
