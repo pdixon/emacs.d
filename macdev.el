@@ -16,3 +16,6 @@
 (setq org-feed-alist
       '(("iChair Trac" "http://ichair.sw/report/7?format=rss&USER=pdixon"
          "~/org/inbox.org" "iChair Assigned Issues")))
+
+(setq url-proxy-services '(("no_proxy" . "\\.sw")
+			   ("http" . "127.0.0.1:3128")))
