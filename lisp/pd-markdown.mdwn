@@ -1,0 +1,57 @@
+% pd-markdown-mode
+% Phillip Dixon
+% June, 2011
+
+# Introduction
+`pd-markdown-mode` is my attempt at a markdown mode the works the way
+I want.
+
+It targets the markdown with [Pandoc] extensions.
+
+It provides outline style editing.
+
+It provides indentation and filling.
+
+- Pandoc and Hakyll style header blocks.
+
+# Markdown elements 
+## Block
+- Paragraph
+- Indented code
+- Delimited code.
+- Lists
+- Tables
+- Horizontal rules.
+- Block-quotes
+- Meta data header (Pandoc and Hakyll style)
+- Comments
+
+## Spans
+- Verbatim
+- Emphasis
+- Strong Emphasis
+- Strikeout
+- TeX maths
+
+## Links
+- Links, inline and reference
+- Footnotes
+- Images
+- Citations
+
+## Lists
+- Numbered lists
+- Plain lists
+- Number examples
+- Description lists
+
+# Indentation
+- Headers always to column 0.
+- Body text to line up with previous line.
+
+# Filling
+
+[pandoc]: <http://johnmacfarlane.net/pandoc/>
+[markdown-mode]:
+[hakyll]:
+[pandockit]:
