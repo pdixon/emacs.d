@@ -26,14 +26,15 @@
 
 (require 'auto-complete)
 (require 'auto-complete-config)
+(require 'auto-complete-clang)
+
 (global-auto-complete-mode t)
 (setq ac-auto-start t)
 (setq ac-dwim t)
 (setq ac-override-local-map nil)
 
 (setq-default ac-sources
-              '(ac-source-yasnippet
-                ac-source-abbrev))
+              '(ac-source-yasnippet))
 
 (add-hook 'emacs-lisp-mode-hook
           '(lambda ()
@@ -50,6 +51,10 @@
 ;;              (add-to-list 'ac-sources 'ac-source-semantic)
 ;;              (add-to-list 'ac-sources 'ac-source-semantic-raw)))
 
+(defun my-ac-cc-mode-setup ()
+  (setq ac-sources '(ac-source-clang ac-source-yasnippet)))
+
+(add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
+
 (provide '50autocomplete)
 ;;; 50autocomplete.el ends here
-
