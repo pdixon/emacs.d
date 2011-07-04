@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: header
+# --
+
+/*! $1
+ *
+ * \author `(user-full-name)`
+ *
+ * Copyright `(format-time-string "%Y")` `(user-company)`
+ */
+
+#ifndef ${2:`(upcase (file-name-nondirectory (file-name-sans-extension (buffer-file-name))))`_H}
+#define $2
+
+$0
+
+#endif /* $2 */
