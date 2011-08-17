@@ -181,6 +181,6 @@
   (if (> (frame-width) (* 2 80))
          (split-window-horizontally))
   (if (> (frame-width) (* 3 80))
-      ((split-window-horizontally)
-       (split-window-vertically)))
+      (progn (split-window-horizontally)
+             (split-window-vertically)))
   (balance-windows))
