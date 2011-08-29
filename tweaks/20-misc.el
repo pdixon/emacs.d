@@ -57,6 +57,8 @@
       smtpmail-smtp-service 587)
 (setq message-kill-buffer-on-exit t)
 
+(setq ispell-dictionary "en_GB-ise")
+
 (defalias 'list-buffers 'ibuffer)
 (setq ibuffer-expert 1)
 (setq ibuffer-show-empty-filter-groups nil)
