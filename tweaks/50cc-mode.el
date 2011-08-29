@@ -15,10 +15,10 @@
 
 ;; Customizations for all modes in CC Mode.
 (defun my-c-mode-common-hook ()
-  (c-set-style "PERSONAL"))
+  (c-set-style "PERSONAL")
+  (setq ff-always-in-other-window t))
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
-
 
 ;; Xcode support from http://han9kin.doesntexist.com/29
 (defvar xcode-compile-sdks nil)

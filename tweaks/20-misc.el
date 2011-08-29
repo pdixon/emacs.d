@@ -30,8 +30,9 @@
   (mouse-wheel-mode t)
   (blink-cursor-mode -1))
 
-(show-paren-mode 1)    
+(show-paren-mode 1)
 (setq-default x-stretch-cursor t)
+(setq-default cursor-type 'bar)
 (put 'dired-find-alternate-file 'disabled nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 (set-default 'sentence-end-double-space nil)

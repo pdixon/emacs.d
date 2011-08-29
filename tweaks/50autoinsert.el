@@ -27,15 +27,6 @@
 (add-hook 'find-file-hooks 'auto-insert)
 (setq auto-insert-directory (concat dotfiles-dir "mytemplates/"))
 (setq auto-insert-query nil)
-(setq auto-insert-alist
-      '(
-        ("\\.el" . ["template.el" pd-auto-insert-substitute])
-        ("\\.sh" . ["template.sh" pd-auto-insert-substitute])
-        ("\\.py" . ["template.py" pd-auto-insert-substitute])
-        ))
-
-(defun pd-auto-insert-substitute ()
-)
 
 (provide '50autoinsert)
 ;;; 50autoinsert.el ends here
