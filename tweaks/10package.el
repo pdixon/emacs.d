@@ -37,7 +37,8 @@
                           'autopair
                           'haskell-mode
                           'lua-mode
-                          'graphviz-dot-mode))
+                          'graphviz-dot-mode
+                          'deft))
 
 (defun starter-kit-elpa-install ()
   "Install all starter-kit packages that aren't installed."
