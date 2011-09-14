@@ -28,5 +28,23 @@
 (setq auto-insert-directory (concat dotfiles-dir "mytemplates/"))
 (setq auto-insert-query nil)
 
+(defun pd-parse-yas-from-file (file)
+  (with-temp-buffer
+    (when (file-readable-p file)
+      (insert-file-contents file nil nil nil t)
+      (yas/parse-template file))))
+
+(defun pd-expand-yas-template-from-file (file)
+  "expand the snippet read from FILE."
+  (yas/expand-snippet
+   (second (pd-parse-yas-from-file file))))
+
+(defun pd-auto-insert-template (template)
+  (pd-expand-yas-template-from-file
+   (concat auto-insert-directory template)))
+
+(define-auto-insert "\.markdown"
+  '(lambda () (pd-auto-insert-template "post.yasnippet")))
+
 (provide '50autoinsert)
 ;;; 50autoinsert.el ends here
