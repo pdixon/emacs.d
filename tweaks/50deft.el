@@ -26,8 +26,8 @@
 
 (require 'deft)
 
-(setq deft-extension ".mdwn")
-(setq deft-directory "~/Dropbox/Elements")
+(setq deft-extension "mdwn")
+(setq deft-directory "~/Dropbox/Elements/")
 
 (setq deft-text-mode 'markdown-mode)
 
