@@ -70,4 +70,6 @@
   (ibuffer nil "*Projects*" nil nil nil 
            (mapcar (lambda (project)
                      (list (car project) (cons 'eproject-root (cdr project)))) (eproject-projects))))
+
+(require 'eproject-tags)
 ;;; 30eproject.el ends here
