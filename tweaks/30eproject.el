@@ -71,5 +71,17 @@
            (mapcar (lambda (project)
                      (list (car project) (cons 'eproject-root (cdr project)))) (eproject-projects))))
 
+(defun compile-dwim ()
+  ""
+  (interactive)
+  (let ((comp-buffer-name (concat "*" (eproject-name) " compilation*")))
+    (if (get-buffer comp-buffer-name)
+        (with-current-buffer comp-buffer-name
+          (recompile))
+      (progn
+        (compile compile-command)
+        (with-current-buffer "*compilation*"
+          (rename-buffer comp-buffer-name))))))
+
 (require 'eproject-tags)
 ;;; 30eproject.el ends here
