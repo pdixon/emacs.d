@@ -1,9 +1,10 @@
-(autoload 'markdown-mode "markdown-mode.el"
-   "Major mode for editing Markdown files" t)
+
 (add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.mdwn" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode))
 
-(add-hook 'markdown-mode-hook 
-          (lambda () 
-            (setq outline-regexp "^[#]+")))
+(defun markdown-yas-fixup ()
+  (local-set-key "\t" 'markdown-cycle)
+  (local-set-key [tab] 'yas/expand))
+
+(add-hook 'markdown-mode-hook 'markdown-yas-fixup)
