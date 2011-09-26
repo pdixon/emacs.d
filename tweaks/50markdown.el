@@ -3,6 +3,8 @@
 (add-to-list 'auto-mode-alist '("\\.mdwn" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode))
 
+(setq markdown-command "pandoc")
+
 (defun markdown-yas-fixup ()
   (local-set-key "\t" 'markdown-cycle)
   (local-set-key [tab] 'yas/expand))
