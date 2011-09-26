@@ -17,6 +17,7 @@
 
 (global-set-key (kbd "<f5>") 'deft)
 (global-set-key (kbd "<f6>") 'org-agenda)
+(global-set-key (kbd "<f7>") 'magit-status)
 
 ;; Doesn't work on mac and collides with expose bindings.
 ;; (global-set-key (kbd "<f11>") 'my-toggle-fullscreen)
