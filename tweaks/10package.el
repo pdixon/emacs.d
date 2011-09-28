@@ -38,7 +38,8 @@
                           'haskell-mode
                           'lua-mode
                           'graphviz-dot-mode
-                          'deft))
+                          'deft
+                          'markdown-mode))
 
 (defun starter-kit-elpa-install ()
   "Install all starter-kit packages that aren't installed."
