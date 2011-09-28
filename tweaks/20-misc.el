@@ -120,9 +120,10 @@
 ;; Default to unified diffs
 (setq diff-switches "-u")
 
+(desktop-save-mode 1)
+(savehist-mode t)
 
 (require 'solarized-light-theme)
 
 (provide '20-misc)
 ;;; 20-misc.el ends here
-
