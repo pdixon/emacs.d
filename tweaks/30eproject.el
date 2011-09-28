@@ -83,5 +83,6 @@
         (with-current-buffer "*compilation*"
           (rename-buffer comp-buffer-name))))))
 
+(require 'etags) ;; eproject-tags uses functions from this that don't autoload.
 (require 'eproject-tags)
 ;;; 30eproject.el ends here
