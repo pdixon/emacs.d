@@ -30,19 +30,23 @@
   (mouse-wheel-mode t)
   (blink-cursor-mode -1))
 
-(show-paren-mode 1)
+
 (setq-default x-stretch-cursor t)
 (setq-default cursor-type 'bar)
-(put 'dired-find-alternate-file 'disabled nil)
-(fset 'yes-or-no-p 'y-or-n-p)
-(set-default 'sentence-end-double-space nil)
 (setq inhibit-startup-message t)
-(server-start)
-(customize-set-variable 'indent-tabs-mode nil)
-(global-auto-revert-mode 1)
 (setq vc-handled-backends nil)
 (setq whitespace-style '(face trailing lines-tail tabs)
       whitespace-line-column 80)
+(setq message-kill-buffer-on-exit t)
+(setq diff-switches "-u")
+
+
+(put 'dired-find-alternate-file 'disabled nil)
+(fset 'yes-or-no-p 'y-or-n-p)
+(set-default 'sentence-end-double-space nil)
+
+(server-start)
+(customize-set-variable 'indent-tabs-mode nil)
 (setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
 (setq user-full-name "Phillip Dixon")
@@ -55,7 +59,6 @@
       smtpmail-default-smtp-server "smtp.gmail.com"
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587)
-(setq message-kill-buffer-on-exit t)
 
 (setq ispell-dictionary "en_GB-ise")
 
@@ -77,6 +80,8 @@
 (setq backup-directory-alist `(("." . ,(expand-file-name
                                         (concat dotfiles-dir "backups")))))
 
+(show-paren-mode 1)
+
 ;; Transparently open compressed files
 (auto-compression-mode t)
  
@@ -85,6 +90,9 @@
  
 ;; Save a list of recent files visited.
 (recentf-mode 1)
+
+(global-auto-revert-mode 1)
+
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
@@ -104,9 +112,12 @@
   (ido-mode t)
   (setq ido-enable-prefix nil
         ido-enable-flex-matching t
-        ido-auto-merge-work-directories-length -1
+        ido-auto-merge-work-directories-length nil
         ido-create-new-buffer 'always
-        ido-use-filename-at-point 'guess))
+        ido-use-filename-at-point 'guess
+        ido-use-virtual-buffers t
+        ido-handle-duplicate-virtual-buffers 2
+        ido-max-prospects 10))
 
 ;; Use C-x k to close server buffers.
 (defun my-remap-server-edit()
@@ -117,8 +128,6 @@
 
 (add-hook 'server-switch-hook 'my-remap-server-edit)
 
-;; Default to unified diffs
-(setq diff-switches "-u")
 
 (desktop-save-mode 1)
 (savehist-mode t)
