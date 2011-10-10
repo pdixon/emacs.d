@@ -94,15 +94,15 @@
 
 (global-auto-revert-mode 1)
 
+(electric-pair-mode 1)
+(electric-indent-mode 1)
+(electric-layout-mode 1)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
 (setq uniquify-separator "/")
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
-
-(require 'autopair)
-;(autopair-global-mode)
 
 ;; Setup for better printing
 (require 'printing)

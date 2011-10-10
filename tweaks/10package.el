@@ -34,7 +34,6 @@
                           'gist
                           'auto-complete
                           'yasnippet-bundle
-                          'autopair
                           'haskell-mode
                           'lua-mode
                           'graphviz-dot-mode
