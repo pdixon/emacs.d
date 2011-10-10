@@ -79,7 +79,8 @@
 ;; Don't clutter up directories with files~
 (setq backup-directory-alist `(("." . ,(expand-file-name
                                         (concat dotfiles-dir "backups")))))
-
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 (show-paren-mode 1)
 
 ;; Transparently open compressed files
