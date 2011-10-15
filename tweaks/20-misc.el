@@ -129,8 +129,6 @@
 
 (add-hook 'server-switch-hook 'my-remap-server-edit)
 
-
-(desktop-save-mode 1)
 (savehist-mode t)
 
 (require 'solarized-light-theme)
