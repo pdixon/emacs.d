@@ -52,7 +52,7 @@
 ;;              (add-to-list 'ac-sources 'ac-source-semantic-raw)))
 
 (defun my-ac-cc-mode-setup ()
-  (setq ac-sources '(ac-source-yasnippet)))
+  (setq ac-sources '(ac-source-clang ac-source-yasnippet)))
 
 (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
 
