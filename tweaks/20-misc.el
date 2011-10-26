@@ -120,6 +120,9 @@
         ido-handle-duplicate-virtual-buffers 2
         ido-max-prospects 10))
 
+;; auto-complete in minibuffer
+(icomplete-mode 1)
+
 ;; Use C-x k to close server buffers.
 (defun my-remap-server-edit()
   (when (current-local-map)
