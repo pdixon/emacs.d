@@ -212,3 +212,12 @@
     (if mark-active
         (buffer-substring (region-beginning) (region-end))
       (read-string "Google: ")))))
+
+(defun ubuntu-mono (size)
+  (interactive "p")
+  (set-default-font
+   (concat "-apple-Ubuntu_Mono-medium-normal-normal-*-"
+           (if (stringp size) size
+             (if (= 1 size) "15"
+               (read-from-minibuffer "Size: ")))
+           "-*-*-*-m-0-iso10646-1")))

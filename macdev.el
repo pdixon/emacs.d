@@ -1,6 +1,7 @@
 ;; (setq mac-option-modifier 'hyper)
 ;; (setq mac-command-modifier 'meta)
 (setq ispell-program-name "/usr/local/bin/aspell")
+
 (setq org-latex-to-pdf-process
   '("/usr/texbin/pdflatex -interaction nonstopmode %s"
     "/usr/texbin/pdflatex -interaction nonstopmode %s"))
@@ -19,3 +20,6 @@
 
 (setq url-proxy-services '(("no_proxy" . "\\.sw")
 			   ("http" . "127.0.0.1:3128")))
+
+(when window-system
+  (ubuntu-mono 1))
