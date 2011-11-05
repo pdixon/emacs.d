@@ -134,6 +134,11 @@
 
 (savehist-mode t)
 
+(put 'set-goal-column 'disabled nil)
+
+(put 'narrow-to-region 'disabled nil)
+
+
 (require 'solarized-light-theme)
 
 (provide '20-misc)
