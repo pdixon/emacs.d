@@ -221,3 +221,23 @@
              (if (= 1 size) "15"
                (read-from-minibuffer "Size: ")))
            "-*-*-*-m-0-iso10646-1")))
+
+;; AppleScript Safari stuff
+(defun tell-app (app something)
+  "Use Applescript to tell an Application"
+  (do-applescript (concat "tell application\""
+                          app
+                          "\" to "
+                          something)))
+
+(defun my-safari-selection ()
+  (tell-app "Safari"
+            "do Javascript \"getSelection()\" in front document"))
+
+(defun my-safari-url-as-markdown ()
+  (interactive)
+  (let ((url (tell-app "Safari"
+                       "URL of front document"))
+        (title (tell-app "Safari"
+                         "do Javascript \"document.title\" in front document")))
+    (insert (concat "[" title "](" url ")"))))
