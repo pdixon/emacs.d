@@ -43,8 +43,16 @@
   (pd-expand-yas-template-from-file
    (concat auto-insert-directory template)))
 
+(defun pd-expand-buffer ()
+  "Expand buffer in place as a yasnippet."
+  (yas/expand-snippet (buffer-string) (point-min) (point-max))
+)
+
 (define-auto-insert "\.markdown"
   '(lambda () (pd-auto-insert-template "post.markdown")))
+
+(add-to-list 'auto-insert-alist 
+             '(("\\.m\\'" . "Object-C") . ["template.m" pd-expand-buffer]))
 
 (provide '50autoinsert)
 ;;; 50autoinsert.el ends here

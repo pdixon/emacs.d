@@ -247,3 +247,9 @@
   (let ((url my-safari-url)
         (title my-safari-title))
     (insert (concat "[" title "](" url ")"))))
+
+(defun my-organisation ()
+  "Return company name if I have one."
+  (if (boundp 'my-company)
+      (my-company)
+    (user-full-name)))
