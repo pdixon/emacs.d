@@ -234,10 +234,16 @@
   (tell-app "Safari"
             "do Javascript \"getSelection()\" in front document"))
 
+(defun my-safari-url ()
+  (tell-app "Safari"
+            "URL of front document"))
+
+(defun my-safari-title ()
+  (tell-app "Safari"
+            "do Javascript \"document.title\" in front document"))
+
 (defun my-safari-url-as-markdown ()
   (interactive)
-  (let ((url (tell-app "Safari"
-                       "URL of front document"))
-        (title (tell-app "Safari"
-                         "do Javascript \"document.title\" in front document")))
+  (let ((url my-safari-url)
+        (title my-safari-title))
     (insert (concat "[" title "](" url ")"))))
