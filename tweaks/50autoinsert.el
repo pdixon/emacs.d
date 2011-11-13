@@ -48,7 +48,7 @@
   (yas/expand-snippet (buffer-string) (point-min) (point-max))
 )
 
-(define-auto-insert "\.markdown"
+(define-auto-insert "\.markdown\'"
   '(lambda () (pd-auto-insert-template "post.markdown")))
 
 (add-to-list 'auto-insert-alist 
