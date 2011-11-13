@@ -44,7 +44,7 @@
    (concat auto-insert-directory template)))
 
 (define-auto-insert "\.markdown"
-  '(lambda () (pd-auto-insert-template "post.yasnippet")))
+  '(lambda () (pd-auto-insert-template "post.markdown")))
 
 (provide '50autoinsert)
 ;;; 50autoinsert.el ends here
