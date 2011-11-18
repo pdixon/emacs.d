@@ -28,31 +28,16 @@
 (setq auto-insert-directory (concat dotfiles-dir "mytemplates/"))
 (setq auto-insert-query nil)
 
-(defun pd-parse-yas-from-file (file)
-  (with-temp-buffer
-    (when (file-readable-p file)
-      (insert-file-contents file nil nil nil t)
-      (yas/parse-template file))))
-
-(defun pd-expand-yas-template-from-file (file)
-  "expand the snippet read from FILE."
-  (yas/expand-snippet
-   (second (pd-parse-yas-from-file file))))
-
-(defun pd-auto-insert-template (template)
-  (pd-expand-yas-template-from-file
-   (concat auto-insert-directory template)))
-
 (defun pd-expand-buffer ()
   "Expand buffer in place as a yasnippet."
   (yas/expand-snippet (buffer-string) (point-min) (point-max))
 )
 
-(define-auto-insert "\.markdown\'"
-  '(lambda () (pd-auto-insert-template "post.markdown")))
+(define-auto-insert "\\.markdown\\'"
+  ["post.markdown" pd-expand-buffer])
 
-(add-to-list 'auto-insert-alist 
-             '(("\\.m\\'" . "Object-C") . ["template.m" pd-expand-buffer]))
+(define-auto-insert "\\.m\\'"
+  ["template.m" pd-expand-buffer])
 
 (provide '50autoinsert)
 ;;; 50autoinsert.el ends here
