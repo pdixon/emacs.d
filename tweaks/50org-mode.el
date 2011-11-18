@@ -132,7 +132,8 @@
             `(lambda ()
                (setq yas/fallback-behavior
                      '(apply ,original-command))
-               (local-set-key [tab] 'yas/expand))))
+               (local-set-key [tab] 'yas/expand)
+               (electric-indent-mode -1))))
 
 ; Erase all reminders and rebuilt reminders for today from the agenda
 (defun bh/org-agenda-to-appt ()
