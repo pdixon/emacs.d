@@ -36,6 +36,9 @@
 (define-auto-insert "\\.markdown\\'"
   ["post.markdown" pd-expand-buffer])
 
+(define-auto-insert "\\.mdwn\\'"
+  ["template.mdwn" pd-expand-buffer])
+
 (define-auto-insert "\\.m\\'"
   ["template.m" pd-expand-buffer])
 
