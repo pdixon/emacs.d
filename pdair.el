@@ -27,5 +27,8 @@
 (when window-system
   (ubuntu-mono 1))
 
+(push "~/Libray/Haskell/bin" exec-path)
+(push "/usr/local/bin" exec-path)
+
 (provide 'pdair)
 ;;; pdair.el ends here
