@@ -60,7 +60,8 @@
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587)
 
-(setq ispell-dictionary "en_GB-ise")
+(setq ispell-dictionary "en_GB-ise"
+      ispell-extra-args `("--keyboard=dvorak"))
 
 (defalias 'list-buffers 'ibuffer)
 (setq ibuffer-expert 1)
