@@ -263,3 +263,23 @@
   (if (boundp 'my-company)
       (my-company)
     (user-full-name)))
+
+(defun say-text (text)
+  (do-applescript
+   (concat "say \""
+           text
+           "\" waiting until completion false stopping current speech true")))
+
+(defun speak-buffer-or-region ()
+  "Reads a buffer or region aloud."
+  (interactive)
+  (save-excursion
+    (unless (region-active-p)
+      (mark-whole-buffer))
+    (let ((text (buffer-substring (region-beginning) (region-end))))
+      (say-text text))))
+
+(defun stop-speech ()
+  "stopping talking."
+  (interactive)
+  (say-text ""))
