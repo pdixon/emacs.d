@@ -4,4 +4,4 @@
 	pushurl = ssh://github.com/pdixon/eproject.git
 [submodule "vendor/solarized"]
 	path = vendor/solarized
-	url = http://github.com/sellout/emacs-color-theme-solarized.git
+	url = https://github.com/bbatsov/solarized-emacs.git
