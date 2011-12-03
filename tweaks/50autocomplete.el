@@ -29,7 +29,7 @@
 (require 'auto-complete-clang)
 
 (global-auto-complete-mode t)
-(setq ac-auto-start t)
+(setq ac-auto-start 4)
 (setq ac-dwim t)
 (setq ac-override-local-map nil)
 
