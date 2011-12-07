@@ -38,7 +38,9 @@
                           'lua-mode
                           'graphviz-dot-mode
                           'deft
-                          'markdown-mode))
+                          'markdown-mode
+                          'zenburn-theme
+                          'solarized-theme))
 
 
 (when (not package-archive-contents)
