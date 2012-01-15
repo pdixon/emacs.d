@@ -29,6 +29,7 @@
 
 (push "~/Libray/Haskell/bin" exec-path)
 (push "/usr/local/bin" exec-path)
+(push "/opt/homebrew/bin" exec-path)
 
 (provide 'pdair)
 ;;; pdair.el ends here
