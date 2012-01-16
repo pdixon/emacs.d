@@ -193,7 +193,9 @@
   (if (> (frame-width) (* 3 80))
       (progn (split-window-horizontally)
              (split-window-vertically)))
-  (balance-windows))
+  (balance-windows)
+  (set-window-buffer (selected-window) "*Deft*")
+  (set-window-buffer (other-window 1) "*Org Agenda*"))
 
 ;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
 (defun rename-file-and-buffer (new-name)
