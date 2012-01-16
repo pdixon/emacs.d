@@ -30,17 +30,21 @@
 (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
-(defvar pd-packages (list 'magit
-                          'gist
-                          'auto-complete
-                          'yasnippet-bundle
-                          'haskell-mode
-                          'lua-mode
-                          'graphviz-dot-mode
-                          'deft
-                          'markdown-mode
-                          'zenburn-theme
-                          'solarized-theme))
+(defvar pd-packages (list
+                     'auctex
+                     'auto-complete
+                     'cmake-mode
+                     'deft
+                     'gist
+                     'graphviz-dot-mode
+                     'haskell-mode
+                     'lua-mode
+                     'magit
+                     'markdown-mode
+                     'solarized-theme
+                     'yasnippet
+                     'zenburn-theme
+))
 
 
 (when (not package-archive-contents)

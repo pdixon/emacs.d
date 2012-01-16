@@ -1,5 +1,5 @@
 ;; Setup for yasnippets
-(require 'yasnippet-bundle)
+(require 'yasnippet)
 
 (setq yas/root-directory  (list (concat dotfiles-dir "mysnippets/")))
 
