@@ -188,6 +188,8 @@
 (require 'window-number)
 (defun my-windows ()
   (interactive)
+  (deft)
+  (org-agenda 0 "w")
   (delete-other-windows)
   (if (> (frame-width) (* 2 80))
          (split-window-horizontally))
