@@ -42,6 +42,7 @@
                      'magit
                      'markdown-mode
                      'solarized-theme
+                     'window-number
                      'yasnippet
                      'zenburn-theme
 ))

@@ -185,6 +185,7 @@
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
+(require 'window-number)
 (defun my-windows ()
   (interactive)
   (delete-other-windows)
@@ -194,8 +195,10 @@
       (progn (split-window-horizontally)
              (split-window-vertically)))
   (balance-windows)
+  (window-number-select 1)
   (set-window-buffer (selected-window) "*Deft*")
-  (set-window-buffer (other-window 1) "*Org Agenda*"))
+  (window-number-select 2)
+  (set-window-buffer (selected-window) "*Org Agenda*"))
 
 ;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
 (defun rename-file-and-buffer (new-name)
