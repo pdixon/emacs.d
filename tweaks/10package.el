@@ -35,9 +35,11 @@
                      'auto-complete
                      'cmake-mode
                      'deft
+                     'expand-region
                      'gist
                      'graphviz-dot-mode
                      'haskell-mode
+                     'iy-go-to-char
                      'lua-mode
                      'magit
                      'markdown-mode

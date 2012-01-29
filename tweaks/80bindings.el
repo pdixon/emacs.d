@@ -10,11 +10,11 @@
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key "\C-cr" 'org-capture)
 (global-set-key (kbd "M-SPC") 'shrink-whitespaces)
-(global-set-key (kbd "C-'") 'select-text-in-quote)
-(global-set-key (kbd "M-'") 'extend-selection)
+(global-set-key (kbd "C-'") 'er/contract-region)
+(global-set-key (kbd "M-'") 'er/expand-region)
 (global-set-key (kbd "C-t") 'transpose-dwim)
 (global-set-key (kbd "M-c") 'toggle-letter-case)
-
+(global-set-key (kbd "C-z") 'iy-go-to-char)
 (global-set-key (kbd "<f5>") 'deft)
 (global-set-key (kbd "<f6>") 'org-agenda)
 (global-set-key (kbd "<f7>") 'magit-status)
@@ -26,53 +26,6 @@
 
 ;;;; Helper functions from Xahlee's ergo bindings (http://xahlee.org).
 ;;; TEXT SELECTION RELATED
-
-(defun select-text-in-quote ()
-  "Select text between the nearest left and right delimiters.
-Delimiters are paired characters: ()[]<>«»“”‘’「」【】, including \"\"."
- (interactive)
- (let (b1 b2)
-   (skip-chars-backward "^<>(“{[「«【\"‘")
-   (setq b1 (point))
-   (skip-chars-forward "^<>)”}]」】»\"’")
-   (setq b2 (point))
-   (set-mark b1)
-   )
- )
-
-;; by Nikolaj Schumacher, 2008-10-20. Released under GPL.
-(defun semnav-up (arg)
-  (interactive "p")
-  (when (nth 3 (syntax-ppss))
-    (if (> arg 0)
-        (progn
-          (skip-syntax-forward "^\"")
-          (goto-char (1+ (point)))
-          (decf arg))
-      (skip-syntax-backward "^\"")
-      (goto-char (1- (point)))
-      (incf arg)))
-  (up-list arg))
-
-;; by Nikolaj Schumacher, 2008-10-20. Released under GPL.
-(defun extend-selection (arg &optional incremental)
-  "Select the current word.
-Subsequent calls expands the selection to larger semantic unit."
-  (interactive (list (prefix-numeric-value current-prefix-arg)
-                     (or (and transient-mark-mode mark-active)
-                         (eq last-command this-command))))
-  (if incremental
-      (progn
-        (semnav-up (- arg))
-        (forward-sexp)
-        (mark-sexp -1))
-    (if (> arg 1)
-        (extend-selection (1- arg) t)
-      (if (looking-at "\\=\\(\\s_\\|\\sw\\)*\\_>")
-          (goto-char (match-end 0))
-        (unless (memq (char-before) '(?\) ?\"))
-          (forward-sexp)))
-      (mark-sexp -1))))
 
 (defun shrink-whitespaces ()
   "Remove white spaces around cursor to just one or none.
