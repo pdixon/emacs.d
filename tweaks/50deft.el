@@ -30,6 +30,7 @@
 (setq deft-directory "~/Dropbox/Elements/")
 
 (setq deft-text-mode 'markdown-mode)
+(setq deft-use-filename-as-title t)
 
 (provide '50deft)
 ;;; 50deft.el ends here
