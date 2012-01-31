@@ -65,7 +65,9 @@
 
 
 (define-project-type xcode (generic)
-  (look-for "*.xcodeproj/project.pbxproj" :glob))
+  (look-for "*.xcodeproj/project.pbxproj" :glob)
+  :local-variables (lambda (root)
+                     (list 'compile-command "xcodebuild")))
 
 (defun ibuffer-eproject-generate-filter-groups-by-name ()
   "Create a set of ibuffer filter groups based on the eproject root dirs of buffers"
@@ -88,10 +90,11 @@
            (mapcar (lambda (project)
                      (list (car project) (cons 'eproject-root (cdr project)))) (eproject-projects))))
 
-(defun compile-dwim ()
+(defun eproject-compile-dwim ()
   ""
   (interactive)
-  (let ((comp-buffer-name (concat "*" (eproject-name) " compilation*")))
+  (let ((comp-buffer-name (concat "*" (eproject-name) " compilation*"))
+        (default-directory (eproject-root)))
     (if (get-buffer comp-buffer-name)
         (with-current-buffer comp-buffer-name
           (recompile))
@@ -99,6 +102,8 @@
         (compile compile-command)
         (with-current-buffer "*compilation*"
           (rename-buffer comp-buffer-name))))))
+
+(define-key eproject-mode-map (kbd "C-c C-k") #'eproject-compile-dwim)
 
 ;(require 'etags) ;; eproject-tags uses functions from this that don't autoload.
 ;(require 'eproject-tags)
