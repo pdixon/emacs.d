@@ -64,6 +64,23 @@
                            (format "cd %s; cabal configure; cabal build" root))))
 
 
+(define-project-type xcode (generic)
+  (look-for "*.xcodeproj/project.pbxproj" :glob))
+
+(defun ibuffer-eproject-generate-filter-groups-by-name ()
+  "Create a set of ibuffer filter groups based on the eproject root dirs of buffers"
+  (mapcar (lambda (project-name)
+            (cons (format "*%s*" project-name)
+                  `((eproject . ,project-name))))
+          (eproject-project-names)))
+
+;;;###autoload
+(defun ibuffer-eproject-set-filter-groups-by-name ()
+  "Set the current filter groups to filter by eproject root dir."
+  (interactive)
+  (setq ibuffer-filter-groups (ibuffer-eproject-generate-filter-groups-by-name))
+  (ibuffer-update nil t))
+
 (defun all-projects-ibuffer (prefix)
   "Open an IBuffer window showing all buffers by project."
   (interactive "p")
