@@ -26,4 +26,10 @@
 
 (add-hook 'compilation-mode-hook 'pd/compilation-hook)
 
+(defun pd/objc-ff-setup-hook ()
+  (set (make-local-variable 'cc-other-file-alist)
+       '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
+
+(add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
+
 ;; (define-project-type kernel (generic-git) (look-for "Kbuild"))
