@@ -185,9 +185,22 @@
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
+(require 'cl)
+(defun first-matching-buffer (predicate)
+  "Return PREDICATE applied to the first buffer where PREDICATE applied to the
+   buffer yields a non-nil value."
+  (loop for buf in (buffer-list)
+        when (with-current-buffer buf (funcall predicate buf))
+        return (with-current-buffer buf (funcall predicate buf))))
+
+(defun show (buffer)
+  (set-window-buffer (selected-window) buffer))
+
 (require 'window-number)
 (defun my-windows ()
   (interactive)
+  (let ((current-project
+         (first-matching-buffer (lambda (x) (ignore-errors (eproject-name))))))
   (deft)
   (org-agenda 0 "w")
   (delete-other-windows)
@@ -200,7 +213,17 @@
   (window-number-select 1)
   (set-window-buffer (selected-window) "*Deft*")
   (window-number-select 2)
-  (set-window-buffer (selected-window) "*Org Agenda*"))
+  (set-window-buffer (selected-window) "*Org Agenda*")
+  (let ((cur))
+    (loop for i in '(3 4)
+          do
+          (window-number-select i)
+          (show (first-matching-buffer
+                 (lambda (x) (and (equal (ignore-errors (eproject-name))
+                                         current-project)
+                                  (not (equal cur (buffer-name x)))
+                                  x))))
+          (setf cur (buffer-name (window-buffer)))))))
 
 ;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
 (defun rename-file-and-buffer (new-name)
