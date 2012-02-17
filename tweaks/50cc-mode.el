@@ -30,6 +30,10 @@
   (set (make-local-variable 'cc-other-file-alist)
        '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
 
+(defun pd/objc-imenu-setup ()
+  (setq imenu-generic-expression '(("Sections" "^#pragma mark \\(.+\\)" 1))))
+
 (add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
+;; (add-hook 'objc-mode-hook 'pd/objc-imenu-setup)
 
 ;; (define-project-type kernel (generic-git) (look-for "Kbuild"))

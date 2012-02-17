@@ -140,7 +140,7 @@
 (put 'narrow-to-region 'disabled nil)
 
 
-(require 'solarized-light-theme)
+;; (require 'solarized-light-theme)
 
 (provide '20-misc)
 ;;; 20-misc.el ends here
