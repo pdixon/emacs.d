@@ -26,8 +26,8 @@
 
 (when window-system
   (ubuntu-mono 1))
-
-(push "~/Libray/Haskell/bin" exec-path)
+(setq shell-file-name "zsh")
+(push "/Users/pjd67/Library/Haskell/bin" exec-path)
 (push "/usr/local/bin" exec-path)
 (push "/opt/homebrew/bin" exec-path)
 

@@ -32,7 +32,7 @@
 
 
 (setq-default x-stretch-cursor t)
-(setq-default cursor-type 'bar)
+;; (setq-default cursor-type 'bar)
 (setq inhibit-startup-message t)
 (setq vc-handled-backends nil)
 (setq whitespace-style '(face trailing lines-tail tabs)
@@ -138,6 +138,7 @@
 (put 'set-goal-column 'disabled nil)
 
 (put 'narrow-to-region 'disabled nil)
+
 
 
 ;; (require 'solarized-light-theme)
