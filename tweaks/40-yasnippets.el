@@ -1,7 +1,9 @@
 ;; Setup for yasnippets
 (require 'yasnippet)
+(yas/initialize)
 
-(setq yas/root-directory  (list (concat dotfiles-dir "mysnippets/")))
+(setq yas/root-directory  (list (concat dotfiles-dir "mysnippets/")
+                                (concat dotfiles-dir "elpa/yasnippet-0.6.1/snippets")))
 
 (mapc 'yas/load-directory yas/root-directory)
 
