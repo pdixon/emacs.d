@@ -32,7 +32,6 @@
 (package-initialize)
 (defvar pd-packages (list
                      'auctex
-                     'auto-complete
                      'cmake-mode
                      'deft
                      'expand-region

@@ -19,6 +19,8 @@
 (global-set-key (kbd "<f6>") 'org-agenda)
 (global-set-key (kbd "<f7>") 'magit-status)
 
+(global-set-key (kbd "M-/") 'hippie-expand)
+
 (global-set-key (kbd "C-h a") 'apropos)
 (global-set-key (kbd "C-h i") 'info-apropos)
 ;; Doesn't work on mac and collides with expose bindings.
