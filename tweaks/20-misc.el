@@ -139,5 +139,9 @@
 
 ;; (require 'solarized-light-theme)
 
+;; make scripts executable on save.
+(add-hook 'after-save-hook
+          'executable-make-buffer-file-executable-if-script-p)
+
 (provide '20-misc)
 ;;; 20-misc.el ends here
