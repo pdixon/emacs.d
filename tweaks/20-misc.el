@@ -124,15 +124,6 @@
 ;; auto-complete in minibuffer
 (icomplete-mode 1)
 
-;; Use C-x k to close server buffers.
-(defun my-remap-server-edit()
-  (when (current-local-map)
-    (use-local-map (copy-keymap (current-local-map))))
-  (when server-buffer-clients
-    (local-set-key (kbd "C-x k") 'server-edit)))
-
-(add-hook 'server-switch-hook 'my-remap-server-edit)
-
 (savehist-mode t)
 
 (put 'set-goal-column 'disabled nil)
