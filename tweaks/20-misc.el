@@ -143,5 +143,9 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
+(column-number-mode t)
+(line-number-mode t)
+(size-indication-mode t)
+
 (provide '20-misc)
 ;;; 20-misc.el ends here
