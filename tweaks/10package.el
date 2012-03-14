@@ -33,6 +33,7 @@
 (defvar pd-packages (list
                      'auctex
                      'cmake-mode
+                     'color-theme-solarized
                      'deft
                      'expand-region
                      'gist
@@ -42,10 +43,8 @@
                      'lua-mode
                      'magit
                      'markdown-mode
-                     'solarized-theme
                      'window-number
                      'yasnippet
-                     'zenburn-theme
 ))
 
 
