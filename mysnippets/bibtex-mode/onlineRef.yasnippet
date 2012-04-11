@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: Bibtex entry for website.
+# key: onlineRef
+# contributor: Phil Dixon <phil@dixon.gen.nz>
+# --
+@Online{$0,
+  author =    {$1},
+  title =        {`(my-safari-title)`},
+  url =          {`(my-safari-url)`},
+  ${2:organization = {$3},}
+  ${4:date =      {$5},}
+  urldate =   {`(format-time-string "%Y-%02m-%d")`}}

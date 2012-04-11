@@ -1,11 +1,12 @@
 ;; Setup for yasnippets
 (require 'yasnippet)
-(yas/initialize)
 
 (setq yas/root-directory  (list (concat dotfiles-dir "mysnippets/")
-                                (concat dotfiles-dir "elpa/yasnippet-0.6.1/snippets")))
+                                (concat dotfiles-dir "elpa/yasnippet-20120326/snippets")))
 
 (mapc 'yas/load-directory yas/root-directory)
+
+(yas/initialize)
 
 (defun my-yas-org-hook ()
   (let ((original-command (lookup-key org-mode-map [tab])))
