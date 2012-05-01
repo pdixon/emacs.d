@@ -176,13 +176,14 @@
 	 :auto-preamble t
 	 )))
 
-(add-hook 'org-mode-hook
-          (let ((original-command (lookup-key org-mode-map [tab])))
-            `(lambda ()
-               (setq yas/fallback-behavior
-                     '(apply ,original-command))
-               (local-set-key [tab] 'yas/expand)
-               (electric-indent-mode -1))))
+;; (add-hook 'org-mode-hook
+;;           (let ((original-command (lookup-key org-mode-map [tab])))
+;;             `(lambda ()
+;;                (make-variable-buffer-local yas/fallback-behaviour)
+;;                (setq yas/fallback-behavior
+;;                      '(apply ,original-command))
+;;                (local-set-key [tab] 'yas/expand)
+;;                (electric-indent-mode -1))))
 
 ; Erase all reminders and rebuilt reminders for today from the agenda
 (defun bh/org-agenda-to-appt ()
