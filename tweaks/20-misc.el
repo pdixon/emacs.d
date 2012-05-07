@@ -139,6 +139,9 @@
 
 ;; (require 'solarized-light-theme)
 
+(load-theme 'solarized-dark t t)
+(load-theme 'solarized-light t t)
+
 ;; make scripts executable on save.
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
