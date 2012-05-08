@@ -24,6 +24,9 @@
 
 ;;; Code:
 
+;;; I'd rather reuse a window than have things split on me.
+(setq split-height-threshold nil)
+(setq split-width-threshold nil)
 
 (require 'cl)
 (defun first-matching-buffer (predicate)
