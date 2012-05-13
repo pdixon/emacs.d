@@ -35,7 +35,7 @@
 ;; (setq-default cursor-type 'bar)
 (setq inhibit-startup-message t)
 (setq vc-handled-backends nil)
-(setq whitespace-style '(face trailing lines-tail tabs)
+(setq whitespace-style '(face trailing tabs)
       whitespace-line-column 80)
 (setq message-kill-buffer-on-exit t)
 (setq diff-switches "-u")
