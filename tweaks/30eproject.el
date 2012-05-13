@@ -67,7 +67,8 @@
 (define-project-type xcode (generic)
   (look-for "*.xcodeproj/project.pbxproj" :glob)
   :local-variables (lambda (root)
-                     (list 'compile-command "xcodebuild")))
+                     (list 'compile-command
+                           (format "cd %s; xcodebuild" root))))
 
 (defun ibuffer-eproject-generate-filter-groups-by-name ()
   "Create a set of ibuffer filter groups based on the eproject root dirs of buffers"
@@ -93,7 +94,7 @@
 (defun eproject-compile-dwim ()
   ""
   (interactive)
-  (let ((comp-buffer-name (concat "*" (eproject-name) " compilation*"))
+  (let ((comp-buffer-name (concat "*compilation: " (eproject-name) "*"))
         (default-directory (eproject-root)))
     (if (get-buffer comp-buffer-name)
         (with-current-buffer comp-buffer-name
