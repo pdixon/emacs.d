@@ -16,7 +16,7 @@
 ;; Customizations for all modes in CC Mode.
 (defun my-c-mode-common-hook ()
   (c-set-style "PERSONAL")
-  (setq ff-always-in-other-window t))
+  (setq ff-always-in-other-window nil))
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
@@ -30,10 +30,24 @@
   (set (make-local-variable 'cc-other-file-alist)
        '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
 
-(defun pd/objc-imenu-setup ()
-  (setq imenu-generic-expression '(("Sections" "^#pragma mark \\(.+\\)" 1))))
-
 (add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
-;; (add-hook 'objc-mode-hook 'pd/objc-imenu-setup)
 
-;; (define-project-type kernel (generic-git) (look-for "Kbuild"))
+(defun pd/toggle-header ()
+  ""
+  (interactive)
+  (ff-find-other-file nil t))
+
+(defun pd/xcode-target-dirs ()
+  (if ((= (substring default-directory -6 -1) "Tests"))
+      ((list "." (substring default-director 0 -6)))
+    ((list "." (concat (substring default-directory 0 -1) "Tests")))))
+
+(defun pd/toggle-test ()
+  ""
+  (interactive)
+  (let
+      ((ff-other-file-alist '((".m" ("Tests.m"))
+                              ("Tests.m" (".m"))))
+       (ff-always-try-to-create nil)
+       (ff-search-directories (pd/xcode-target-dirs)))
+    (ff-find-other-file nil t)))

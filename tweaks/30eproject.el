@@ -63,6 +63,10 @@
                      (list 'compile-command
                            (format "cd %s; cabal configure; cabal build" root))))
 
+(define-project-type emacsd (generic)
+  (look-for "init.el")
+  :relevant-files ("\\.el")
+  :irrelevant-files ("elpa/" "backups/"))
 
 (define-project-type xcode (generic)
   (look-for "*.xcodeproj/project.pbxproj" :glob)
