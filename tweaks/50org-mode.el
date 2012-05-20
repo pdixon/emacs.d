@@ -18,7 +18,7 @@
 ;; Remove completed scheduled tasks from the agenda view
 (setq org-agenda-skip-scheduled-if-done t)
 (setq org-agenda-tags-todo-honor-ignore-options t)
-
+(setq org-agenda-window-setup 'current-window)
 (setq org-use-fast-todo-selection t)
 (setq org-todo-keywords
       '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
