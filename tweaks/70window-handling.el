@@ -24,9 +24,12 @@
 
 ;;; Code:
 
-;;; I'd rather reuse a window than have things split on me.
+;; I'd rather reuse a window than have things split on me.
 (setq split-height-threshold nil)
 (setq split-width-threshold nil)
+
+;;
+(setq magit-status-buffer-switch-function 'switch-to-buffer)
 
 (require 'cl)
 (defun first-matching-buffer (predicate)
