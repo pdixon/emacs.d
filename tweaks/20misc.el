@@ -137,10 +137,19 @@
 ;; Add this back in at the end of the list.
 (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)
 
-;; (require 'solarized-light-theme)
-
-(load-theme 'solarized-dark t t)
 (load-theme 'solarized-light t t)
+(load-theme 'solarized-dark t t)
+
+(defun pd/light ()
+  "Activate light theme."
+  (interactive)
+  (custom-set-variables '(custom-enabled-themes '(solarized-light))))
+
+(defun pd/dark ()
+  "Activate dark theme."
+  (interactive)
+  (custom-set-variables '(custom-enabled-themes '(solarized-dark))))
+
 
 ;; make scripts executable on save.
 (add-hook 'after-save-hook
