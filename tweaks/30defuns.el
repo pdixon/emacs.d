@@ -242,6 +242,24 @@
   (tell-app "Safari"
             "do Javascript \"document.title\" in front document"))
 
+(defun my-safari-all-urls ()
+  "Return a list of all the URLs in the front most Safari window."
+  (split-string (do-applescript (concat "tell application \"Safari\"\n"
+                          "set links to \"\"\n"
+                          "repeat with t in every tab in front Window\n"
+                          "set links to links & the URL of t & linefeed\n"
+                          "end repeat\n"
+                          "return links\n"
+                          "end tell\n")) "\n" t))
+
+(defun my-safari-all-urls-as-markdown ()
+  (interactive)
+  (let ((urls (my-safari-all-urls))
+        (i 0))
+    (dolist (url urls)
+      (setq i (1+ i))
+      (insert (format "[%d]: %s\n" i url)))))
+
 (defun my-safari-url-as-markdown ()
   (interactive)
   (let ((url my-safari-url)
