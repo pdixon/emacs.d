@@ -27,26 +27,15 @@
 (when window-system
   (setq frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
   (tooltip-mode -1)
-  (mouse-wheel-mode t)
   (blink-cursor-mode -1))
 
-
-(setq-default x-stretch-cursor t)
-;; (setq-default cursor-type 'bar)
-(setq inhibit-startup-message t)
 (setq vc-handled-backends nil)
 (setq whitespace-style '(face trailing tabs)
       whitespace-line-column 80)
 (setq message-kill-buffer-on-exit t)
-(setq diff-switches "-u")
-
-
-(put 'dired-find-alternate-file 'disabled nil)
-(fset 'yes-or-no-p 'y-or-n-p)
-(set-default 'sentence-end-double-space nil)
 
 (server-start)
-(customize-set-variable 'indent-tabs-mode nil)
+
 (setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
 (setq user-full-name "Phillip Dixon")
@@ -97,37 +86,12 @@
               " "
               filename-and-process)))
 
-;; Don't clutter up directories with files~
-(setq backup-directory-alist `(("." . ,(expand-file-name
-                                        (concat dotfiles-dir "backups")))))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
-(show-paren-mode 1)
-
-;; Transparently open compressed files
-(auto-compression-mode t)
- 
-;; Enable syntax highlighting for older Emacsen that have it off
-(global-font-lock-mode t)
- 
-;; Save a list of recent files visited.
-(recentf-mode 1)
-
-(global-auto-revert-mode 1)
-
-(electric-pair-mode 1)
-(electric-indent-mode 1)
-(electric-layout-mode 1)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)
 (setq uniquify-separator "/")
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
-
-;; Setup for better printing
-(require 'printing)
-(pr-update-menus)
 
 ;; Setup for ido.el
 (when (functionp 'ido-mode)
@@ -141,23 +105,12 @@
         ido-handle-duplicate-virtual-buffers 2
         ido-max-prospects 10))
 
-;; auto-complete in minibuffer
-(icomplete-mode 1)
-
-(savehist-mode t)
-
-(put 'set-goal-column 'disabled nil)
-
-(put 'narrow-to-region 'disabled nil)
-
 ;; Hippie expand: at times perhaps too hip
 (dolist (f '(try-expand-line try-expand-list try-complete-file-name-partially))
   (delete f hippie-expand-try-functions-list))
 
 ;; Add this back in at the end of the list.
 (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)
-
-
 
 (defun pd/light ()
   "Activate light theme."
@@ -171,14 +124,10 @@
   (load-theme 'solarized-dark t t)
   (custom-set-variables '(custom-enabled-themes '(solarized-dark))))
 
-
 ;; make scripts executable on save.
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-(column-number-mode t)
-(line-number-mode t)
-(size-indication-mode t)
 
 (provide '20-misc)
 ;;; 20-misc.el ends here
