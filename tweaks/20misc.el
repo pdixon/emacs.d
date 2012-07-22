@@ -93,18 +93,6 @@
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
 
-;; Setup for ido.el
-(when (functionp 'ido-mode)
-  (ido-mode t)
-  (setq ido-enable-prefix nil
-        ido-enable-flex-matching t
-        ido-auto-merge-work-directories-length nil
-        ido-create-new-buffer 'always
-        ido-use-filename-at-point 'guess
-        ido-use-virtual-buffers t
-        ido-handle-duplicate-virtual-buffers 2
-        ido-max-prospects 10))
-
 ;; Hippie expand: at times perhaps too hip
 (dolist (f '(try-expand-line try-expand-list try-complete-file-name-partially))
   (delete f hippie-expand-try-functions-list))
