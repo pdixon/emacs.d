@@ -37,6 +37,7 @@
                      'color-theme-solarized
                      'deft
                      'expand-region
+                     'fill-column-indicator
                      'gist
                      'graphviz-dot-mode
                      'haskell-mode
