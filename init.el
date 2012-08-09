@@ -3,7 +3,7 @@
 ;; Copyright (C) 2011 Phillip Dixon
 
 ;; Author: Phillip Dixon <phil@dixon.gen.nz>
-;; Keywords: 
+;; Keywords:
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@
 
 ;;; Code:
 
-(require 'cl)
-(defvar *emacs-load-start* (current-time))
+(defconst *emacs-load-start* (current-time))
+(message "Loading %s..." load-file-name)
 
 (defvar dotfiles-dir (file-name-directory load-file-name))
 (defvar tweaks-dir (concat dotfiles-dir "tweaks/"))
@@ -48,8 +48,6 @@
   (normal-top-level-add-subdirs-to-load-path)
   (nconc load-path orig-load-path))
 
-(add-to-list 'custom-theme-load-path (concat vendor-dir "solarized/"))
-
 (setq custom-file (concat dotfiles-dir "custom.el"))
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
 
@@ -62,10 +60,7 @@
 (when (file-exists-p system-specific-config)
   (load system-specific-config))
 
-(message "My .emacs loaded in %ds"
-         (destructuring-bind (hi lo ms) (current-time)
-           (- (+ hi lo)
-              (+ (first *emacs-load-start*)
-                 (second *emacs-load-start*)))))
-
+(let ((elapsed (float-time (time-subtract (current-time)
+                                          *emacs-load-start*))))
+  (message "Loading %s...done (%.3fs)" load-file-name elapsed))
 ;;; init.el ends here
