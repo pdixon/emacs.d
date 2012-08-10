@@ -24,8 +24,8 @@
 
 ;;; Code:
 
-(when window-system
-  (ubuntu-mono 1))
+;; (when window-system
+;;   (ubuntu-mono 1))
 (setq shell-file-name "zsh")
 (push "/Users/pjd67/Library/Haskell/bin" exec-path)
 (push "/usr/local/bin" exec-path)
