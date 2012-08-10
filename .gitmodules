@@ -5,3 +5,6 @@
 [submodule "vendor/solarized"]
 	path = vendor/solarized
 	url = https://github.com/bbatsov/solarized-emacs.git
+[submodule "vendor/use-package"]
+	path = vendor/use-package
+	url = https://github.com/jwiegley/use-package.git
