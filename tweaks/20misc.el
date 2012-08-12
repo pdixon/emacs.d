@@ -117,5 +117,10 @@
           'executable-make-buffer-file-executable-if-script-p)
 
 
+(use-package expand-region
+  :bind (("C-'" . er/contract-region)
+         ("M-'" . er/expand-region)))
+
+
 (provide '20-misc)
 ;;; 20-misc.el ends here
