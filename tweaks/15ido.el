@@ -25,17 +25,23 @@
 ;;; Code:
 
 
-(require 'ido)
-(ido-mode t)
+(use-package ido
+  :init
+  (ido-mode t)
 
-(setq ido-enable-prefix nil
+  :config
+  (progn
+    (setq ido-enable-prefix nil
       ido-enable-flex-matching t
       ido-auto-merge-work-directories-length nil
       ido-create-new-buffer 'always
       ido-use-filename-at-point 'guess
       ido-use-virtual-buffers t
       ido-handle-duplicate-virtual-buffers 2
-      ido-max-prospects 10)
+      ido-max-prospects 10)))
+
+(use-package lusty-explorer
+  :commands lusty-file-explorer)
 
 (provide '15ido)
 ;;; 15ido.el ends here

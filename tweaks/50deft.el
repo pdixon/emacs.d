@@ -24,13 +24,14 @@
 
 ;;; Code:
 
-(require 'deft)
-
-(setq deft-extension "mdwn")
-(setq deft-directory "~/Dropbox/Elements/")
-
-(setq deft-text-mode 'markdown-mode)
-(setq deft-use-filename-as-title t)
+(use-package deft
+  :bind ("<f5>" . deft)
+  :config
+  (progn
+    (setq deft-extension "mdwn")
+    (setq deft-directory "~/Dropbox/Elements/")
+    (setq deft-text-mode 'markdown-mode)
+    (setq deft-use-filename-as-title t)))
 
 (provide '50deft)
 ;;; 50deft.el ends here

@@ -54,6 +54,8 @@
 ;; load the customize stuff
 (load custom-file 'noerror)
 
+(require 'use-package)
+
 ;; Load up my config stuff
 (mapc 'load (directory-files tweaks-dir nil "^[^#].*el$"))
 

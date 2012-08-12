@@ -15,7 +15,7 @@
 (global-set-key (kbd "C-t") 'transpose-dwim)
 (global-set-key (kbd "M-c") 'toggle-letter-case)
 (global-set-key (kbd "C-z") 'iy-go-to-char)
-(global-set-key (kbd "<f5>") 'deft)
+;;(global-set-key (kbd "<f5>") 'deft)
 (global-set-key (kbd "<f6>") 'org-agenda)
 (global-set-key (kbd "<f7>") 'magit-status)
 
