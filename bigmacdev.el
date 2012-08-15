@@ -1,5 +1,9 @@
 ;; (setq mac-option-modifier 'hyper)
 ;; (setq mac-command-modifier 'meta)
+
+(setq mac-option-modifier 'meta)
+(setq mac-command-modifier 'none)
+
 (setq ispell-program-name "/opt/homebrew/bin/aspell")
 
 (setq org-latex-to-pdf-process
@@ -26,5 +30,5 @@
 
 (setq mediawiki-site-default "Software")
 
-(when window-system
-  (ubuntu-mono 1))
+;; (when window-system
+;;   (ubuntu-mono 1))
