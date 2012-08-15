@@ -45,9 +45,9 @@
                      'lua-mode
                      'magit
                      'markdown-mode
+                     'python
                      'window-number
-                     'yasnippet
-))
+                     'yasnippet))
 
 
 (when (not package-archive-contents)
