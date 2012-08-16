@@ -59,6 +59,19 @@
       (error "No number at point"))
   (replace-match (number-to-string (+ 1 (string-to-number (match-string 0))))))
 
+(defun transpose-dwim (arg)
+ "Execute the appropriate transpose based on where the point is.
+
+If the point is in a word do a transpose character. If it is between
+words do a transpose word. If it is on the start of a line, do a
+transpose line.
+"
+ (interactive "*p")
+ (cond ((bolp) (transpose-lines arg))
+       ((looking-at "[[:space:]]") (transpose-words arg))
+       (t (transpose-chars arg))))
+
+
 (require 'imenu)
 
 (defun ido-imenu ()
