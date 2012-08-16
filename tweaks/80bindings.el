@@ -5,7 +5,6 @@
 (global-set-key "\C-c+" 'my-increment)
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
 (global-set-key (kbd "C-x C-M-f") 'project-root-find-file)
-(global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-x C-p") 'find-file-at-point)
 (global-set-key (kbd "C-c y") 'bury-buffer)
 ;(global-set-key "\C-cr" 'org-capture)
