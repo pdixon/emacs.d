@@ -121,6 +121,14 @@
   :bind (("C-'" . er/contract-region)
          ("M-'" . er/expand-region)))
 
+(use-package magit
+  :bind ("<f7>" . magit-status)
+  :config
+  (progn
+    (add-hook 'magit-log-edit-mode-hook
+              #'(lambda ()
+                  (set-fill-column 72)
+                  (flyspell-mode)))))
 
 (provide '20-misc)
 ;;; 20-misc.el ends here
