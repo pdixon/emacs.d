@@ -20,3 +20,9 @@
       )
 
     (add-hook 'python-mode-hook 'pd-python-mode-hook)))
+
+(use-package wizard-db
+  :mode ("\\.xmd\\'" . wizard-db-mode))
+
+(use-package lilypond-mode
+  :mode ("\\.ly\\'" . LilyPond-mode))
