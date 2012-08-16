@@ -1,29 +1,16 @@
 ;; Phil's Bindings
-;(global-set-key "\C-cl" 'org-store-link)
-;(global-set-key "\C-ca" 'org-agenda)
-;(global-set-key "\C-cb" 'org-iswitchb)
 (global-set-key "\C-c+" 'my-increment)
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
-(global-set-key (kbd "C-x C-M-f") 'project-root-find-file)
-(global-set-key (kbd "C-x C-p") 'find-file-at-point)
 (global-set-key (kbd "C-c y") 'bury-buffer)
-;(global-set-key "\C-cr" 'org-capture)
 (global-set-key (kbd "M-SPC") 'shrink-whitespaces)
-;;(global-set-key (kbd "C-'") 'er/contract-region)
-;;(global-set-key (kbd "M-'") 'er/expand-region)
 (global-set-key (kbd "C-t") 'transpose-dwim)
 (global-set-key (kbd "M-c") 'toggle-letter-case)
 (global-set-key (kbd "C-z") 'iy-go-to-char)
-;;(global-set-key (kbd "<f5>") 'deft)
-;(global-set-key (kbd "<f6>") 'org-agenda)
-;(global-set-key (kbd "<f7>") 'magit-status)
 
 (global-set-key (kbd "M-/") 'hippie-expand)
 
 (global-set-key (kbd "C-h a") 'apropos)
 (global-set-key (kbd "C-h i") 'info-apropos)
-;; Doesn't work on mac and collides with expose bindings.
-;; (global-set-key (kbd "<f11>") 'my-toggle-fullscreen)
 
 ;;;; Helper functions from Xahlee's ergo bindings (http://xahlee.org).
 ;;; TEXT SELECTION RELATED
