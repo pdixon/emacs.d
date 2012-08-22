@@ -30,8 +30,7 @@
 
 (defun pd-expand-buffer ()
   "Expand buffer in place as a yasnippet."
-  (yas/expand-snippet (buffer-string) (point-min) (point-max))
-)
+  (yas-expand-snippet (buffer-string) (point-min) (point-max)))
 
 (define-auto-insert "\\.markdown\\'"
   ["post.markdown" pd-expand-buffer])

@@ -5,15 +5,15 @@
      (add-hook mode-hook ,func)))
 
 (use-package yasnippet
-  :commands (yas/minor-mode yas/expand)
+  :commands (yas-minor-mode yas-expand)
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
   :init
-  (hook-into-modes #'(lambda () (yas/minor-mode 1))
+  (hook-into-modes #'(lambda () (yas-minor-mode 1))
                    '(prog-mode-hook
                      org-mode-hook
                      message-mode-hook
                      markdown-mode-hook))
   :config
   (progn
-    (setq yas/root-directory (concat dotfiles-dir "snippets"))
-    (yas/load-directory yas/root-directory)))
+    (setq yas-root-directory (concat dotfiles-dir "snippets"))
+    (yas-reload-all)))
