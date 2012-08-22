@@ -231,10 +231,13 @@ transpose line.
 ;; AppleScript Safari stuff
 (defun tell-app (app something)
   "Use Applescript to tell an Application"
-  (do-applescript (concat "tell application\""
-                          app
-                          "\" to "
-                          something)))
+  (decode-coding-string
+   (do-applescript
+    (concat "tell application\""
+            app
+            "\" to "
+            something))
+   'mac-roman))
 
 (defun my-safari-selection ()
   (tell-app "Safari"
