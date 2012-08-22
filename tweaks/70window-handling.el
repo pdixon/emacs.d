@@ -71,5 +71,14 @@
                                   x))))
           (setf cur (buffer-name (window-buffer)))))))
 
+(defun my-toggle-split ()
+  "Switch from the current window setup to just one window or back."
+  (interactive)
+  (if (< 1 (count-windows))
+      (progn
+        (window-configuration-to-register ?u)
+        (delete-other-windows))
+    (jump-to-register ?u)))
+
 (provide '70window-handling)
 ;;; 70window-handling.el ends here
