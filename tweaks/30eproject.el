@@ -77,7 +77,7 @@
 (defun ibuffer-eproject-generate-filter-groups-by-name ()
   "Create a set of ibuffer filter groups based on the eproject root dirs of buffers"
   (mapcar (lambda (project-name)
-            (cons (format "*%s*" project-name)
+            (cons (format "%s" project-name)
                   `((eproject . ,project-name))))
           (eproject-project-names)))
 
@@ -91,9 +91,7 @@
 (defun all-projects-ibuffer (prefix)
   "Open an IBuffer window showing all buffers by project."
   (interactive "p")
-  (ibuffer nil "*Projects*" nil nil nil 
-           (mapcar (lambda (project)
-                     (list (car project) (cons 'eproject-root (cdr project)))) (eproject-projects))))
+  (ibuffer nil "*Projects*" nil nil nil (ibuffer-eproject-generate-filter-groups-by-name)))
 
 (defun eproject-compile-dwim ()
   ""
