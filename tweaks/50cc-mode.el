@@ -13,6 +13,13 @@
   (c-basic-offset . 3)))
 (c-add-style "DCL" dcl-c-style)
 
+(defconst my-obj-c-style
+  '("bsd"
+    (c-basic-offset . 4)
+    (indent-tabs-mode . nil)
+    (c-offsets-alist . ((case-label . +)))))
+(c-add-style "my-obj-c" my-obj-c-style)
+
 ;; Customizations for all modes in CC Mode.
 (defun my-c-mode-common-hook ()
   (c-set-style "PERSONAL")
