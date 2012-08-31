@@ -70,6 +70,7 @@
 
 (define-project-type xcode (generic)
   (look-for "*.xcodeproj/project.pbxproj" :glob)
+  :irrelevant-files ("DerivedData/")
   :local-variables (lambda (root)
                      (list 'compile-command
                            (format "cd %s; xcodebuild" root))))
@@ -106,7 +107,16 @@
         (with-current-buffer "*compilation*"
           (rename-buffer comp-buffer-name))))))
 
-(define-key eproject-mode-map (kbd "C-c C-k") #'eproject-compile-dwim)
+;;(define-key eproject-mode-map (kbd "C-c C-k") #'eproject-compile-dwim)
+(assq-delete-all 'eproject-mode minor-mode-map-alist)
+
+(use-package find-file-in-project
+  :bind ("C-c C-f" . ffip)
+  :config
+  (progn
+    (require 'eproject)
+    (setq ffip-project-root-function 'eproject-root)))
+
 
 ;(require 'etags) ;; eproject-tags uses functions from this that don't autoload.
 ;(require 'eproject-tags)
