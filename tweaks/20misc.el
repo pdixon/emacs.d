@@ -118,7 +118,7 @@
 
 
 (use-package expand-region
-  :bind (("C-'" . er/contract-region)
+  :bind (("M-\"" . er/contract-region)
          ("M-'" . er/expand-region)))
 
 (use-package magit
@@ -129,6 +129,15 @@
               #'(lambda ()
                   (set-fill-column 72)
                   (flyspell-mode)))))
+
+
+(defun delete-indentation-forward ()
+  (interactive)
+  (delete-indentation t))
+
+(bind-key "M-J" 'delete-indentation-forward)
+(bind-key "M-j" 'delete-indentation)
+
 
 (provide '20-misc)
 ;;; 20-misc.el ends here
