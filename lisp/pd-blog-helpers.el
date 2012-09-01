@@ -1,4 +1,4 @@
-;;; 50blog-helpers.el --- Helper functions for working with my blog
+;;; pd-blog-helpers.el --- Helper functions for working with my blog
 
 ;; Copyright (C) 2011  Phillip Dixon
 
@@ -71,5 +71,5 @@ to the name."
                     (buffer-file-name (current-buffer))))))
       (rename-file-and-buffer filename)))))
 
-(provide '50blog-helpers)
-;;; 50blog-helpers.el ends here
+(provide 'pd-blog-helpers)
+;;; pd-blog-helpers.el ends here

@@ -31,3 +31,7 @@
 
     (add-hook 'markdown-mode-hook 'markdown-yas-fixup)
     (add-hook 'markdown-mode-hook 'markdown-imenu-setup)))
+
+(use-package pd-blog-helpers
+  :commands (pd-blog-draft
+             pd-blog-publish-post))
