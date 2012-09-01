@@ -28,17 +28,19 @@
 (defconst *emacs-load-start* (current-time))
 (message "Loading %s..." load-file-name)
 
-(defvar dotfiles-dir (file-name-directory load-file-name))
-(defvar tweaks-dir (concat dotfiles-dir "tweaks/"))
-(defvar vendor-dir (concat dotfiles-dir "vendor/"))
+(defconst dotfiles-dir (file-name-directory load-file-name))
+(defconst tweaks-dir (concat dotfiles-dir "tweaks/"))
+(defconst vendor-dir (concat dotfiles-dir "vendor/"))
+(defconst lisp-dir (concat dotfiles-dir "lisp/"))
 
 ;; You can keep system-specific customizations here
 ;; Use the only the inital term if the system name is a FQDN.
-(defvar system-specific-config
+(defconst system-specific-config
       (concat dotfiles-dir (car (split-string system-name "\\.")) ".el"))
 
 (add-to-list 'load-path dotfiles-dir)
 (add-to-list 'load-path tweaks-dir)
+(add-to-list 'load-path lisp-dir)
 
 ;; Recusively add directories under vendor/ to the load path.
 (let* ((my-lisp-dir vendor-dir)
