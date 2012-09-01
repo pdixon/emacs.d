@@ -38,6 +38,7 @@
                      'deft
                      'expand-region
                      'fill-column-indicator
+                     'find-file-in-project
                      'gist
                      'graphviz-dot-mode
                      'haskell-mode
