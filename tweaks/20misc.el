@@ -104,7 +104,8 @@
   "Activate light theme."
   (interactive)
   (load-theme 'solarized-light t t)
-  (custom-set-variables '(custom-enabled-themes '(solarized-light))))
+  (load-theme 'pd-solarized-light-overrides t t)
+  (custom-set-variables '(custom-enabled-themes '(pd-solarized-light-overrides solarized-light))))
 
 (defun pd/dark ()
   "Activate dark theme."
