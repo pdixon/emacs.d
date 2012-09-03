@@ -69,6 +69,11 @@
 ;; Load up my config stuff
 (mapc 'load (directory-files tweaks-dir nil "^[^#].*el$"))
 
+(use-package pd-darwin
+  :if (eq system-type 'darwin))
+(use-package pd-linux
+  :if (eq system-type 'gnu/linux))
+
 (when (file-exists-p system-specific-config)
   (load system-specific-config))
 

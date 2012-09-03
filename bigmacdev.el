@@ -1,11 +1,3 @@
-;; (setq mac-option-modifier 'hyper)
-;; (setq mac-command-modifier 'meta)
-
-(setq mac-option-modifier 'meta)
-(setq mac-command-modifier 'none)
-
-(setq ispell-program-name "/opt/homebrew/bin/aspell")
-
 (setq org-latex-to-pdf-process
       '("/usr/texbin/pdflatex -interaction nonstopmode %s"
         "/usr/texbin/pdflatex -interaction nonstopmode %s"))
@@ -29,6 +21,3 @@
              '("Software" "http://wiki.sw.au.ivc/mediawiki" "pdixon" "" "The PENSIEVE"))
 
 (setq mediawiki-site-default "Software")
-
-;; (when window-system
-;;   (ubuntu-mono 1))

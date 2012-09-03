@@ -1,6 +1,6 @@
-;;; pdair.el --- Machine specific settings for my MacBook Air
+;;; pd-darwin.el --- Mac specific setup
 
-;; Copyright (C) 2011  Phillip Dixon
+;; Copyright (C) 2012  Phillip Dixon
 
 ;; Author: Phillip Dixon <phil@dixon.gen.nz>
 ;; Keywords: 
@@ -20,14 +20,12 @@
 
 ;;; Commentary:
 
-;; 
+;;
 
 ;;; Code:
 
-(setq shell-file-name "zsh")
-(push "/Users/pjd67/Library/Haskell/bin" exec-path)
-(push "/usr/local/bin" exec-path)
-(push "/opt/homebrew/bin" exec-path)
+(setq mac-option-modifier 'meta)
+(setq mac-command-modifier 'none)
 
-(provide 'pdair)
-;;; pdair.el ends here
+(provide 'pd-darwin)
+;;; pd-darwin.el ends here
