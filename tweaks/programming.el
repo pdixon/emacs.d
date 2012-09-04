@@ -26,3 +26,56 @@
 
 (use-package lilypond-mode
   :mode ("\\.ly\\'" . LilyPond-mode))
+
+(use-package cc-mode
+  :defer t
+  :config
+  (progn
+    (use-package google-c-style
+      :init
+      (progn
+        (c-add-style "Google" google-c-style)
+
+        (defconst my-c-style
+          '("Google"
+            (c-basic-offset . 4)))
+        (c-add-style "PERSONAL" my-c-style)
+
+        (defconst dcl-c-style
+          '("Google"
+            (c-basic-offset . 3)))
+        (c-add-style "DCL" dcl-c-style)))
+
+    (defconst my-obj-c-style
+      '("bsd"
+        (c-basic-offset . 4)
+        (indent-tabs-mode . nil)
+        (c-offsets-alist . ((case-label . +)))))
+    (c-add-style "my-obj-c" my-obj-c-style)
+
+    ;; Customizations for all modes in CC Mode.
+    (defun my-c-mode-common-hook ()
+      (c-set-style "PERSONAL")
+      (setq ff-always-in-other-window nil))
+
+    (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+    (defun pd/objc-ff-setup-hook ()
+      (set (make-local-variable 'cc-other-file-alist)
+           '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
+
+    (add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
+
+    (use-package pd-cc-mode-extras
+      :commands (pd/toggle-header
+                 pd/toggle-test))))
+
+(use-package compile
+  :defer t
+  :config
+  (progn
+    (defun pd/compilation-hook ()
+      (setq truncate-lines t))
+
+    (add-hook 'compilation-mode-hook 'pd/compilation-hook)
+    ))

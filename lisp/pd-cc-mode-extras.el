@@ -1,43 +1,28 @@
-;; Create my personal C style.
+;;; pd-cc-mode-extras.el --- My helpers for cc-mode
 
-(require 'google-c-style)
-(c-add-style "Google" google-c-style)
+;; Copyright (C) 2012  Phillip Dixon
 
-(defconst my-c-style
-'("Google"
-  (c-basic-offset . 4)))
-(c-add-style "PERSONAL" my-c-style)
+;; Author: Phillip Dixon <phil@dixon.gen.nz>
+;; Keywords: 
 
-(defconst dcl-c-style
-'("Google"
-  (c-basic-offset . 3)))
-(c-add-style "DCL" dcl-c-style)
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
 
-(defconst my-obj-c-style
-  '("bsd"
-    (c-basic-offset . 4)
-    (indent-tabs-mode . nil)
-    (c-offsets-alist . ((case-label . +)))))
-(c-add-style "my-obj-c" my-obj-c-style)
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
 
-;; Customizations for all modes in CC Mode.
-(defun my-c-mode-common-hook ()
-  (c-set-style "PERSONAL")
-  (setq ff-always-in-other-window nil))
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+;;; Commentary:
 
-;; Compilation mode stuff
-(defun pd/compilation-hook ()
-  (setq truncate-lines t))
+;; 
 
-(add-hook 'compilation-mode-hook 'pd/compilation-hook)
-
-(defun pd/objc-ff-setup-hook ()
-  (set (make-local-variable 'cc-other-file-alist)
-       '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
-
-(add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
+;;; Code:
 
 (defun pd/toggle-header (&optional in-other-window)
   ""
@@ -89,3 +74,6 @@
                        stub
                        suffixes
                        in-other-window))))
+
+(provide 'pd-cc-mode-extras)
+;;; pd-cc-mode-extras.el ends here
