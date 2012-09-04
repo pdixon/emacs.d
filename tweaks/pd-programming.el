@@ -25,6 +25,7 @@
   :mode ("\\.xmd\\'" . wizard-db-mode))
 
 (use-package lilypond-mode
+  :load-path "vendor/lilypond"
   :mode ("\\.ly\\'" . LilyPond-mode))
 
 (use-package cc-mode
@@ -32,6 +33,7 @@
   :config
   (progn
     (use-package google-c-style
+      :load-path "vendor/"
       :init
       (progn
         (c-add-style "Google" google-c-style)
@@ -79,3 +81,5 @@
 
     (add-hook 'compilation-mode-hook 'pd/compilation-hook)
     ))
+
+(provide 'pd-programming)

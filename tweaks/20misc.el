@@ -169,5 +169,5 @@
         (line-beginning-position 2)))))
 
 
-(provide '20-misc)
+(provide '20misc)
 ;;; 20-misc.el ends here

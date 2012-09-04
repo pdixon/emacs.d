@@ -58,5 +58,5 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
-;;(provide '(package-support))
+(provide '10package)
 ;;; (10package.el) ends here

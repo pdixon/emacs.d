@@ -346,3 +346,5 @@ When not restricted, skip project and sub-project tasks, habits, and project rel
                     (setq parent-task (point))))
                 (goto-char parent-task)
                 parent-task)))))
+
+(provide '50org-mode)

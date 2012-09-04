@@ -34,3 +34,5 @@
 
 (define-auto-insert "\\.m\\'"
   ["template.m" pd-expand-buffer])
+
+(provide 'pd-autotyping)

@@ -1,8 +1,8 @@
-(defun my-toggle-fullscreen () 
-  (interactive) 
-  (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen) 
-                                           nil 
-                                           'fullboth)))
+(defun my-toggle-fullscreen ()
+  (interactive)
+  (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
+                                           nil
+                                         'fullboth)))
 (defun my-kill-word ()
   (interactive)
   (save-excursion
@@ -37,7 +37,7 @@
     (skip-syntax-backward "w_")
     (goto-char
      (if (re-search-backward (concat "\\_<" (current-word) "\\_>") nil t)
-	 (match-beginning 0)
+         (match-beginning 0)
        cur))))
 
 (defun my-search-word-forward ()
@@ -47,7 +47,7 @@
     (skip-syntax-forward "w_")
     (goto-char
      (if (re-search-forward (concat "\\_<" (current-word) "\\_>") nil t)
-	 (match-beginning 0)
+         (match-beginning 0)
        cur))))
 
 (require 'imenu)
@@ -65,15 +65,15 @@
                              (cond
                               ((and (listp symbol) (imenu--subalist-p symbol))
                                (addsymbols symbol))
-                              
+
                               ((listp symbol)
                                (setq name (car symbol))
                                (setq position (cdr symbol)))
-                              
+
                               ((stringp symbol)
                                (setq name symbol)
                                (setq position (get-text-property 1 'org-imenu-marker symbol))))
-                             
+
                              (unless (or (null position) (null name))
                                (add-to-list 'symbol-names name)
                                (add-to-list 'name-and-pos (cons name position))))))))
@@ -87,7 +87,7 @@
   (if (string-equal (substring (buffer-file-name) -2) ".h")
       (progn
         ;; OK, we got a .h file, if a .m file exists we'll assume it's
-        ; an objective c file. Otherwise, we'll look for a .cpp file.
+                                        ; an objective c file. Otherwise, we'll look for a .cpp file.
         (let ((dot-m-file (concat (substring (buffer-file-name) 0 -1) "m"))
               (dot-cpp-file (concat (substring (buffer-file-name) 0 -1) "cpp")))
           (if (file-exists-p dot-m-file)
@@ -174,16 +174,16 @@
   "Renames both current buffer and file it's visiting to NEW-NAME."
   (interactive "sNew name: ")
   (let ((name (buffer-name))
-    (filename (buffer-file-name)))
+        (filename (buffer-file-name)))
     (if (not filename)
-    (message "Buffer '%s' is not visiting a file!" name)
+        (message "Buffer '%s' is not visiting a file!" name)
       (if (get-buffer new-name)
-      (message "A buffer named '%s' already exists!" new-name)
-    (progn
-      (rename-file name new-name 1)
-      (rename-buffer new-name)
-      (set-visited-file-name new-name)
-      (set-buffer-modified-p nil))))))
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file name new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
 
 
 ;; From https://github.com/bbatsov/emacs-prelude
@@ -232,12 +232,12 @@
 (defun my-safari-all-urls ()
   "Return a list of all the URLs in the front most Safari window."
   (split-string (do-applescript (concat "tell application \"Safari\"\n"
-                          "set links to \"\"\n"
-                          "repeat with t in every tab in front Window\n"
-                          "set links to links & the URL of t & linefeed\n"
-                          "end repeat\n"
-                          "return links\n"
-                          "end tell\n")) "\n" t))
+                                        "set links to \"\"\n"
+                                        "repeat with t in every tab in front Window\n"
+                                        "set links to links & the URL of t & linefeed\n"
+                                        "end repeat\n"
+                                        "return links\n"
+                                        "end tell\n")) "\n" t))
 
 (defun my-safari-all-urls-as-markdown ()
   (interactive)
@@ -278,3 +278,5 @@
   "stopping talking."
   (interactive)
   (say-text ""))
+
+(provide '30defuns)

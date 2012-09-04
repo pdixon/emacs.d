@@ -41,14 +41,7 @@
 (add-to-list 'load-path dotfiles-dir)
 (add-to-list 'load-path tweaks-dir)
 (add-to-list 'load-path lisp-dir)
-
-;; Recusively add directories under vendor/ to the load path.
-(let* ((my-lisp-dir vendor-dir)
-       (default-directory my-lisp-dir)
-       (orig-load-path load-path))
-  (setq load-path (cons my-lisp-dir nil))
-  (normal-top-level-add-subdirs-to-load-path)
-  (nconc load-path orig-load-path))
+(add-to-list 'load-path (concat vendor-dir "use-package/"))
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
@@ -67,7 +60,18 @@
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 ;; Load up my config stuff
-(mapc 'load (directory-files tweaks-dir nil "^[^#].*el$"))
+(use-package 10package)
+(use-package 15defaults)
+(use-package 15ido)
+(use-package 20misc)
+(use-package 30defuns)
+(use-package 30eproject)
+(use-package 40text-mode)
+(use-package 50ansi-term)
+(use-package 50org-mode)
+(use-package 70window-handling)
+(use-package pd-autotyping)
+(use-package pd-programming)
 
 (use-package pd-darwin
   :if (eq system-type 'darwin))

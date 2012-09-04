@@ -35,3 +35,5 @@
 (use-package pd-blog-helpers
   :commands (pd-blog-draft
              pd-blog-publish-post))
+
+(provide '40text-mode)

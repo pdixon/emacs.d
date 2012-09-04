@@ -25,6 +25,7 @@
 ;;; Code:
 
 (use-package eproject
+  :load-path "vendor/eproject/"
   :init
   (progn
     (use-package eproject-extras)
@@ -79,5 +80,5 @@
       :local-variables (lambda (root)
                          (list 'compile-command
                                (format "cd %s; xcodebuild" root))))))
-
+(provide '30eproject)
 ;;; 30eproject.el ends here
