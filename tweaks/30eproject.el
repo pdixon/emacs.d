@@ -45,7 +45,7 @@
       (look-for ".hg")
       :irelevant-files (".hg/"))
 
-    (define-project-type cmake (generic)
+    (define-project-type cmake (generic-git hg)
       (look-for "build")
       :relevant-files ("\\.cpp" "\\.h" "\\.txt")
       :irrelevant-files ("build/")
@@ -53,27 +53,27 @@
                          (list 'compile-command
                                (format "cd %s/build; make && make test" root))))
 
-    (define-project-type qt (generic)
+    (define-project-type qt (generic-git hg)
       (look-for "*.pro" :glob)
       :relevant-files ("\\.cpp" "\\.h"))
 
-    (define-project-type python (generic)
+    (define-project-type python (generic-git hg)
       (look-for "setup.py")
       :relevant-files ("\\.py" "\\.h" "\\.c"))
 
-    (define-project-type haskell (generic)
+    (define-project-type haskell (generic-git hg)
       (look-for "*?.cabal" :glob)
       :relevant-files ("\\.hs" "\\.cabal" "\\.lhs" "\\.chs")
       :local-variables (lambda (root)
                          (list 'compile-command
                                (format "cd %s; cabal configure; cabal build" root))))
 
-    (define-project-type emacsd (generic)
+    (define-project-type emacsd (generic-git hg)
       (look-for "init.el")
       :relevant-files ("\\.el")
       :irrelevant-files ("elpa/" "backups/"))
 
-    (define-project-type xcode (generic)
+    (define-project-type xcode (generic-git hg)
       (look-for "*.xcodeproj/project.pbxproj" :glob)
       :irrelevant-files ("DerivedData/")
       :local-variables (lambda (root)
