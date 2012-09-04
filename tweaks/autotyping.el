@@ -17,3 +17,20 @@
   (progn
     (setq yas-root-directory (concat dotfiles-dir "snippets"))
     (yas-reload-all)))
+
+(add-hook 'find-file-hooks 'auto-insert)
+(setq auto-insert-directory (concat dotfiles-dir "mytemplates/"))
+(setq auto-insert-query nil)
+
+(defun pd-expand-buffer ()
+  "Expand buffer in place as a yasnippet."
+  (yas-expand-snippet (buffer-string) (point-min) (point-max)))
+
+(define-auto-insert "\\.markdown\\'"
+  ["post.markdown" pd-expand-buffer])
+
+(define-auto-insert "\\.mdwn\\'"
+  ["template.mdwn" pd-expand-buffer])
+
+(define-auto-insert "\\.m\\'"
+  ["template.m" pd-expand-buffer])

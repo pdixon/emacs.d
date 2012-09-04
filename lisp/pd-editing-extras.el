@@ -1,16 +1,28 @@
-;; Phil's Bindings
-(global-set-key "\C-c+" 'my-increment)
-(global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
-(global-set-key (kbd "C-c y") 'bury-buffer)
-(global-set-key (kbd "M-SPC") 'shrink-whitespaces)
-(global-set-key (kbd "C-t") 'transpose-dwim)
-(global-set-key (kbd "M-c") 'toggle-letter-case)
-(global-set-key (kbd "C-z") 'iy-go-to-char)
+;;; pd-editing-extras.el --- My editing helper functions
 
-(global-set-key (kbd "M-/") 'hippie-expand)
+;; Copyright (C) 2012  Phillip Dixon
 
-(global-set-key (kbd "C-h a") 'apropos)
-(global-set-key (kbd "C-h i") 'info-apropos)
+;; Author: Phillip Dixon <phil@dixon.gen.nz>
+;; Keywords: 
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; 
+
+;;; Code:
 
 ;;;; Helper functions from Xahlee's ergo bindings (http://xahlee.org).
 ;;; TEXT SELECTION RELATED
@@ -104,18 +116,26 @@ in that cyclic order."
    ((string= "all caps" (get this-command 'state))
     (downcase-region pos1 pos2) (put this-command 'state "all lower")))))
 
-;;;; And some I've put together myself.
+(defun my-increment ()
+  "Transform the number under the point to Wizard DB string ref.
+   Note current only works for PM databases."
+  (interactive)
+  (skip-chars-backward "0123456789")
+  (or (looking-at "[0123456789]+")
+      (error "No number at point"))
+  (replace-match (number-to-string (+ 1 (string-to-number (match-string 0))))))
 
-;;;; And some other bits and pieces.
-(defadvice kill-ring-save (before slick-copy activate compile) "When called
-  interactively with no active region, copy a single line instead."
-  (interactive (if mark-active (list (region-beginning) (region-end)) (message
-  "Copied line") (list (line-beginning-position) (line-beginning-position
-  2)))))
+(defun transpose-dwim (arg)
+ "Execute the appropriate transpose based on where the point is.
 
-(defadvice kill-region (before slick-cut activate compile)
-  "When called interactively with no active region, kill a single line instead."
-  (interactive
-    (if mark-active (list (region-beginning) (region-end))
-      (list (line-beginning-position)
-        (line-beginning-position 2)))))
+If the point is in a word do a transpose character. If it is between
+words do a transpose word. If it is on the start of a line, do a
+transpose line.
+"
+ (interactive "*p")
+ (cond ((bolp) (transpose-lines arg))
+       ((looking-at "[[:space:]]") (transpose-words arg))
+       (t (transpose-chars arg))))
+
+(provide 'pd-editing-extras)
+;;; pd-editing-extras.el ends here

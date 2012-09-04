@@ -99,6 +99,8 @@
 
 ;; Add this back in at the end of the list.
 (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)
+(bind-key "M-/" 'hippie-expand)
+
 
 (defun pd/light ()
   "Activate light theme."
@@ -122,6 +124,9 @@
   :bind (("M-\"" . er/contract-region)
          ("M-'" . er/expand-region)))
 
+(use-package iy-go-to-char
+  :bind ("C-z" . iy-go-to-char))
+
 (use-package magit
   :bind ("<f7>" . magit-status)
   :config
@@ -131,6 +136,10 @@
                   (set-fill-column 72)
                   (flyspell-mode)))))
 
+(use-package pd-editing-extras
+  :bind (("C-c +" . my-increment)
+         ("C-t" . transpose-dwim)
+         ("M-c". toggle-letter-case)))
 
 (defun delete-indentation-forward ()
   (interactive)
@@ -138,6 +147,26 @@
 
 (bind-key "M-J" 'delete-indentation-forward)
 (bind-key "M-j" 'delete-indentation)
+
+(bind-key "C-h a" 'apropos)
+(bind-key "C-h i" 'info-apropos)
+(bind-key "C-c y" 'bury-buffer)
+
+
+;; Yank line or region
+(defadvice kill-ring-save (before slick-copy activate compile) "When called
+  interactively with no active region, copy a single line instead."
+  (interactive (if mark-active (list (region-beginning) (region-end)) (message
+  "Copied line") (list (line-beginning-position) (line-beginning-position
+  2)))))
+
+;; Kill line or region
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+    (if mark-active (list (region-beginning) (region-end))
+      (list (line-beginning-position)
+        (line-beginning-position 2)))))
 
 
 (provide '20-misc)
