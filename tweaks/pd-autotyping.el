@@ -4,6 +4,8 @@
   `(dolist (mode-hook ,modes)
      (add-hook mode-hook ,func)))
 
+(setq tab-always-indent 'complete)
+
 (use-package yasnippet
   :commands (yas-minor-mode yas-expand)
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
@@ -15,6 +17,7 @@
                      markdown-mode-hook))
   :config
   (progn
+    (setq yas-prompt-functions '(yas-ido-prompt yas-complete-prompt))
     (setq yas-root-directory (concat dotfiles-dir "snippets"))
     (yas-reload-all)))
 

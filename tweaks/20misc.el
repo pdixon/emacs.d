@@ -34,7 +34,7 @@
       whitespace-line-column 80)
 (setq message-kill-buffer-on-exit t)
 
-(server-start)
+;;(server-start)
 
 (setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
@@ -52,46 +52,53 @@
 (setq ispell-dictionary "en_GB-ise"
       ispell-extra-args `("--keyboard=dvorak"))
 
-(defalias 'list-buffers 'ibuffer)
-(setq ibuffer-expert 1)
-(setq ibuffer-show-empty-filter-groups nil)
-(setq ibuffer-saved-filter-groups
-      (quote (("default"
-               ("org" (or (mode . org-mode)
-                          (name . "^\\*Org Agenda\\*$")))
-               (".emacs" (filename . ".emacs.d/"))))))
-(add-hook 'ibuffer-mode-hook
-          (lambda ()
-            (ibuffer-auto-mode 1)
-            (ibuffer-switch-to-saved-filter-groups "default")))
 
-(eval-after-load 'ibuffer
-  '(progn
-     ;; Use human readable Size column instead of original one
-     (define-ibuffer-column size-h
-       (:name "Size" :inline t)
-       (cond
-        ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-        ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
-        (t (format "%8d" (buffer-size)))))))
+(use-package ibuffer
+  :defer t
+  :init
+  (progn
+    (defalias 'list-buffers 'ibuffer))
+  :config
+  (progn
+    (setq ibuffer-expert 1)
+    (setq ibuffer-show-empty-filter-groups nil)
+    (setq ibuffer-saved-filter-groups
+          (quote (("default"
+                   ("org" (or (mode . org-mode)
+                              (name . "^\\*Org Agenda\\*$")))
+                   (".emacs" (filename . ".emacs.d/"))))))
+    (add-hook 'ibuffer-mode-hook
+              (lambda ()
+                (ibuffer-auto-mode 1)
+                (ibuffer-switch-to-saved-filter-groups "default")))
 
-;; Modify the default ibuffer-formats
-(setq ibuffer-formats
-      '((mark modified read-only " "
-              (name 18 18 :left :elide)
-              " "
-              (size-h 9 -1 :right)
-              " "
-              (mode 16 16 :left :elide)
-              " "
-              filename-and-process)))
+    ;; Use human readable Size column instead of original one
+    (define-ibuffer-column size-h
+      (:name "Size" :inline t)
+      (cond
+       ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+       ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+       (t (format "%8d" (buffer-size)))))
+
+    ;; Modify the default ibuffer-formats
+    (setq ibuffer-formats
+          '((mark modified read-only " "
+                  (name 18 18 :left :elide)
+                  " "
+                  (size-h 9 -1 :right)
+                  " "
+                  (mode 16 16 :left :elide)
+                  " "
+                  filename-and-process)))))
 
 
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'reverse)
-(setq uniquify-separator "/")
-(setq uniquify-after-kill-buffer-p t)
-(setq uniquify-ignore-buffers-re "^\\*")
+(use-package uniquify
+  :init
+  (progn
+    (setq uniquify-buffer-name-style 'reverse
+          uniquify-separator "/"
+          uniquify-after-kill-buffer-p t
+          uniquify-ignore-buffers-re "^\\*")))
 
 ;; Hippie expand: at times perhaps too hip
 (dolist (f '(try-expand-line try-expand-list try-complete-file-name-partially))
