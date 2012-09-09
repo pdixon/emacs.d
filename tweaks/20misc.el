@@ -159,6 +159,8 @@
 (bind-key "C-h i" 'info-apropos)
 (bind-key "C-c y" 'bury-buffer)
 
+(use-package bookmark
+  :bind ("<f9>" . bookmark-bmenu-list))
 
 ;; Yank line or region
 (defadvice kill-ring-save (before slick-copy activate compile) "When called
