@@ -209,13 +209,13 @@
 ;; AppleScript Safari stuff
 (defun tell-app (app something)
   "Use Applescript to tell an Application"
-  (decode-coding-string
-   (do-applescript
-    (concat "tell application\""
-            app
-            "\" to "
-            something))
-   'mac-roman))
+  (substring (decode-coding-string
+              (do-applescript
+               (concat "tell application\""
+                       app
+                       "\" to "
+                       something))
+              'mac-roman) 1 -1))
 
 (defun my-safari-selection ()
   (tell-app "Safari"
