@@ -48,7 +48,8 @@
                      'markdown-mode
                      'python
                      'window-number
-                     'yasnippet))
+                     'yasnippet
+                     'zenburn-theme))
 
 
 (when (not package-archive-contents)

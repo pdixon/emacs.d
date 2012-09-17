@@ -122,6 +122,13 @@
   (load-theme 'solarized-dark t t)
   (custom-set-variables '(custom-enabled-themes '(solarized-dark))))
 
+(defun pd/zenburn ()
+  "Activate dark theme."
+  (interactive)
+  (load-theme 'zenburn t t)
+  (custom-set-variables '(custom-enabled-themes '(zenburn))))
+
+
 ;; make scripts executable on save.
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
