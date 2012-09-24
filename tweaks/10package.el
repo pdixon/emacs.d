@@ -46,6 +46,7 @@
                      'lua-mode
                      'magit
                      'markdown-mode
+                     'multiple-cursors
                      'python
                      'window-number
                      'yasnippet

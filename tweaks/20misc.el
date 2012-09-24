@@ -169,6 +169,10 @@
 (use-package bookmark
   :bind ("<f9>" . bookmark-bmenu-list))
 
+(use-package multiple-cursors
+  :bind (("C-<" . mc/mark-previous-like-this)
+         ("C->" . mc/mark-next-like-this)))
+
 ;; Yank line or region
 (defadvice kill-ring-save (before slick-copy activate compile) "When called
   interactively with no active region, copy a single line instead."
