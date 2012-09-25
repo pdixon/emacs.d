@@ -40,7 +40,8 @@
 
         (defconst my-c-style
           '("Google"
-            (c-basic-offset . 4)))
+            (c-basic-offset . 4)
+            (c-offsets-alist . ((inextern-lang . -)))))
         (c-add-style "PERSONAL" my-c-style)
 
         (defconst dcl-c-style
