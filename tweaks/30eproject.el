@@ -45,13 +45,13 @@
       (look-for ".hg")
       :irelevant-files (".hg/"))
 
-    (define-project-type cmake (generic-git hg)
-      (look-for "build")
-      :relevant-files ("\\.cpp" "\\.h" "\\.txt")
-      :irrelevant-files ("build/")
-      :local-variables (lambda (root)
-                         (list 'compile-command
-                               (format "cd %s/build; make && make test" root))))
+    ;; (define-project-type cmake (generic-git hg)
+    ;;   (look-for "build")
+    ;;   :relevant-files ("\\.cpp" "\\.h" "\\.txt")
+    ;;   :irrelevant-files ("build/")
+    ;;   :local-variables (lambda (root)
+    ;;                      (list 'compile-command
+    ;;                            (format "cd %s/build; make && make test" root))))
 
     (define-project-type qt (generic-git hg)
       (look-for "*.pro" :glob)
