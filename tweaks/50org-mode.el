@@ -26,8 +26,9 @@
          ("<f6>" . org-agenda))
   :config (progn
             (defun pd-org-hook ()
-              (electric-indent-mode -1)
-              (electrict-layout-mode -1))
+              ;;(electric-indent-mode -1)
+              ;;(electrict-layout-mode -1)
+              )
 
             (add-hook 'org-mode-hook 'pd-org-hook)
             (setq org-directory "~/org/")
