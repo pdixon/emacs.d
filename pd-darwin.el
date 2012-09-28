@@ -27,5 +27,7 @@
 (setq mac-option-modifier 'meta)
 (setq mac-command-modifier 'none)
 
+(setq insert-directory-program "gls")
+
 (provide 'pd-darwin)
 ;;; pd-darwin.el ends here
