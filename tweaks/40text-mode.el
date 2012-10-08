@@ -31,4 +31,10 @@
   :commands (pd-blog-draft
              pd-blog-publish-post))
 
+(use-package writegood-mode
+  :commands (writegood-mode))
+
+(use-package wc-mode
+  :commands (wc-mode))
+
 (provide '40text-mode)
