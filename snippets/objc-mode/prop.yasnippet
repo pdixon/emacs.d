@@ -1,0 +1,13 @@
+# name: foo { ... } ; setFoo { ... }
+# key: prop
+# --
+- (${1:id})${2:foo}
+{
+    return _$2;
+}
+
+- (void)set${2:$(capitalize text)}:($1)value
+{
+    _$2 = value;
+}
+$0

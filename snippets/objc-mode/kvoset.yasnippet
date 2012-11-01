@@ -1,0 +1,35 @@
+# -*- mode: snippet -*-
+# name: Unordered KVO to-many property
+# key: kvoset
+# --
+- (NSSet *)${1:foo}
+{
+    return [NSSet setWithSet:_$1];
+}
+
+- (void)set${1:$(capitalize text)}:(NSSet *)value
+{
+    [_$1 setSet:value];
+}
+
+- (NSMutableSet *)mutable$1
+{
+   return [self mutableSetValueForKey:@"$1"];
+}
+
+- (void)add${1:$(capitalize text)}Object:(${2:id})value {
+    [_$1 addObject:value];
+}
+
+- (void)remove${1:$(capitalize text)}Object:($2)value {
+    [_$1 removeObject:value];
+}
+
+- (void)add${1:$(capitalize text)}:(NSSet *)value {
+    [_$1 unionSet:value];
+}
+
+- (void)remove${1:$(capitalize text)}:(NSSet *)value {
+    [_$1 minusSet:value];
+}
+$0
