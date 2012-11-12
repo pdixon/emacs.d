@@ -12,6 +12,7 @@ session.*
 history
 tramp
 url/
+var/
 /.org-id-locations
 semanticdb/
 /bookmarks
