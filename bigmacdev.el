@@ -11,8 +11,10 @@
  (expand-file-name "~/Documents/work/") 'work-directory)
 
 (setq org-feed-alist
-      '(("iChair Trac" "http://ichair.sw/report/7?format=rss&USER=pdixon"
-         "~/org/inbox.org" "iChair Assigned Issues")))
+      '(("UniPD Trac Tickets" "http://tracunipd.au.ivc/report/7?format=rss&USER=pdixon"
+         "~/org/inbox.org" "UniPD Assigned Issues")
+        ("UniShark Trac Tickets" "http://tracunishark.au.ivc/report/7?format=rss&USER=pdixon"
+         "~/org/inbox.org" "UniShark Assigned Issues")))
 
 (setq url-proxy-services '(("no_proxy" . "\\.au.ivc")
                            ("http" . "127.0.0.1:3128")))
