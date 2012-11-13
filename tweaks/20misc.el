@@ -108,6 +108,19 @@
 (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)
 (bind-key "M-/" 'hippie-expand)
 
+(use-package dired
+  :init
+  (progn
+    (put 'dired-find-alternate-file 'disabled nil)
+    (setq dired-dwim-target t
+          dired-recursive-copies 'always
+          dired-recursive-deletes 'top)
+    (defun pd-dired-find-alternate-parent ()
+      (interactive)
+      (find-alternate-file ".."))
+    (bind-key "<return>" 'dired-find-alternate-file dired-mode-map)
+    (bind-key "^" 'pd-dired-find-alternate-parent dired-mode-map)))
+
 
 (defun pd/light ()
   "Activate light theme."

@@ -68,8 +68,6 @@
 ;; auto-complete in minibuffer
 (icomplete-mode 1)
 
-(put 'dired-find-alternate-file 'disabled nil)
-
 (set-default 'sentence-end-double-space nil)
 
 
