@@ -7,7 +7,7 @@
 (setq tab-always-indent 'complete)
 
 (use-package yasnippet
-  :commands (yas-minor-mode yas-expand)
+  :commands (yas-minor-mode yas-expand yas-hippie-try-expand)
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
   :init
   (hook-into-modes #'(lambda () (yas-minor-mode 1))
@@ -20,6 +20,23 @@
     (setq yas-prompt-functions '(yas-ido-prompt yas-complete-prompt))
     (setq yas-root-directory (concat dotfiles-dir "snippets"))
     (yas-reload-all)))
+
+(use-package hippie-exp
+  :config
+  (progn
+    ;; Hippie expand: at times perhaps too hip
+    (dolist (f '(try-expand-line try-expand-list try-complete-file-name-partially))
+      (delete f hippie-expand-try-functions-list))
+
+    ;; Add this back in at the end of the list.
+    (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)))
+
+(use-package smart-tab
+  :config
+  (progn
+    (add-to-list 'smart-tab-disabled-major-modes 'Magit)
+    (setq smart-tab-using-hippie-expand t)
+    (global-smart-tab-mode 1)))
 
 (add-hook 'find-file-hooks 'auto-insert)
 (setq auto-insert-directory (concat dotfiles-dir "mytemplates/"))

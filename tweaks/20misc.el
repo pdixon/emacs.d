@@ -100,14 +100,6 @@
           uniquify-after-kill-buffer-p t
           uniquify-ignore-buffers-re "^\\*")))
 
-;; Hippie expand: at times perhaps too hip
-(dolist (f '(try-expand-line try-expand-list try-complete-file-name-partially))
-  (delete f hippie-expand-try-functions-list))
-
-;; Add this back in at the end of the list.
-(add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)
-(bind-key "M-/" 'hippie-expand)
-
 (use-package dired
   :init
   (progn
