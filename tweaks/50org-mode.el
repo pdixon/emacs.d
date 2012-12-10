@@ -108,7 +108,7 @@
                                 (org-tags-match-list-sublevels t)
                                 (org-agenda-sorting-strategy
                                  '(todo-state-down effort-up category-keep))))
-                    (tags-todo "-SOMEDAY/!"
+                    (tags-todo "-SOMEDAY/!-WAITING"
                                ((org-agenda-overriding-header "Tasks")
                                 (org-agenda-skip-function 'bh/skip-project-tasks-maybe)
                                 (org-agenda-todo-ignore-scheduled t)
