@@ -50,8 +50,8 @@
 (global-auto-revert-mode 1)
 
 (electric-pair-mode 1)
-(electric-indent-mode 1)
-(electric-layout-mode 1)
+;;(electric-indent-mode 1)
+;;(electric-layout-mode 1)
 
 (savehist-mode t)
 

@@ -32,6 +32,7 @@
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)))
 
 (use-package smart-tab
+  :disabled t
   :config
   (progn
     (add-to-list 'smart-tab-disabled-major-modes 'Magit)
