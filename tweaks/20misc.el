@@ -110,7 +110,6 @@
     (defun pd-dired-find-alternate-parent ()
       (interactive)
       (find-alternate-file ".."))
-    (bind-key "<return>" 'dired-find-alternate-file dired-mode-map)
     (bind-key "^" 'pd-dired-find-alternate-parent dired-mode-map)))
 
 
