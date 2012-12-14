@@ -24,68 +24,75 @@
 
 ;;; Code:
 
-;;;; Helper functions from Xahlee's ergo bindings (http://xahlee.org).
-;;; TEXT SELECTION RELATED
+(defvar cycle-spacing--context nil
+  "Store context used in consecutive calls to `cycle-spacing' command.
+The first time this function is run, it saves the original point
+position and original spacing around the point in this
+variable.")
 
-(defun shrink-whitespaces ()
-  "Remove white spaces around cursor to just one or none.
-If current line does not contain non-white space chars, then remove blank lines to just one.
-If current line contains non-white space chars, then shrink any whitespace char surrounding cursor to just one space.
-If current line is a single space, remove that space.
+(defun cycle-spacing (&optional n preserve-nl-back single-shot)
+  "Manipulate spaces around the point in a smart way.
 
-Calling this command 3 times will always result in no whitespaces around cursor."
-  (interactive)
-  (let (
-        cursor-point
-        line-has-meat-p  ; current line contains non-white space chars
-        spaceTabNeighbor-p
-        whitespace-begin whitespace-end
-        space-or-tab-begin space-or-tab-end
-        line-begin-pos line-end-pos
-        )
-    (save-excursion
-      ;; todo: might consider whitespace as defined by syntax table, and also consider whitespace chars in unicode if syntax table doesn't already considered it.
-      (setq cursor-point (point))
+When run as an interactive command, the first time it's called
+in a sequence, deletes all spaces and tabs around point leaving
+one (or N spaces).  If this does not change content of the
+buffer, skips to the second step:
 
-      (setq spaceTabNeighbor-p (if (or (looking-at " \\|\t") (looking-back " \\|\t")) t nil) )
-      (move-beginning-of-line 1) (setq line-begin-pos (point) )
-      (move-end-of-line 1) (setq line-end-pos (point) )
-      ;;       (re-search-backward "\n$") (setq line-begin-pos (point) )
-      ;;       (re-search-forward "\n$") (setq line-end-pos (point) )
-      (setq line-has-meat-p (if (< 0 (count-matches "[[:graph:]]" line-begin-pos line-end-pos)) t nil) )
-      (goto-char cursor-point)
+When run for the second time in a sequence, deletes all the
+spaces it has previously inserted.
 
-      (skip-chars-backward "\t ")
-      (setq space-or-tab-begin (point))
+When run for the third time, returns the whitespace and point in
+a state encountered when it had been run for the first time.
 
-      (skip-chars-backward "\t \n")
-      (setq whitespace-begin (point))
+For example, if buffer contains \"foo ^ bar\" with \"^\" donating the
+point, calling `cycle-spacing' command will replace two spaces with
+a single space, calling it again immediately after, will remove all
+spaces, and calling it for the third time will bring two spaces back
+together.
 
-      (goto-char cursor-point)      (skip-chars-forward "\t ")
-      (setq space-or-tab-end (point))
-      (skip-chars-forward "\t \n")
-      (setq whitespace-end (point))
-      )
+If N is negative, delete newlines as well.  However, if
+PRESERVE-NL-BACK is t new line characters prior to the point
+won't be removed.
 
-    (if line-has-meat-p
-        (let (deleted-text)
-          (when spaceTabNeighbor-p
-            ;; remove all whitespaces in the range
-            (setq deleted-text (delete-and-extract-region space-or-tab-begin space-or-tab-end))
-            ;; insert a whitespace only if we have removed something
-            ;; different that a simple whitespace
-            (if (not (string= deleted-text " "))
-                (insert " ") ) ) )
+If SINGLE-SHOT is non-nil, will only perform the first step.  In
+other words, it will work just like `just-on-space' command."
+  (interactive "*p")
+  (let ((orig-pos        (point))
+        (skip-characters (if (and n (< n 0)) " \t\n\r" " \t"))
+        (n               (abs (or n 1))))
+    (skip-chars-backward (if preserve-nl-back " \t" skip-characters))
+    (constrain-to-field nil orig-pos)
+    (cond
+     ;; Command run for the first time or single-shot is non-nil
+     ((or single-shot
+          (not (equal last-command this-command))
+          (not cycle-spacing--context))
+      (let* ((start (point))
+             (n     (- n (skip-chars-forward " " (+ n (point)))))
+             (mid   (point))
+             (end   (progn
+                      (skip-chars-forward skip-characters)
+                      (constrain-to-field nil orig-pos t))))
+        (setq cycle-spacing--context  ;; Save for later
+              ;; Special handling for case where there was no space at all
+              (unless (= start end)
+                (cons orig-pos (buffer-substring start (point)))))
+        ;; If this run causes no change in buffer content, delete all spaces,
+        ;; otherwise delete all excees spaces.
+        (delete-region (if (and (not single-shot) (zerop n) (= mid end))
+                           start mid) end)
+        (dotimes (_ n)
+          (insert ?\s))))
 
-      (progn
-        ;; (delete-region whitespace-begin whitespace-end)
-        ;; (insert "\n")
-        (delete-blank-lines)
-        )
-      ;; todo: possibly code my own delete-blank-lines here for better efficiency, because delete-blank-lines seems complex.
-      )
-    )
-  )
+     ;; Command run for the second time
+     ((not (equal orig-pos (point)))
+      (delete-region (point) orig-pos))
+
+     ;; Command run for the third time
+     (t
+      (insert (cdr cycle-spacing--context))
+      (goto-char (car cycle-spacing--context))
+      (setq cycle-spacing--context nil)))))
 
 (defun toggle-letter-case ()
   "Toggle the letter case of current word or text selection.

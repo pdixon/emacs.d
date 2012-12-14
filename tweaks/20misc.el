@@ -158,7 +158,8 @@
 (use-package pd-editing-extras
   :bind (("C-c +" . my-increment)
          ("C-t" . transpose-dwim)
-         ("M-c". toggle-letter-case)))
+         ("M-c". toggle-letter-case)
+         ("M-<SPC>" . cycle-spacing)))
 
 (defun delete-indentation-forward ()
   (interactive)
