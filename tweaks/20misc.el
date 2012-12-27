@@ -154,6 +154,11 @@
                   (set-fill-column 72)
                   (flyspell-mode)))))
 
+(use-package ediff
+  :config
+  (progn
+    (setq ediff-split-window-function 'split-window-horizontally)))
+
 (use-package pd-editing-extras
   :bind (("C-c +" . my-increment)
          ("C-t" . transpose-dwim)
