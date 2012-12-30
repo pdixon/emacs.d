@@ -36,7 +36,7 @@
 ;; You can keep system-specific customizations here
 ;; Use the only the inital term if the system name is a FQDN.
 (defconst system-specific-config
-      (concat dotfiles-dir (car (split-string system-name "\\.")) ".el"))
+      (concat dotfiles-dir "user/" (car (split-string system-name "\\.")) ".el"))
 
 (add-to-list 'load-path dotfiles-dir)
 (add-to-list 'load-path tweaks-dir)
@@ -78,8 +78,11 @@
 (use-package pd-linux
   :if (eq system-type 'gnu/linux))
 
-(when (file-exists-p system-specific-config)
-  (load system-specific-config))
+(if (file-exists-p system-specific-config)
+    (load system-specific-config)
+  (message "No system specific config for %s (i.e %s doesn't exist)"
+           system-name
+           system-specific-config))
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
