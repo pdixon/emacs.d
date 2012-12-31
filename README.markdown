@@ -3,26 +3,39 @@ Everything lives under `.emacs.d`. `init.el` is the entry point. This
 file set up the paths where everything else is found.
 
 Paths:
+`lisp`
+:   elisp code I've written.
+
+`mytemplates`
+:   Autoinsert file templates.
+
+`snippets`
+:   Text snippets for yasnippets.
 
 `tweaks`
 :   This is where all my setup and configuration lives.
 
-`mysnippets`
-:   Text snippets for yasnippets.
-
-`mytemplates`
-:   Autoinsert file templates.
+`user`
+:   Machine specific customisations.
 
 `vendor`
 :   Third party packages. Where possible I'm moving to using submodules
     to track these from upstream.
 
 
-# Vendor Libraries
-All third party packages live under `vendor`.
+# Packages
+Where ever possible I'm using package.el to manage these. I have
+[melpa](), and [marmalade]() set up as package sources as well as the
+default gnu elpa.
 
-Since I've move to emacs 24 where I'm using the include package
-support rather than bundling libraries directly.
+Anything that isn't packaged I include as a sub-module, or as a last
+resort I'll check the file in directly. In either of these cases the
+package well be living under `vendor`
+
+[melpa]:
+[marmalade]:
+
+# Applications
 
 ## Org mode
 Version: As bundled with emacs 24.
@@ -31,52 +44,23 @@ Version: As bundled with emacs 24.
 I used to use Remember with org-mode, since org-capture was released
 I've been using that.
 
-## Auto Typing
+## Deft
+
+## Gnus
+
+## Magit
+
+## Dired
+
+# Auto Typing
 I like to make the computer do as much of my work as I possibly can.
 Hence I've spend a bit of time on the various auto typing features.
 
 ## yasnippet
-Version: 0.6.1c
 [yasnippet](http://code.google.com/p/yasnippet/)
-
-## autopair
-Version: 0.3
-[autopair](http://code.google.com/p/autopair/)
-
-## autocomplete
-Version: git
-[autocomplete](http://cx4a.org/software/auto-complete/)
 
 ## autoinsert
 As bundled with emacs.
-
-## File modes
-
-### lua mode
-What it sounds like.
-from [here](http://luaforge.net/projects/lua-mode/).
-
-### lilypond
-
-### rst
-
-### markdown-mode
-Version: 1.7
-Get it from [here](http://jblevins.org/projects/markdown-mode/).
-
-### AuCTex
-Version 11.85 from [here](http://www.gnu.org/software/auctex/)
-
-Installing on Mac OSX in a portable way is... interesting.
-I ended up using the following:
-
-    ./configure --prefix=/Users/pdixon/.emacs.d/vendor/ \\
-    --with-lispdir=/Users/pdixon/.emacs.d/vendor/ \\
-    --with-emacs="/Applications/Emacs.app/Contents/MacOS/Emacs" \\
-    --without-texmf-dir
-
-### Haskell
-Version 2.4 from [here](http://www.iro.umontreal.ca/~monnier/elisp/#haskell-mode)
 
 # Key-bindings
 
@@ -88,6 +72,33 @@ I've made some changes.
 Actually I don't use this anymore. Enough other programs (i.e all
 standard text fields in Cocoa) use Emacs style key bindings that it's
 worth learning the stand bindings.
+
+# File modes
+
+## lua mode
+What it sounds like.
+from [here](http://luaforge.net/projects/lua-mode/).
+
+## lilypond
+
+## markdown-mode
+Version: 1.7
+Get it from [here](http://jblevins.org/projects/markdown-mode/).
+
+## AuCTex
+Version 11.85 from [here](http://www.gnu.org/software/auctex/)
+
+Installing on Mac OSX in a portable way is... interesting.
+I ended up using the following:
+
+    ./configure --prefix=/Users/pdixon/.emacs.d/vendor/ \\
+    --with-lispdir=/Users/pdixon/.emacs.d/vendor/ \\
+    --with-emacs="/Applications/Emacs.app/Contents/MacOS/Emacs" \\
+    --without-texmf-dir
+
+## Haskell
+Version 2.4 from [here](http://www.iro.umontreal.ca/~monnier/elisp/#haskell-mode)
+
 
 # External Programs
 ## Aspell
@@ -104,5 +115,3 @@ Instead it looks in the Defaults system, specifically
 `.MacOSX\environment.plist`. Create this using:
 
     defaults write $HOME/.MacOSX/environment PATH "$PATH"
-    
-## pyflakes
