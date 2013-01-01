@@ -14,7 +14,7 @@ Paths:
 
 * Packages
 Where ever possible I'm using package.el to manage these. I have
-[[melpa][]], and [[marmalade][]] set up as package sources as well as the
+[[][melpa]], and [[][marmalade]] set up as package sources as well as the
 default gnu elpa.
 
 Anything that isn't packaged I include as a sub-module, or as a last
@@ -25,7 +25,7 @@ package well be living under ~vendor~
 
 ** Org mode
 Version: As bundled with emacs 24.
-[[org-mode][http://orgmode.org/index.html#sec-3]]
+[[http://orgmode.org/index.html#sec-3][org-mode]]
 
 I used to use Remember with org-mode, since org-capture was released
 I've been using that.
@@ -43,14 +43,14 @@ I like to make the computer do as much of my work as I possibly can.
 Hence I've spend a bit of time on the various auto typing features.
 
 ** yasnippet
-[[yasnippet][https://github.com/capitaomorte/yasnippet]]
+[[https://github.com/capitaomorte/yasnippet][yasnippet]]
 
 ** autoinsert
 As bundled with emacs.
 
 * Key-bindings
 
-Based on [[Xahlee's Dvorak Ergo Keybindings][http://xahlee.org/emacs/ergonomic_emacs_keybinding.html]].
+Based on [[http://xahlee.org/emacs/ergonomic_emacs_keybinding.html][Xahlee's Dvorak Ergo Keybindings]].
 
 I've made some changes.
 
@@ -62,16 +62,16 @@ worth learning the stand bindings.
 
 ** lua mode
 What it sounds like.
-from [[here][http://luaforge.net/projects/lua-mode/]].
+from [[http://luaforge.net/projects/lua-mode/][here]].
 
 ** lilypond
 
 ** markdown-mode
 Version: 1.7
-Get it from [[here][http://jblevins.org/projects/markdown-mode/]].
+Get it from [[http://jblevins.org/projects/markdown-mode/][here]].
 
 ** AuCTex
-Version 11.85 from [[here][http://www.gnu.org/software/auctex/]].
+Version 11.85 from [[http://www.gnu.org/software/auctex/][here]].
 
 Installing on Mac OSX in a portable way is... interesting.
 I ended up using the following:
@@ -84,7 +84,7 @@ I ended up using the following:
 #+END_SRC
 
 ** Haskell
-Version 2.4 from [[here][http://www.iro.umontreal.ca/~monnier/elisp/#haskell-mode]]
+Version 2.4 from [[http://www.iro.umontreal.ca/~monnier/elisp/#haskell-mode][here]]
 
 
 * External Programs
