@@ -32,16 +32,20 @@
 (defconst tweaks-dir (concat dotfiles-dir "tweaks/"))
 (defconst vendor-dir (concat dotfiles-dir "vendor/"))
 (defconst lisp-dir (concat dotfiles-dir "lisp/"))
+(defconst user-dir (concat dotfiles-dir "user/"))
+
 
 ;; You can keep system-specific customizations here
 ;; Use the only the inital term if the system name is a FQDN.
 (defconst system-specific-config
-      (concat dotfiles-dir "user/" (car (split-string system-name "\\.")) ".el"))
+      (concat user-dir (car (split-string system-name "\\.")) ".el"))
 
 (add-to-list 'load-path dotfiles-dir)
 (add-to-list 'load-path tweaks-dir)
 (add-to-list 'load-path lisp-dir)
 (add-to-list 'load-path (concat vendor-dir "use-package/"))
+(add-to-list 'load-path user-dir)
+
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
