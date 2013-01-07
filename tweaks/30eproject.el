@@ -53,10 +53,6 @@
     ;;                      (list 'compile-command
     ;;                            (format "cd %s/build; make && make test" root))))
 
-    (define-project-type qt (generic-git hg)
-      (look-for "*.pro" :glob)
-      :relevant-files ("\\.cpp" "\\.h"))
-
     (define-project-type python (generic-git hg)
       (look-for "setup.py")
       :relevant-files ("\\.py" "\\.h" "\\.c"))
