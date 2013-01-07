@@ -49,6 +49,10 @@
 
 (global-auto-revert-mode 1)
 
+;; Auto revert dired and buffer menu etc.
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
+
 (electric-pair-mode 1)
 ;;(electric-indent-mode 1)
 ;;(electric-layout-mode 1)
