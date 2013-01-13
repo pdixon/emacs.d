@@ -198,6 +198,9 @@
       (list (line-beginning-position)
         (line-beginning-position 2)))))
 
+(defadvice ansi-term (after advise-ansi-term-coding-system)
+    (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
+(ad-activate 'ansi-term)
 
 (provide '20misc)
 ;;; 20-misc.el ends here
