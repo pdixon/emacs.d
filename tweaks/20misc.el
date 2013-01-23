@@ -202,5 +202,9 @@
     (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
 (ad-activate 'ansi-term)
 
+(use-package hexl-mode
+  :mode (("\\.exe\\'" . hexl-mode)
+         ("\\.dll\\'" . hexl-mode)))
+
 (provide '20misc)
 ;;; 20-misc.el ends here
