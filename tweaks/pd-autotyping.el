@@ -22,6 +22,7 @@
     (yas-reload-all)))
 
 (use-package hippie-exp
+  :defer t
   :config
   (progn
     ;; Hippie expand: at times perhaps too hip

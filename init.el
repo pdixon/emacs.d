@@ -68,12 +68,13 @@
   (message "Basic Config...done (%.3fs)" elapsed))
 
 ;; Load up my config stuff
+(use-package 30eproject)
 (use-package 10package)
 (use-package 15defaults)
 (use-package 15ido)
 (use-package 20misc)
 (use-package 30defuns)
-(use-package 30eproject)
+
 (use-package 40text-mode)
 (use-package 50ansi-term)
 (use-package 50org-mode)
