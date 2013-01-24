@@ -165,6 +165,9 @@
          ("M-c". toggle-letter-case)
          ("M-<SPC>" . cycle-spacing)))
 
+(setq cua-enable-cua-keys nil)
+(cua-mode)
+
 (defun delete-indentation-forward ()
   (interactive)
   (delete-indentation t))
