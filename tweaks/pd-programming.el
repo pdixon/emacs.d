@@ -80,7 +80,23 @@
     (defun pd/compilation-hook ()
       (setq truncate-lines t))
 
-    (add-hook 'compilation-mode-hook 'pd/compilation-hook)
-    ))
+    (add-hook 'compilation-mode-hook 'pd/compilation-hook)))
+
+(use-package eldoc
+  :diminish eldoc-mode
+  :defer t
+  :config (eldoc-add-command 'paredit-backward-delete
+                             'paredit-close-round))
+
+(use-package elisp-slime-nav
+  :diminish elisp-slime-nav-mode
+  :defer t)
+
+(defun pd/elisp-mode-hook ()
+  (paredit-mode)
+  (elisp-slime-nav-mode)
+  (eldoc-mode))
+
+(add-hook 'emacs-lisp-mode-hook 'pd/elisp-mode-hook)
 
 (provide 'pd-programming)
