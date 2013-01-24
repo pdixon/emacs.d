@@ -29,5 +29,8 @@
 
 (setq insert-directory-program "gls")
 
+(set-face-attribute 'default nil :font "Menlo-12")
+(pd/light)
+
 (provide 'pd-darwin)
 ;;; pd-darwin.el ends here
