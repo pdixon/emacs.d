@@ -63,6 +63,10 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
+(let ((elapsed (float-time (time-subtract (current-time)
+                                          *emacs-load-start*))))
+  (message "Basic Config...done (%.3fs)" elapsed))
+
 ;; Load up my config stuff
 (use-package 10package)
 (use-package 15defaults)

@@ -101,7 +101,8 @@
           uniquify-ignore-buffers-re "^\\*")))
 
 (use-package dired
-  :init
+  :defer t
+  :config
   (progn
     (put 'dired-find-alternate-file 'disabled nil)
     (setq dired-dwim-target t
@@ -155,6 +156,7 @@
                   (flyspell-mode)))))
 
 (use-package ediff
+  :defer t
   :config
   (progn
     (setq ediff-split-window-function 'split-window-horizontally)))
