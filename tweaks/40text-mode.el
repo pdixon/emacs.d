@@ -21,12 +21,7 @@
   (progn
     (setq markdown-command "pandoc")
 
-    (defun markdown-imenu-setup ()
-      (setq imenu-generic-expression '(("Sections" "^#+ .+" 0)
-                                       ("Refs" "^\\[\\(.+\\)\\]:" 1)))
-      (imenu-add-menubar-index))
-
-    (add-hook 'markdown-mode-hook 'markdown-imenu-setup)))
+    (add-hook 'markdown-mode-hook 'imenu-add-menubar-index)))
 
 
 (use-package pd-blog-helpers
