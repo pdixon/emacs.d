@@ -32,13 +32,26 @@
 (setq vc-handled-backends nil)
 (setq whitespace-style '(face trailing tabs)
       whitespace-line-column 80)
-(setq message-kill-buffer-on-exit t)
+
 
 ;;(server-start)
 
+(setq message-kill-buffer-on-exit t)
 (setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
 (setq user-full-name "Phillip Dixon")
+
+(eudc-set-server "localhost" 'mab t)
+(eudc-protocol-set 'eudc-inline-expansion-format
+                   '("%s %s <%s>" firstname lastname email)
+                   'mab)
+
+(defun eudc-select (choices beg end)
+    (let ((replacement
+           (ido-completing-read "Multiple matches found; choose one: "
+                                (mapcar 'list choices))))
+      (delete-region beg end)
+      (insert replacement)))
 
 (setq send-mail-function 'smtpmail-send-it 
       message-send-mail-function 'smtpmail-send-it
