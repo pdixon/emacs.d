@@ -76,10 +76,13 @@ ARCHIVE is the string name of the package archive.")
 
 (package-initialize)
 
+(require-package 'applescript-mode)
 (require-package 'auctex)
 (require-package 'cmake-mode)
 (require-package 'color-theme-solarized)
 (require-package 'deft)
+(require-package 'diminish)
+(require-package 'elisp-slime-nav)
 (require-package 'expand-region)
 (require-package 'fill-column-indicator)
 (require-package 'find-file-in-project)
