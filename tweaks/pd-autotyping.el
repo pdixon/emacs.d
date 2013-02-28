@@ -18,7 +18,7 @@
   :config
   (progn
     (setq yas-prompt-functions '(yas-ido-prompt yas-complete-prompt))
-    (setq yas-root-directory (concat dotfiles-dir "snippets"))
+    (setq yas-snippet-dirs (list (concat dotfiles-dir "snippets")))
     (yas-reload-all)))
 
 (use-package hippie-exp

@@ -65,6 +65,11 @@
 (setq ispell-dictionary "en_GB-ise"
       ispell-extra-args `("--keyboard=dvorak"))
 
+(use-package imenu
+  :defer t
+  :config
+  (progn
+    (setq imenu-max-items 200)))
 
 (use-package ibuffer
   :defer t

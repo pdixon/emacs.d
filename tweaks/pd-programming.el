@@ -12,7 +12,8 @@
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)
-  :interpreter ("python" . python-mode)
+  :interpreter (("python" . python-mode)
+                ("python3" . python-mode))
   :config
   (progn
     (defun pd-python-mode-hook ()
