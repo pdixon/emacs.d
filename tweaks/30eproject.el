@@ -25,7 +25,6 @@
 ;;; Code:
 
 (use-package eproject
-  :load-path "vendor/eproject/"
   :init
   (progn
     (use-package eproject-extras)
