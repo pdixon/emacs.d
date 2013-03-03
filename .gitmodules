@@ -1,7 +1,3 @@
-[submodule "vendor/eproject"]
-	path = vendor/eproject
-	url = http://github.com/jrockway/eproject.git
-	pushurl = ssh://github.com/pdixon/eproject.git
 [submodule "vendor/use-package"]
 	path = vendor/use-package
 	url = http://github.com/jwiegley/use-package.git
