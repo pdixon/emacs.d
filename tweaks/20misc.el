@@ -172,6 +172,12 @@
               #'(lambda ()
                   (set-fill-column 72)
                   (flyspell-mode)))))
+(use-package monky
+  :defer t
+  :config
+  (progn
+    (setq monky-process-type 'cmdserver)))
+
 
 (use-package ediff
   :defer t
