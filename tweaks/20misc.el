@@ -29,7 +29,7 @@
   (tooltip-mode -1)
   (blink-cursor-mode -1))
 
-(setq vc-handled-backends nil)
+(setq vc-handled-backends '(Git Hg))
 (setq whitespace-style '(face trailing tabs)
       whitespace-line-column 80)
 
