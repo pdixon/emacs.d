@@ -29,6 +29,9 @@
 
 (setq insert-directory-program "gls")
 
+;; Fix up emacs macport info dir
+(add-to-list 'Info-directory-list "/Applications/Emacs.app/Contents/Resources/info")
+
 (set-face-attribute 'default nil :font "Menlo-12")
 (pd/light)
 
