@@ -37,8 +37,7 @@
         (setq ffip-project-root-function 'eproject-root)))
 
     (use-package pd-eproject-extensions
-      :bind (("C-c C-k" . eproject-compile-dwim)
-             ("<f8>" . all-projects-ibuffer)))
+      :bind (("C-c C-k" . eproject-compile-dwim)))
 
     (define-project-type hg (generic)
       (look-for ".hg")

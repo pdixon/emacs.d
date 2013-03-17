@@ -73,6 +73,7 @@
 
 (use-package ibuffer
   :defer t
+  :bind ("<f8>" . ibuffer)
   :init
   (progn
     (defalias 'list-buffers 'ibuffer))
@@ -80,15 +81,21 @@
   (progn
     (setq ibuffer-expert 1)
     (setq ibuffer-show-empty-filter-groups nil)
-    (setq ibuffer-saved-filter-groups
-          (quote (("default"
-                   ("org" (or (mode . org-mode)
-                              (name . "^\\*Org Agenda\\*$")))
-                   (".emacs" (filename . ".emacs.d/"))))))
-    (add-hook 'ibuffer-mode-hook
+    ;; (setq ibuffer-saved-filter-groups
+    ;;       (quote (("default"
+    ;;                ("org" (or (mode . org-mode)
+    ;;                           (name . "^\\*Org Agenda\\*$")))
+    ;;                (".emacs" (filename . ".emacs.d/"))))))
+    ;; (add-hook 'ibuffer-mode-hook
+    ;;           (lambda ()
+    ;;             (ibuffer-auto-mode 1)
+    ;;             (ibuffer-switch-to-saved-filter-groups "default")))
+
+    (add-hook 'ibuffer-hook
               (lambda ()
-                (ibuffer-auto-mode 1)
-                (ibuffer-switch-to-saved-filter-groups "default")))
+                (ibuffer-vc-set-filter-groups-by-vc-root)
+                (unless (eq ibuffer-sorting-mode 'alphabetic)
+                  (ibuffer-do-sort-by-alphabetic))))
 
     ;; Use human readable Size column instead of original one
     (define-ibuffer-column size-h
@@ -106,6 +113,8 @@
                   (size-h 9 -1 :right)
                   " "
                   (mode 16 16 :left :elide)
+                  " "
+                  (vc-status 16 16 :left)
                   " "
                   filename-and-process)))))
 
