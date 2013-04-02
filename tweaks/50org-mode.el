@@ -50,6 +50,7 @@
           (setq org-agenda-tags-todo-honor-ignore-options t)
           (setq org-agenda-window-setup 'current-window)
           (setq org-use-fast-todo-selection t)
+          (setq org-fast-tag-selection-single-key 'expert)
           (setq org-todo-keywords
                 '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
                   (sequence "WAITING(w@/!)" "|" "CANCELLED" "DELEGATED(e@)")))
@@ -162,8 +163,6 @@
                     (org-agenda-todo-keyword-format "")))
                   ("c" todo "TODO"
                    ((org-agenda-sorting-strategy '(tag-up priority-down))))))
-
-          ;; Org Capture
 
           ;; Refile setup
           (setq org-completion-use-ido t)
