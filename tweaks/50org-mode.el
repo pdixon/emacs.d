@@ -352,4 +352,81 @@ When not restricted, skip project and sub-project tasks, habits, and project rel
                 (goto-char parent-task)
                 parent-task)))))
 
+
+(setq org-publish-project-alist
+      '(("blog-posts"
+         :base-directory "~/personal/phil.dixon.gen.nz/posts"
+         :base-extension "org"
+         :publishing-directory "~/Sites/phil.dixon.gen.nz/posts"
+         :table-of-contents nil
+         :section-numbers nil
+         :creator-info nil
+         :style-include-default	nil
+         :style-include-scripts	nil
+         :style "<link href=\"/css/bootstrap.css\" rel=\"stylesheet\" style=\"text/css\" />"
+         :html-preamble "<header class=\"wrapper clearfix\">
+        <div class=\"masthead\">
+          <h1>Phillip Dixon</h1>
+          <p>Obscure things, but they interest me.</p>
+        </div>
+        <nav>
+          <ul>
+            <li><a href=\"/\">Home</a></li>
+            <li><a href=\"/posts/\">Posts</a></li>
+          </ul>
+        </nav>
+      </header>"
+         :html-postamble "<footer class=\"wrapper\">
+        <p>
+          &#169; 2009&#8211;12 <a href=\"/\">Phillip Dixon</a>
+          ( <a rel=\"license\"
+          href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/nz/\">Some
+          rights reserved</a> )
+        </p>
+      </footer>"
+         :auto-sitemap t
+         :sitemap-title ""
+         :sitemap-filename "index.org"
+         :sitemap-sort-files anti-chronologically
+         :sitemap-file-entry-format "%t (%d)")
+        ("blog-pages"
+         :base-directory "~/personal/phil.dixon.gen.nz/"
+         :base-extension "org"
+         :publishing-directory "~/Sites/phil.dixon.gen.nz/"
+         :table-of-contents nil
+         :section-numbers nil
+         :creator-info nil
+         :style-include-default	nil
+         :style-include-scripts	nil
+         :style "<link href=\"/css/bootstrap.css\" rel=\"stylesheet\" style=\"text/css\" />"
+         :html-preamble "<header class=\"wrapper clearfix\">
+        <div class=\"masthead\">
+          <h1>Phillip Dixon</h1>
+          <p>Obscure things, but they interest me.</p>
+        </div>
+        <nav>
+          <ul>
+            <li><a href=\"/\">Home</a></li>
+            <li><a href=\"/posts/\">Posts</a></li>
+          </ul>
+        </nav>
+      </header>"
+         :html-postamble "<footer class=\"wrapper\">
+        <p>
+          &#169; 2009&#8211;12 <a href=\"/\">Phillip Dixon</a>
+          ( <a rel=\"license\"
+          href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/nz/\">Some
+          rights reserved</a> )
+        </p>
+      </footer>")
+        ("blog-static"
+         :base-directory "~/personal/phil.dixon.gen.nz/"
+         :base-extension "jpg\\|png\\|css\\|js"
+         :recursive t
+         :publishing-directory "~/Sites/phil.dixon.gen.nz/"
+         :publishing-function org-publish-attachment)
+        ("blog"
+         :components
+         ("blog-pages" "blog-posts" "blog-static"))))
+
 (provide '50org-mode)
