@@ -25,7 +25,15 @@
 ;;; Code:
 
 (use-package ansi-term
-  :defer t
+  :bind ("<f10>" . pd-visit-term)
+  :init
+  (progn
+    (defun pd-visit-term ()
+      ""
+      (interactive)
+      (if (not (get-buffer "*ansi-term*"))
+          (ansi-term (getenv "SHELL"))
+        (switch-to-buffer "*ansi-term*"))))
   :config
   (progn
     (defun my-term-use-utf8 ()
