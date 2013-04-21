@@ -216,6 +216,18 @@
                      :sitemap-filename "index.org"
                      :sitemap-sort-files anti-chronologically
                      :sitemap-file-entry-format "%t (%d)")
+                    ("blog-drafts"
+                     :base-directory "~/personal/phil.dixon.gen.nz/drafts"
+                     :base-extension "org"
+                     :publishing-directory "~/Sites/phil.dixon.gen.nz/drafts"
+                     :publishing-function pd-html-publish-to-html
+                     :with-toc nil
+                     :section-numbers nil
+                     :auto-sitemap t
+                     :sitemap-title ""
+                     :sitemap-filename "index.org"
+                     :sitemap-sort-files anti-chronologically
+                     :sitemap-file-entry-format "%t (%d)")
                     ("blog-pages"
                      :base-directory "~/personal/phil.dixon.gen.nz/"
                      :base-extension "org"
@@ -232,7 +244,7 @@
                      :publishing-function org-publish-attachment)
                     ("blog"
                      :components
-                     ("blog-pages" "blog-posts" "blog-static"))))
+                     ("blog-pages" "blog-posts" "blog-drafts" "blog-static"))))
 
             ))
 
