@@ -53,8 +53,6 @@
 ;; load the customize stuff
 (load custom-file 'noerror)
 
-(require 'use-package)
-
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -68,17 +66,18 @@
   (message "Basic Config...done (%.3fs)" elapsed))
 
 ;; Load up my config stuff
-(use-package 10package)
-(use-package 30eproject)
+(require '10package)
+(require 'use-package)
+;;(use-package 30eproject)
 (use-package 15defaults)
 (use-package 15ido)
 (use-package 20misc)
 (use-package 30defuns)
-
 (use-package 40text-mode)
 (use-package 50ansi-term)
 (use-package 50org-mode)
 (use-package 70window-handling)
+(use-package pd-project-setup)
 (use-package pd-autotyping)
 (use-package pd-programming)
 
