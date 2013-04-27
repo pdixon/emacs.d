@@ -52,19 +52,31 @@
 ;;;###autoload
 (defun pd-project-compile ()
   "Call compile at the project root."
-  (interactive))
+  (interactive)
+  (let ((comp-buffer-name (concat "*compilation: " (pd-project-get-root) "*"))
+        (default-directory (pd-project-get-root)))
+    (if (get-buffer comp-buffer-name)
+        (with-current-buffer comp-buffer-name
+          (recompile))
+      (progn
+        (compile compile-command)
+        (with-current-buffer "*compilation*"
+          (rename-buffer comp-buffer-name))))))
 
 ;;;###autoload
 (defun pd-project-grep (regexp)
   "Search all project files for REGEXP."
-  (interactive "sRegexp grep: "))
+  (interactive "sRegexp grep: ")
+  (let ((root (pd-project-get-root)))
+    (rgrep regexp "* .*" root)))
 
 ;;;###autoload
 (defun pd-project-todo ()
   "Find TODO type comments in the project.
 
 `pd-project-todo-regexp' is used to determine what this function looks for."
-  (interactive))
+  (interactive)
+  (pd-project-grep (regexp-opt pd-project-todo-regexp)))
 
 ;;;###autoload
 (defun pd-project-find-file ()
