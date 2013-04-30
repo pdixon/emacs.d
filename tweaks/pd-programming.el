@@ -100,4 +100,43 @@
 
 (add-hook 'emacs-lisp-mode-hook 'pd/elisp-mode-hook)
 
+;; From emacs start kit v2.
+;;; These belong in prog-mode-hook:
+
+;; We have a number of turn-on-* functions since it's advised that lambda
+;; functions not go in hooks. Repeatedly evaling an add-to-list with a
+;; hook value will repeatedly add it since there's no way to ensure
+;; that a lambda doesn't already exist in the list.
+
+(defun pd/local-column-number-mode ()
+  (make-local-variable 'column-number-mode)
+  (column-number-mode t))
+
+(defun pd/local-comment-auto-fill ()
+  (set (make-local-variable 'comment-auto-fill-only-comments) t)
+  (auto-fill-mode t))
+
+(defun pd/turn-on-hl-line-mode ()
+  (when window-system (hl-line-mode t)))
+
+(defun pd/turn-on-save-place-mode ()
+  (require 'saveplace)
+  (setq save-place t))
+
+(defun pd/turn-on-whitespace ()
+  (whitespace-mode t))
+
+(defun pd/add-watchwords ()
+  (font-lock-add-keywords
+   nil '(("\\<\\(FIXME\\|TODO\\|FIX\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
+          1 font-lock-warning-face t))))
+
+(add-hook 'prog-mode-hook 'pd/local-comment-auto-fill)
+(add-hook 'prog-mode-hook 'pd/turn-on-hl-line-mode)
+(add-hook 'prog-mode-hook 'pd/turn-on-save-place-mode)
+(add-hook 'prog-mode-hook 'pd/turn-on-whitespace)
+(add-hook 'prog-mode-hook 'pd/add-watchwords)
+
+(which-function-mode t)
+
 (provide 'pd-programming)
