@@ -29,7 +29,8 @@
 (setq split-width-threshold nil)
 
 ;;
-(setq magit-status-buffer-switch-function 'switch-to-buffer)
+(setq magit-status-buffer-switch-function 'switch-to-buffer
+      magit-diff-refine-hunk t)
 
 (require 'cl)
 (defun first-matching-buffer (predicate)
