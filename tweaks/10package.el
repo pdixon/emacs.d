@@ -84,7 +84,7 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'deft)
 (require-package 'diminish)
 (require-package 'elisp-slime-nav)
-(require-package 'eproject)
+
 (require-package 'expand-region)
 (require-package 'fill-column-indicator)
 (require-package 'find-file-in-project)

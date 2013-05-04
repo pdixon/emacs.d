@@ -68,7 +68,7 @@
 ;; Load up my config stuff
 (require '10package)
 (require 'use-package)
-;;(use-package 30eproject)
+
 (use-package 15defaults)
 (use-package 15ido)
 (use-package 20misc)
