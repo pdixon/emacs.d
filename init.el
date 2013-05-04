@@ -43,7 +43,6 @@
 (add-to-list 'load-path dotfiles-dir)
 (add-to-list 'load-path tweaks-dir)
 (add-to-list 'load-path lisp-dir)
-(add-to-list 'load-path (concat vendor-dir "use-package/"))
 (add-to-list 'load-path user-dir)
 
 
@@ -61,13 +60,14 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
+(require '10package)
+(require 'use-package)
+
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
   (message "Basic Config...done (%.3fs)" elapsed))
 
 ;; Load up my config stuff
-(require '10package)
-(require 'use-package)
 
 (use-package 15defaults)
 (use-package 15ido)
