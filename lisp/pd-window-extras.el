@@ -3,7 +3,7 @@
 ;; Copyright (C) 2013  Phillip Dixon
 
 ;; Author: Phillip Dixon <phil@dixon.gen.nz>
-;; Keywords: 
+;; Keywords:
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -20,11 +20,11 @@
 
 ;;; Commentary:
 
-;; 
+;;
 
 ;;; Code:
 
-; The following are from http://whattheemacsd.com
+;; The following are from http://whattheemacsd.com
 
 ;;;###autoload
 (defun pd/rotate-windows ()
@@ -77,6 +77,37 @@
           (set-window-buffer (next-window) next-win-buffer)
           (select-window first-win)
           (if this-win-2nd (other-window 1))))))
+
+(require 'window-number)
+;;;###autoload
+(defun pd/setup-windows ()
+  (interactive)
+  (delete-other-windows)
+  (if (> (frame-width) (* 2 80))
+      (split-window-horizontally))
+  (if (> (frame-width) (* 3 80))
+      (progn (split-window-horizontally)
+             (split-window-vertically)))
+  (balance-windows)
+  (window-number-select 1)
+  (deft)
+  (window-number-select 2)
+  (org-agenda 0 "w")
+  (if (> 2 (count-windows))
+      (progn
+        (window-number-select 3)
+        (switch-to-buffer nil)
+        (window-number-select 4)
+        (switch-to-buffer nil))))
+
+(defun pd/toggle-just-one-window ()
+  "Switch from the current window setup to just one window or back."
+  (interactive)
+  (if (< 1 (count-windows))
+      (progn
+        (window-configuration-to-register ?u)
+        (delete-other-windows))
+    (jump-to-register ?u)))
 
 (provide 'pd-window-extras)
 ;;; pd-window-extras.el ends here

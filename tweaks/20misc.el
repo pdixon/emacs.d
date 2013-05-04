@@ -35,6 +35,8 @@
 
 
 ;;(server-start)
+(setq split-height-threshold nil
+      split-width-threshold nil)
 
 (setq message-kill-buffer-on-exit t)
 (setq mail-user-agent 'message-user-agent)
@@ -177,6 +179,8 @@
   :bind ("<f7>" . magit-status)
   :config
   (progn
+    (setq magit-status-buffer-switch-function 'switch-to-buffer
+          magit-diff-refine-hunk t)
     (add-hook 'magit-log-edit-mode-hook
               #'(lambda ()
                   (set-fill-column 72)
