@@ -248,5 +248,23 @@
   :mode (("\\.exe\\'" . hexl-mode)
          ("\\.dll\\'" . hexl-mode)))
 
+(use-package find-file-in-project
+  :bind ("C-c C-f" . ffip)
+  :config
+  (progn
+    (require 'pd-project)
+    (setq ffip-project-root-function 'pd-project-get-root)))
+
+(use-package pd-project
+  :commands (pd-project-compile
+             pd-project-grep
+             pd-project-todo))
+
+(use-package pd-window-extras
+  :commands (pd/rotate-windows
+             pd/toggle-window-split
+             pd/setup-windows
+             pd/toggle-just-one-window))
+
 (provide '20misc)
 ;;; 20-misc.el ends here

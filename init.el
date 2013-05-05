@@ -76,7 +76,6 @@
 (use-package 40text-mode)
 (use-package 50ansi-term)
 (use-package 50org-mode)
-(use-package pd-project-setup)
 (use-package pd-autotyping)
 (use-package pd-programming)
 
