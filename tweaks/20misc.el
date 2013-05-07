@@ -83,15 +83,11 @@
   (progn
     (setq ibuffer-expert 1)
     (setq ibuffer-show-empty-filter-groups nil)
-    ;; (setq ibuffer-saved-filter-groups
-    ;;       (quote (("default"
-    ;;                ("org" (or (mode . org-mode)
-    ;;                           (name . "^\\*Org Agenda\\*$")))
-    ;;                (".emacs" (filename . ".emacs.d/"))))))
-    ;; (add-hook 'ibuffer-mode-hook
-    ;;           (lambda ()
-    ;;             (ibuffer-auto-mode 1)
-    ;;             (ibuffer-switch-to-saved-filter-groups "default")))
+
+    (defun pd/dired-do-multi-occur (regexp)
+      "Show all in lines in marked files containing REGEXP"
+      (interactive "MList lines matching regexp: ")
+      (multi-occur (mapcar 'find-file (dired-get-marked-files)) regexp))
 
     (add-hook 'ibuffer-hook
               (lambda ()
