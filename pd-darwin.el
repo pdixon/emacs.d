@@ -33,7 +33,7 @@
 (add-to-list 'Info-directory-list "/Applications/Emacs.app/Contents/Resources/info")
 
 (set-face-attribute 'default nil :font "Menlo-12")
-(pd/light)
+(pd/zenburn)
 
 (provide 'pd-darwin)
 ;;; pd-darwin.el ends here
