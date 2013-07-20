@@ -8,9 +8,9 @@
   :bind ("<f5>" . deft)
   :config
   (progn
-    (setq deft-extension "mdwn")
-    (setq deft-directory "~/Dropbox/Elements/")
-    (setq deft-text-mode 'markdown-mode)
+    (setq deft-extension "org")
+    (setq deft-directory "~/personal/notes")
+    (setq deft-text-mode 'org-mode)
     (setq deft-use-filename-as-title t)))
 
 (use-package markdown-mode
