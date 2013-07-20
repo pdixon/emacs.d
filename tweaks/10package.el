@@ -34,23 +34,6 @@
     (with-current-buffer (find-file-existing path)
       (kill-buffer nil))))
 
-(defvar package-filter-function nil
-  "Optional predicate function used to internally filter packages used by package.el.
-
-The function is called with the arguments PACKAGE VERSION ARCHIVE, where
-PACKAGE is a symbol, VERSION is a vector as produced by `version-to-list', and
-ARCHIVE is the string name of the package archive.")
-
-(defadvice package--add-to-archive-contents
-  (around filter-packages (package archive) activate)
-  "Add filtering of available packages using `package-filter-function', if non-nil."
-  (when (or (null package-filter-function)
-            (funcall package-filter-function
-                     (car package)
-                     (package-desc-vers (cdr package))
-                     archive))
-    ad-do-it))
-
 (defun require-package (package &optional min-version no-refresh)
   "Ask elpa to install given PACKAGE."
   (if (package-installed-p package min-version)
@@ -60,16 +43,6 @@ ARCHIVE is the string name of the package archive.")
       (progn
         (package-refresh-contents)
         (require-package package min-version t)))))
-
-(defvar melpa-exclude-packages
-  '(slime)
-  "Don't install Melpa versions of these packages.")
-
-;; Don't take Melpa versions of certain packages
-(setq package-filter-function
-      (lambda (package version archive)
-        (or (not (string-equal archive "melpa"))
-            (not (memq package melpa-exclude-packages)))))
 
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
@@ -81,10 +54,10 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'auctex)
 (require-package 'cmake-mode)
 (require-package 'color-theme-solarized)
+(require-package 'company)
 (require-package 'deft)
 (require-package 'diminish)
 (require-package 'elisp-slime-nav)
-
 (require-package 'expand-region)
 (require-package 'fill-column-indicator)
 (require-package 'find-file-in-project)
@@ -105,8 +78,9 @@ ARCHIVE is the string name of the package archive.")
 (require-package 'multiple-cursors)
 ;;(require-package 'outline-magic)
 ;;(require-package 'python)
-(require-package 'paredit)
+;;(require-package 'paredit)
 ;;(require-package 'smart-tab)
+(require-package 'smartparens)
 (require-package 'window-number)
 (require-package 'yasnippet)
 (require-package 'zenburn-theme)
