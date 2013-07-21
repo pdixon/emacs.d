@@ -69,6 +69,7 @@
 (require-package 'google-c-style)
 (require-package 'graphviz-dot-mode)
 (require-package 'haskell-mode)
+(require-package 'htmlize)
 (require-package 'ibuffer-vc)
 ;;(require-package 'iy-go-to-char)
 (require-package 'lua-mode)
