@@ -8,8 +8,10 @@
         abort-recursive-edit
         c-electric-backspace
         c-electric-brace
+        c-electric-colon
         c-electric-paren
         c-electric-semi&comma
+        iy-go-to-char
         python-indent-dedent-line-backspace
         ))
 
