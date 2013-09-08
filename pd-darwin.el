@@ -36,7 +36,7 @@
 (pd/zenburn)
 
 (server-start)
-(setq magit-git-editor "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient")
+(setq magit-emacsclient-executable "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient")
 
 (provide 'pd-darwin)
 ;;; pd-darwin.el ends here
