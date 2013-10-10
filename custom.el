@@ -7,7 +7,7 @@
  '(pr-gv-command "evince")
  '(pr-ps-printer-alist (quote ((default "gtklp" nil "" nil))))
  '(pr-txt-printer-alist (quote ((default "gtklp" nil nil))))
- '(safe-local-variable-values (quote ((user-mail-address . "pdixon@dynamiccontrols.com") (user-company . "Dynamic Controls"))))
+ '(safe-local-variable-values (quote ((emacs-lisp-docstring-fill-column . 75) (user-mail-address . "pdixon@dynamiccontrols.com") (user-company . "Dynamic Controls"))))
  '(scroll-bar-mode nil)
  '(scss-compile-at-save nil)
  '(show-paren-mode t)

@@ -94,7 +94,6 @@
   :defer t)
 
 (defun pd/elisp-mode-hook ()
-  (paredit-mode)
   (elisp-slime-nav-mode)
   (eldoc-mode))
 
