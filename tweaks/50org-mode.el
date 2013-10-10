@@ -207,6 +207,12 @@
             (require 'htmlize)
             (setq org-html-htmlize-output-type 'css)
 
+            (defun pd/publish-blog ()
+              "Publish my blog"
+              (interactive)
+              (org-publish-remove-all-timestamps)
+              (org-publish-project "blog"))
+
             (setq org-publish-project-alist
                   '(("blog-posts"
                      :base-directory "~/personal/phil.dixon.gen.nz/posts"
@@ -259,7 +265,7 @@
                      :include ("rss.org"))
                     ("blog"
                      :components
-                     ("blog-pages" "blog-posts" "blog-drafts" "blog-static" "blog-rss"))))))
+                     ("blog-pages" "blog-posts" "blog-drafts" "blog-static"))))))
 
 
 
