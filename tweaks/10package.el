@@ -28,12 +28,6 @@
 
 (require 'package)
 
-(defadvice package-generate-autoloads (after close-autoloads (name pkg-dir) activate)
-  "Stop package.el from leaving open autoload files lying around."
-  (let ((path (expand-file-name (concat name "-autoloads.el") pkg-dir)))
-    (with-current-buffer (find-file-existing path)
-      (kill-buffer nil))))
-
 (defun require-package (package &optional min-version no-refresh)
   "Ask elpa to install given PACKAGE."
   (if (package-installed-p package min-version)
