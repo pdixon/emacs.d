@@ -72,6 +72,7 @@
 (require-package 'monky)
 (require-package 'multiple-cursors)
 (require-package 'org-plus-contrib)
+(require-package 'pkgbuild-mode)
 ;;(require-package 'outline-magic)
 ;;(require-package 'python)
 ;;(require-package 'paredit)
