@@ -29,6 +29,9 @@
   :load-path "vendor/lilypond"
   :mode ("\\.ly\\'" . LilyPond-mode))
 
+(use-package pkgbuild-mode
+  :mode ("PKGBUILD" . pkgbuild-mode))
+
 (use-package cc-mode
   :defer t
   :config
