@@ -86,21 +86,22 @@
 
     (add-hook 'compilation-mode-hook 'pd/compilation-hook)))
 
-(use-package eldoc
-  :diminish eldoc-mode
-  :defer t
-  :config (eldoc-add-command 'paredit-backward-delete
-                             'paredit-close-round))
+(use-package lisp-mode
+  :config
+  (progn
+    (use-package eldoc
+      :diminish eldoc-mode
+      :defer t)
 
-(use-package elisp-slime-nav
-  :diminish elisp-slime-nav-mode
-  :defer t)
+    (use-package elisp-slime-nav
+      :diminish elisp-slime-nav-mode
+      :defer t)
 
-(defun pd/elisp-mode-hook ()
-  (elisp-slime-nav-mode)
-  (eldoc-mode))
+    (defun pd/elisp-mode-hook ()
+      (elisp-slime-nav-mode)
+      (eldoc-mode))
 
-(add-hook 'emacs-lisp-mode-hook 'pd/elisp-mode-hook)
+    (add-hook 'emacs-lisp-mode-hook 'pd/elisp-mode-hook)))
 
 ;; From emacs start kit v2.
 ;;; These belong in prog-mode-hook:
@@ -109,10 +110,6 @@
 ;; functions not go in hooks. Repeatedly evaling an add-to-list with a
 ;; hook value will repeatedly add it since there's no way to ensure
 ;; that a lambda doesn't already exist in the list.
-
-(defun pd/local-column-number-mode ()
-  (make-local-variable 'column-number-mode)
-  (column-number-mode t))
 
 (defun pd/local-comment-auto-fill ()
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
@@ -133,12 +130,14 @@
    nil '(("\\<\\(FIXME\\|TODO\\|FIX\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
           1 font-lock-warning-face t))))
 
+(defun pd/turn-on-which-func ()
+  (which-function-mode t))
+
 (add-hook 'prog-mode-hook 'pd/local-comment-auto-fill)
 (add-hook 'prog-mode-hook 'pd/turn-on-hl-line-mode)
 (add-hook 'prog-mode-hook 'pd/turn-on-save-place-mode)
 (add-hook 'prog-mode-hook 'pd/turn-on-whitespace)
 (add-hook 'prog-mode-hook 'pd/add-watchwords)
-
-(which-function-mode t)
+(add-hook 'prog-mode-hook 'pd/turn-on-which-func)
 
 (provide 'pd-programming)

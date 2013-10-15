@@ -47,11 +47,12 @@
 ;; Save a list of recent files visited.
 (recentf-mode 1)
 
-(global-auto-revert-mode 1)
-
-;; Auto revert dired and buffer menu etc.
-(setq global-auto-revert-non-file-buffers t)
-(setq auto-revert-verbose nil)
+(use-package autorevert
+  :init (global-auto-revert-mode)
+  :config
+  (progn
+    (setq global-auto-revert-non-file-buffers t
+          auto-revert-verbose nil)))
 
 (electric-pair-mode 1)
 ;;(electric-indent-mode 1)
