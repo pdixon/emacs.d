@@ -32,25 +32,11 @@
     ;; Add this back in at the end of the list.
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)))
 
-(use-package smart-tab
-  :disabled t
-  :config
-  (progn
-    (add-to-list 'smart-tab-disabled-major-modes 'Magit)
-    (setq smart-tab-using-hippie-expand t)
-    (global-smart-tab-mode 1)))
-
 (use-package company-mode
   :config
   (progn
     (setq company-begin-commands '(self-insert-command))
     (setq company-idle-delay 0.3)))
-
-(use-package smartparens-config
-  :config
-  (progn
-    (smartparens-global-mode t)
-    (show-smartparens-global-mode t)))
 
 (add-hook 'find-file-hooks 'auto-insert)
 (setq auto-insert-directory (concat dotfiles-dir "mytemplates/"))

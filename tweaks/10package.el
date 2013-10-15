@@ -24,8 +24,6 @@
 
 ;;; Code:
 
-(require 'cl)
-
 (require 'package)
 
 (defun require-package (package &optional min-version no-refresh)
@@ -55,7 +53,6 @@
 (require-package 'expand-region)
 (require-package 'fill-column-indicator)
 (require-package 'find-file-in-project)
-;;(require-package 'gist)
 (require-package 'git-commit-mode)
 (require-package 'gitconfig-mode)
 (require-package 'gitignore-mode)
@@ -65,7 +62,6 @@
 (require-package 'haskell-mode)
 (require-package 'htmlize)
 (require-package 'ibuffer-vc)
-;;(require-package 'iy-go-to-char)
 (require-package 'lua-mode)
 (require-package 'magit)
 (require-package 'markdown-mode)
@@ -73,11 +69,6 @@
 (require-package 'multiple-cursors)
 (require-package 'org-plus-contrib)
 (require-package 'pkgbuild-mode)
-;;(require-package 'outline-magic)
-;;(require-package 'python)
-;;(require-package 'paredit)
-;;(require-package 'smart-tab)
-(require-package 'smartparens)
 (require-package 'window-number)
 (require-package 'yasnippet)
 (require-package 'zenburn-theme)
