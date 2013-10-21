@@ -51,6 +51,7 @@
 (require-package 'diminish)
 (require-package 'elisp-slime-nav)
 (require-package 'expand-region)
+(require-package 'exec-path-from-shell)
 (require-package 'fill-column-indicator)
 (require-package 'find-file-in-project)
 (require-package 'git-commit-mode)

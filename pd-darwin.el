@@ -29,6 +29,9 @@
 
 (setq insert-directory-program "gls")
 
+(use-package exec-path-from-shell
+  :init (exec-path-from-shell-initialize))
+
 ;; Fix up emacs macport info dir
 (add-to-list 'Info-directory-list "/Applications/Emacs.app/Contents/Resources/info")
 
