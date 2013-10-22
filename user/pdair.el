@@ -25,9 +25,6 @@
 ;;; Code:
 
 (setq shell-file-name "zsh")
-(push "/Users/pjd67/Library/Haskell/bin" exec-path)
-(push "/usr/local/bin" exec-path)
-(push "/opt/homebrew/bin" exec-path)
 
 (provide 'pdair)
 ;;; pdair.el ends here
