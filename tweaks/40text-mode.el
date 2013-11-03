@@ -35,4 +35,8 @@
 (use-package wc-mode
   :commands (wc-mode))
 
+(use-package bibtex-mode
+  :mode (("\\.bibtex\\'" . bibtex-mode)
+         ("\\.bib\\'". bibtex-mode)))
+
 (provide '40text-mode)
