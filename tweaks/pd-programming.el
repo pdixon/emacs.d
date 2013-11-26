@@ -32,6 +32,9 @@
 (use-package pkgbuild-mode
   :mode ("PKGBUILD" . pkgbuild-mode))
 
+(use-package conf-mode
+  :mode ("hgrc" . conf-mode))
+
 (use-package cc-mode
   :defer t
   :config
