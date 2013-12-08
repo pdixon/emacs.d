@@ -38,14 +38,13 @@
 
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
-(add-to-list 'package-archives '("org-mode". "http://orgmode.org/elpa/"))
+
 (package-initialize)
 
 (require-package 'use-package)
 (require-package 'applescript-mode)
 (require-package 'auctex)
 (require-package 'cmake-mode)
-(require-package 'color-theme-solarized)
 (require-package 'company)
 (require-package 'deft)
 (require-package 'diminish)
@@ -66,10 +65,9 @@
 (require-package 'lua-mode)
 (require-package 'magit)
 (require-package 'markdown-mode)
-(require-package 'monky)
 (require-package 'multiple-cursors)
-(require-package 'org-plus-contrib)
 (require-package 'pkgbuild-mode)
+(require-package 'solarized-theme)
 (require-package 'window-number)
 (require-package 'yasnippet)
 (require-package 'zenburn-theme)

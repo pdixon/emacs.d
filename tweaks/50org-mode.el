@@ -203,7 +203,6 @@
 
             (require 'ox-html)
             (require 'pd-html)
-            (require 'ox-rss)
             (require 'htmlize)
             (setq org-html-htmlize-output-type 'css)
 
@@ -252,17 +251,6 @@
                      :recursive t
                      :publishing-directory "~/Sites/phil.dixon.gen.nz/"
                      :publishing-function org-publish-attachment)
-                    ("blog-rss"
-                     :base-directory "~/personal/phil.dixon.gen.nz/posts"
-                     :base-extension "org"
-                     :html-line-home "http://phil.dixon.gen.nz"
-                     :rss-extension "xml"
-                     :publishing-directory "~/Sites/phil.dixon.gen.nz/posts"
-                     :publishing-function (org-rss-publish-to-rss)
-                     :section-numbers nil
-                     :table-of-contents nil
-                     :exclude ".*"
-                     :include ("rss.org"))
                     ("blog"
                      :components
                      ("blog-pages" "blog-posts" "blog-drafts" "blog-static"))))))

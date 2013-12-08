@@ -32,7 +32,7 @@
     ;; Add this back in at the end of the list.
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)))
 
-(use-package company-mode
+(use-package company
   :config
   (progn
     (setq company-begin-commands '(self-insert-command))
