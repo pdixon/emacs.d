@@ -29,6 +29,10 @@
   (tooltip-mode -1)
   (blink-cursor-mode -1))
 
+;; Apperance
+(setq solarized-distinct-fringe-background t
+      solarized-use-variable-pitch nil)
+
 (setq vc-handled-backends '(Git Hg))
 (setq whitespace-style '(face trailing tabs)
       whitespace-line-column 80)
