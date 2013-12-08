@@ -40,11 +40,9 @@
 (defconst system-specific-config
       (concat user-dir (car (split-string system-name "\\.")) ".el"))
 
-(add-to-list 'load-path dotfiles-dir)
 (add-to-list 'load-path tweaks-dir)
 (add-to-list 'load-path lisp-dir)
 (add-to-list 'load-path user-dir)
-
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))

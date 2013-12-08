@@ -35,8 +35,8 @@
 ;; Fix up emacs macport info dir
 (add-to-list 'Info-directory-list "/Applications/Emacs.app/Contents/Resources/info")
 
-(set-face-attribute 'default nil :font "Anonymous Pro-12")
-(pd/zenburn)
+;; (set-face-attribute 'default nil :font "Anonymous Pro-12")
+;; (pd/zenburn)
 
 (server-start)
 (setq magit-emacsclient-executable "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient")
