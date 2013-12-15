@@ -1,9 +1,77 @@
 ;; Setup for Org
+(use-package org-agenda
+  :bind (("<f6>" . org-agenda)
+         ("C-c a" . org-agenda)))
+
+(use-package org-capture
+  :bind (("C-c r" . org-capture)))
+
+(use-package ox-html
+  :defer t
+  :config
+  (progn
+    (require 'htmlize)
+    (setq org-html-htmlize-output-type 'css)))
+
+(use-package ox-publish
+  :defer t
+  :commands pd/publish-blog
+  :config
+  (progn
+    (require 'ox-html)
+    (require 'pd-html)
+
+    (defun pd/publish-blog ()
+      "Publish my blog"
+      (interactive)
+      (org-publish-remove-all-timestamps)
+      (org-publish-project "blog"))
+
+    (setq org-publish-project-alist
+          '(("blog-posts"
+             :base-directory "~/personal/phil.dixon.gen.nz/posts"
+             :base-extension "org"
+             :publishing-directory "~/Sites/phil.dixon.gen.nz/posts"
+             :publishing-function pd-html-publish-to-html
+             :with-toc nil
+             :section-numbers nil
+             :auto-sitemap t
+             :sitemap-title ""
+             :sitemap-filename "index.org"
+             :sitemap-sort-files anti-chronologically
+             :sitemap-file-entry-format "%t (%d)")
+            ("blog-drafts"
+             :base-directory "~/personal/phil.dixon.gen.nz/drafts"
+             :base-extension "org"
+             :publishing-directory "~/Sites/phil.dixon.gen.nz/drafts"
+             :publishing-function pd-html-publish-to-html
+             :with-toc nil
+             :section-numbers nil
+             :auto-sitemap t
+             :sitemap-title ""
+             :sitemap-filename "index.org"
+             :sitemap-sort-files anti-chronologically
+             :sitemap-file-entry-format "%t (%d)")
+            ("blog-pages"
+             :base-directory "~/personal/phil.dixon.gen.nz/"
+             :base-extension "org"
+             :publishing-directory "~/Sites/phil.dixon.gen.nz/"
+             :publishing-function pd-html-publish-to-html
+             :with-toc nil
+             :section-numbers nil
+             :creator-info nil)
+            ("blog-static"
+             :base-directory "~/personal/phil.dixon.gen.nz/"
+             :base-extension "jpg\\|png\\|css\\|js"
+             :recursive t
+             :publishing-directory "~/Sites/phil.dixon.gen.nz/"
+             :publishing-function org-publish-attachment)
+            ("blog"
+             :components
+             ("blog-pages" "blog-posts" "blog-drafts" "blog-static"))))))
+
 (use-package org
   :mode ("\\.org\\'" . org-mode)
-  :bind (("C-c a" . org-agenda)
-         ("<f6>" . org-agenda)
-         ("C-c r" . org-capture))
   :config (progn
             (setq org-directory "~/org/")
             (setq org-default-notes-file (concat org-directory "inbox.org"))
@@ -12,7 +80,6 @@
 
             (setq org-hide-leading-stars t)
             (setq org-use-sub-superscripts "{}")
-
 
             (setq org-fast-tag-selection-single-key 'expert)
             (setq org-log-into-drawer "LOGBOOK")
@@ -199,63 +266,6 @@
                    ((bh/is-project-p)
                     next-headline)
                    (t
-                    nil)))))
-
-            (require 'ox-html)
-            (require 'pd-html)
-            (require 'htmlize)
-            (setq org-html-htmlize-output-type 'css)
-
-            (defun pd/publish-blog ()
-              "Publish my blog"
-              (interactive)
-              (org-publish-remove-all-timestamps)
-              (org-publish-project "blog"))
-
-            (setq org-publish-project-alist
-                  '(("blog-posts"
-                     :base-directory "~/personal/phil.dixon.gen.nz/posts"
-                     :base-extension "org"
-                     :publishing-directory "~/Sites/phil.dixon.gen.nz/posts"
-                     :publishing-function pd-html-publish-to-html
-                     :with-toc nil
-                     :section-numbers nil
-                     :auto-sitemap t
-                     :sitemap-title ""
-                     :sitemap-filename "index.org"
-                     :sitemap-sort-files anti-chronologically
-                     :sitemap-file-entry-format "%t (%d)")
-                    ("blog-drafts"
-                     :base-directory "~/personal/phil.dixon.gen.nz/drafts"
-                     :base-extension "org"
-                     :publishing-directory "~/Sites/phil.dixon.gen.nz/drafts"
-                     :publishing-function pd-html-publish-to-html
-                     :with-toc nil
-                     :section-numbers nil
-                     :auto-sitemap t
-                     :sitemap-title ""
-                     :sitemap-filename "index.org"
-                     :sitemap-sort-files anti-chronologically
-                     :sitemap-file-entry-format "%t (%d)")
-                    ("blog-pages"
-                     :base-directory "~/personal/phil.dixon.gen.nz/"
-                     :base-extension "org"
-                     :publishing-directory "~/Sites/phil.dixon.gen.nz/"
-                     :publishing-function pd-html-publish-to-html
-                     :with-toc nil
-                     :section-numbers nil
-                     :creator-info nil)
-                    ("blog-static"
-                     :base-directory "~/personal/phil.dixon.gen.nz/"
-                     :base-extension "jpg\\|png\\|css\\|js"
-                     :recursive t
-                     :publishing-directory "~/Sites/phil.dixon.gen.nz/"
-                     :publishing-function org-publish-attachment)
-                    ("blog"
-                     :components
-                     ("blog-pages" "blog-posts" "blog-drafts" "blog-static"))))))
-
-
-
+                    nil)))))))
 
 (provide '50org-mode)
