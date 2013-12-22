@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ns-pop-up-frames nil)
+ '(ns-use-srgb-colorspace t)
  '(pr-gv-command "evince")
  '(pr-ps-printer-alist (quote ((default "gtklp" nil "" nil))))
  '(pr-txt-printer-alist (quote ((default "gtklp" nil nil))))
