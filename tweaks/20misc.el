@@ -31,7 +31,12 @@
 
 ;; Apperance
 (setq solarized-distinct-fringe-background t
-      solarized-use-variable-pitch nil)
+      solarized-use-variable-pitch nil
+      solarized-height-minus-1 1.0
+      solarized-height-plus-1 1.0
+      solarized-height-plus-2 1.0
+      solarized-height-plus-3 1.0
+      solarized-height-plus-4 1.0)
 
 (setq vc-handled-backends '(Git Hg))
 (setq whitespace-style '(face trailing tabs)
