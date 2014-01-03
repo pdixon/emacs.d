@@ -8,7 +8,10 @@
 (use-package lua-mode
   :mode ("\\.lua\\'" . lua-mode)
   :interpreter (("lua" . lua-mode)
-                ("luajit" . lua-mode)))
+                ("luajit" . lua-mode))
+  :config
+  (progn
+    (setq lua-indent-level 4)))
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)
@@ -30,7 +33,7 @@
   :mode ("\\.ly\\'" . LilyPond-mode))
 
 (use-package pkgbuild-mode
-  :mode ("PKGBUILD" . pkgbuild-mode))
+  :mode ("PKGBUILD\\'" . pkgbuild-mode))
 
 (use-package conf-mode
   :mode ("hgrc" . conf-mode))
