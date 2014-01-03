@@ -177,9 +177,6 @@
   :bind (("M-\"" . er/contract-region)
          ("M-'" . er/expand-region)))
 
-(use-package iy-go-to-char
-  :bind ("C-z" . iy-go-to-char))
-
 (use-package magit
   :bind ("<f7>" . magit-status)
   :config
@@ -190,12 +187,6 @@
               #'(lambda ()
                   (set-fill-column 72)
                   (flyspell-mode)))))
-(use-package monky
-  :defer t
-  :config
-  (progn
-    (setq monky-process-type 'cmdserver)))
-
 
 (use-package ediff
   :defer t
@@ -208,9 +199,6 @@
          ("C-t" . transpose-dwim)
          ("M-c". toggle-letter-case)
          ("M-<SPC>" . cycle-spacing)))
-
-(setq cua-enable-cua-keys nil)
-(cua-mode)
 
 (defun delete-indentation-forward ()
   (interactive)
