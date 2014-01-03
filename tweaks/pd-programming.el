@@ -107,6 +107,8 @@
 
     (add-hook 'emacs-lisp-mode-hook 'pd/elisp-mode-hook)))
 
+(use-package flycheck)
+
 ;; From emacs start kit v2.
 ;;; These belong in prog-mode-hook:
 

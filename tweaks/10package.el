@@ -53,6 +53,7 @@
 (require-package 'exec-path-from-shell)
 (require-package 'fill-column-indicator)
 (require-package 'find-file-in-project)
+(require-package 'flycheck)
 (require-package 'git-commit-mode)
 (require-package 'gitconfig-mode)
 (require-package 'gitignore-mode)
