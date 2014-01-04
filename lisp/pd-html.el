@@ -42,20 +42,22 @@ holding export options."
            (org-export-data (or (plist-get info :title) "") info))
    (format "<meta name=\"author\" content=\"%s\">\n"
            (org-export-data (plist-get info :author) info))
+   (format "<meta name=\"generator\" content=\"Org-mode\">\n")
+   "<link href=\"/css/style.css\" rel=\"stylesheet\" style=\"text/css\" />\n"
    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-   "<link href=\"/css/bootstrap.css\" rel=\"stylesheet\" style=\"text/css\" />\n"
    "</head>\n"
    "<body>\n"
+   "<div id=\"wrap\">\n"
    ;; Preamble.
-   "<div class=\"navbar navbar-inverse navbar-static-top\">\n"
-   "<div class=\"navbar-inner\">\n"
-   "<div class=\"container\" >\n"
-   "<a class=\"brand\" href\"/\">Phillip Dixon</a>\n"
-   "<ul class=\"nav\">\n"
+   "<div class=\"navbar navbar-default navbar-static-top\" role=\"navigation\">\n"
+   "<div class=\"container\">\n"
+   "<div class=\"navbar-header\">\n"
+   "<a class=\"navbar-brand\" href=\"/\">Phillip Dixon</a>\n"
+   "</div>\n"
+   "<ul class=\"nav navbar-nav\">\n"
    "<li><a href=\"/\">Home</a></li>\n"
    "<li><a href=\"/posts/\">Posts</a></li>\n"
    "</ul>\n"
-   "</div>\n"
    "</div>\n"
    "</div>\n"
    ;; Document contents.
@@ -64,12 +66,16 @@ holding export options."
    (format "<h1 class=\"title\">%s</h1>\n"
            (org-export-data (or (plist-get info :title) "") info))
    contents
-   "</article>"
+   "</article>\n"
+   "</div>\n"
    ;; Postamble.
-   "<footer class=\"container\">\n"
-   "<p>&#169; 2009&#8211;12 <a href=\"/\">Phillip Dixon</a> ( <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/nz/\">Some rights reserved</a> )</p>\n"
-   (format "<p>Generated with: %s</p>" (plist-get info :creator))
    "<footer>\n"
+   "<div class=\"container\">\n"
+   "<p>&#169; 2009&#8211;14 <a href=\"/\">Phillip Dixon</a> ( <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/nz/\">Some rights reserved</a> )</p>\n"
+   (format "<p class=\"creator\">Generated with: %s</p>\n"
+           (plist-get info :creator) info)
+   "</div>\n"
+   "</footer>\n"
    "</body>\n"
    "</html>\n"))
 
