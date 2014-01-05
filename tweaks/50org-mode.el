@@ -27,48 +27,27 @@
       (org-publish-remove-all-timestamps)
       (org-publish-project "blog"))
 
+    (setq org-confirm-babel-evaluate nil)
+
     (setq org-publish-project-alist
-          '(("blog-posts"
-             :base-directory "~/personal/phil.dixon.gen.nz/posts"
-             :base-extension "org"
-             :publishing-directory "~/Sites/phil.dixon.gen.nz/posts"
-             :publishing-function pd-html-publish-to-html
-             :with-toc nil
-             :section-numbers nil
-             :auto-sitemap t
-             :sitemap-title ""
-             :sitemap-filename "index.org"
-             :sitemap-sort-files anti-chronologically
-             :sitemap-file-entry-format "%t (%d)")
-            ("blog-drafts"
-             :base-directory "~/personal/phil.dixon.gen.nz/drafts"
-             :base-extension "org"
-             :publishing-directory "~/Sites/phil.dixon.gen.nz/drafts"
-             :publishing-function pd-html-publish-to-html
-             :with-toc nil
-             :section-numbers nil
-             :auto-sitemap t
-             :sitemap-title ""
-             :sitemap-filename "index.org"
-             :sitemap-sort-files anti-chronologically
-             :sitemap-file-entry-format "%t (%d)")
-            ("blog-pages"
+          '(("blog-content"
              :base-directory "~/personal/phil.dixon.gen.nz/"
              :base-extension "org"
+             :recursive t
              :publishing-directory "~/Sites/phil.dixon.gen.nz/"
              :publishing-function pd-html-publish-to-html
              :with-toc nil
              :section-numbers nil
-             :creator-info nil)
+             :html-html5-fancy t)
             ("blog-static"
              :base-directory "~/personal/phil.dixon.gen.nz/"
-             :base-extension "jpg\\|png\\|css\\|js"
+             :base-extension "jpg\\|png\\|css\\|js\\|ico\\|gif"
              :recursive t
              :publishing-directory "~/Sites/phil.dixon.gen.nz/"
              :publishing-function org-publish-attachment)
             ("blog"
              :components
-             ("blog-pages" "blog-posts" "blog-drafts" "blog-static"))))))
+             ("blog-content" "blog-static"))))))
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)

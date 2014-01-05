@@ -18,11 +18,11 @@
                     (nntp-open-connection-function nntp-open-network-stream)
                     (nntp-address "news.gmane.org")))
 
-(add-to-list 'gnus-secondary-select-methods
-             '(nntp "news.gwene.org"
-                    (nntp-connection-timeout 360)
-                    (nntp-open-connection-function nntp-open-network-stream)
-                    (nntp-address "news.gwene.org")))
+;; (add-to-list 'gnus-secondary-select-methods
+;;              '(nntp "news.gwene.org"
+;;                     (nntp-connection-timeout 360)
+;;                     (nntp-open-connection-function nntp-open-network-stream)
+;;                     (nntp-address "news.gwene.org")))
 
 
 ;; (setq imap-log t)
