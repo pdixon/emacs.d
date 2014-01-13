@@ -147,6 +147,9 @@
       (find-alternate-file ".."))
     (bind-key "^" 'pd-dired-find-alternate-parent dired-mode-map)))
 
+(use-package dired-x
+  :bind (("C-x C-j" . dired-jump)
+         ("C-x 4 C-j" . dired-jump-other-window)))
 
 (defun pd/light ()
   "Activate light theme."
