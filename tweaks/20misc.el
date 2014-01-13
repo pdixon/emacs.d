@@ -188,6 +188,9 @@
                   (set-fill-column 72)
                   (flyspell-mode)))))
 
+(use-package hg-commit-mode
+  :defer t)
+
 (use-package ediff
   :defer t
   :config
