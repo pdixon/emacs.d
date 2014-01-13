@@ -155,20 +155,22 @@
   "Activate light theme."
   (interactive)
   (load-theme 'solarized-light t t)
-  (load-theme 'pd-solarized-light-overrides t t)
-  (custom-set-variables '(custom-enabled-themes '(pd-solarized-light-overrides solarized-light))))
+  (load-theme 'pd-basic t t)
+  (custom-set-variables '(custom-enabled-themes '(pd-basic solarized-light))))
 
 (defun pd/dark ()
   "Activate dark theme."
   (interactive)
   (load-theme 'solarized-dark t t)
-  (custom-set-variables '(custom-enabled-themes '(solarized-dark))))
+  (load-theme 'pd-basic t t)
+  (custom-set-variables '(custom-enabled-themes '(pd-basic solarized-dark))))
 
 (defun pd/zenburn ()
   "Activate dark theme."
   (interactive)
   (load-theme 'zenburn t t)
-  (custom-set-variables '(custom-enabled-themes '(zenburn))))
+  (load-theme 'pd-basic t t)
+  (custom-set-variables '(custom-enabled-themes '(pd-basic zenburn))))
 
 
 ;; make scripts executable on save.
