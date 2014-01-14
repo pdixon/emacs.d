@@ -32,7 +32,7 @@
   :prefix "hg-commit-"
   :group 'tools)
 
-(defcustom hg-commit-summary-max-length 50
+(defcustom hg-commit-summary-max-length 60
   "Fontify characters beyond this column in summary lines as errors."
   :group 'hg-commit
   :type 'number)
