@@ -283,8 +283,8 @@ point reaches the beginning or end of the buffer, stop there."
     (setq ffip-project-root-function 'pd-project-get-root)))
 
 (use-package pd-project
-  :commands (pd-project-compile
-             pd-project-grep
+  :bind(("C-c b" . pd-project-compile))
+  :commands (pd-project-grep
              pd-project-todo))
 
 (use-package pd-window-extras
