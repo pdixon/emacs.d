@@ -65,8 +65,13 @@
                                           *emacs-load-start*))))
   (message "Basic Config...done (%.3fs)" elapsed))
 
-;; Load up my config stuff
+;; Basic Apperance
+(if (not (eq system-type 'darwin))
+    (menu-bar-mode 0))
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
 
+;; Load up my config stuff
 (use-package 15defaults)
 (use-package 15ido)
 (use-package 20misc)
