@@ -32,13 +32,6 @@
 (use-package exec-path-from-shell
   :init (exec-path-from-shell-initialize))
 
-;; Fix up emacs macport info dir
-(add-to-list 'Info-directory-list "/Applications/Emacs.app/Contents/Resources/info")
-
-;; (set-face-attribute 'default nil :font "Anonymous Pro-12")
-;; (pd/zenburn)
-
-(server-start)
 (setq magit-emacsclient-executable "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient")
 
 (provide 'pd-darwin)
