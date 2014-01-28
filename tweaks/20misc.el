@@ -194,7 +194,7 @@
                   (flyspell-mode)))))
 
 (use-package hg-commit-mode
-  :defer t)
+  :mode ("hg-editor-.*\\.txt\\'" . hg-commit-mode))
 
 (use-package ediff
   :defer t
