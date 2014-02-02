@@ -52,17 +52,27 @@
 (setq user-mail-address "phil@dixon.gen.nz")
 (setq user-full-name "Phillip Dixon")
 
-(eudc-set-server "localhost" 'mab t)
-(eudc-protocol-set 'eudc-inline-expansion-format
-                   '("%s %s <%s>" firstname lastname email)
-                   'mab)
+(use-package eudc
+  :defer t
+  :config
+  (progn
+    (eudc-set-server "localhost" 'mab t)
+    (eudc-protocol-set 'eudc-inline-expansion-format
+                       '("%s %s <%s>" firstname lastname email)
+                       'mab)
 
-(defun eudc-select (choices beg end)
-    (let ((replacement
-           (ido-completing-read "Multiple matches found; choose one: "
-                                (mapcar 'list choices))))
-      (delete-region beg end)
-      (insert replacement)))
+    (defun eudc-select (choices beg end)
+      (let ((replacement
+             (ido-completing-read "Multiple matches found; choose one: "
+                                  (mapcar 'list choices))))
+        (delete-region beg end)
+        (insert replacement)))))
+
+(use-package message
+  :defer t
+  :config
+  (progn
+    (require 'eudc)))
 
 (setq send-mail-function 'smtpmail-send-it 
       message-send-mail-function 'smtpmail-send-it
