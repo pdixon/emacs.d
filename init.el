@@ -72,12 +72,165 @@
 (scroll-bar-mode 0)
 
 ;; Load up my config stuff
-(use-package 15defaults)
-(use-package 15ido)
+(setq inhibit-startup-message t)
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Don't clutter up directories with files~
+(setq backup-directory-alist `(("." . ,(expand-file-name
+                                        (concat dotfiles-dir "backups")))))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+(show-paren-mode 1)
+
+;; Transparently open compressed files
+(auto-compression-mode t)
+
+;; Enable syntax highlighting for older Emacsen that have it off
+(global-font-lock-mode t)
+
+;; Save a list of recent files visited.
+(recentf-mode 1)
+
+(use-package autorevert
+  :init (global-auto-revert-mode)
+  :config
+  (progn
+    (setq global-auto-revert-non-file-buffers t
+          auto-revert-verbose nil)))
+
+(electric-pair-mode 1)
+;;(electric-indent-mode 1)
+;;(electric-layout-mode 1)
+
+(savehist-mode t)
+
+(put 'set-goal-column 'disabled nil)
+
+(put 'narrow-to-region 'disabled nil)
+
+(column-number-mode t)
+(line-number-mode t)
+(size-indication-mode t)
+
+(setq fill-column 78)
+
+;; auto-complete in minibuffer
+(icomplete-mode 1)
+
+(set-default 'sentence-end-double-space nil)
+
+
+;; Keep cursor away from edges when scrolling up/down
+;;(require 'smooth-scrolling)
+(mouse-wheel-mode t)
+
+;; Never insert tabs
+(set-default 'indent-tabs-mode nil)
+
+;; Show me empty lines after buffer end
+(set-default 'indicate-empty-lines t)
+
+(setq diff-switches "-u")
+
+
+(use-package ido
+  :init
+  (ido-mode t)
+  :config
+  (progn
+    (setq ido-enable-prefix nil
+      ido-enable-flex-matching t
+      ido-auto-merge-work-directories-length nil
+      ido-create-new-buffer 'always
+      ido-use-filename-at-point 'guess
+      ido-use-virtual-buffers t
+      ido-handle-duplicate-virtual-buffers 2
+      ido-max-prospects 10)))
+
+
 (use-package 20misc)
 (use-package 30defuns)
-(use-package 40text-mode)
-(use-package 50ansi-term)
+
+(add-hook 'text-mode-hook
+          '(lambda ()
+             (auto-fill-mode 1)
+             (flyspell-mode 1)))
+
+(use-package deft
+  :bind ("<f5>" . deft)
+  :config
+  (progn
+    (setq deft-extension "org")
+    (setq deft-directory "~/personal/notes")
+    (setq deft-text-mode 'org-mode)
+    (setq deft-use-filename-as-title t)))
+
+(use-package markdown-mode
+  :mode (("\\.md\\'" . markdown-mode)
+         ("\\.mdwn\\'" . markdown-mode)
+         ("\\.markdown" . markdown-mode))
+  :config
+  (progn
+    (setq markdown-command "pandoc")
+
+    (add-hook 'markdown-mode-hook 'imenu-add-menubar-index)))
+
+
+(use-package pd-blog-helpers
+  :commands (pd-blog-draft
+             pd-blog-publish-post))
+
+(use-package writegood-mode
+  :commands (writegood-mode))
+
+(use-package wc-mode
+  :commands (wc-mode))
+
+(use-package bibtex-mode
+  :mode (("\\.bibtex\\'" . bibtex-mode)
+         ("\\.bib\\'". bibtex-mode)))
+
+(use-package ansi-term
+  :bind ("<f10>" . pd-visit-term)
+  :init
+  (progn
+    (defun pd-visit-term ()
+      ""
+      (interactive)
+      (if (not (get-buffer "*ansi-term*"))
+          (ansi-term (getenv "SHELL"))
+        (switch-to-buffer "*ansi-term*"))))
+  :config
+  (progn
+    (defun my-term-use-utf8 ()
+      (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
+    (add-hook 'term-exec-hook 'my-term-use-utf8)
+
+    (defun my-term-hook ()
+      (goto-address-mode)
+      (define-key term-raw-map "\C-y" 'my-term-paste)
+      (let ((base03  "#002b36")
+            (base02  "#073642")
+            (base01  "#586e75")
+            (base00  "#657b83")
+            (base0   "#839496")
+            (base1   "#93a1a1")
+            (base2   "#eee8d5")
+            (base3   "#fdf6e3")
+            (yellow  "#b58900")
+            (orange  "#cb4b16")
+            (red     "#dc322f")
+            (magenta "#d33682")
+            (violet  "#6c71c4")
+            (blue    "#268bd2")
+            (cyan    "#2aa198")
+            (green   "#859900"))
+        (setq ansi-term-color-vector
+              (vconcat `(unspecified ,base02 ,red ,green ,yellow ,blue
+                                     ,magenta ,cyan ,base2)))))
+    (add-hook 'term-mode-hook 'my-term-hook)))
+
 (use-package 50org-mode)
 (use-package pd-autotyping)
 (use-package pd-programming)
