@@ -14,7 +14,6 @@
     (setq deft-use-filename-as-title t)))
 
 (use-package markdown-mode
-  :load-path "vendor/markdown-mode/"
   :mode (("\\.md\\'" . markdown-mode)
          ("\\.mdwn\\'" . markdown-mode)
          ("\\.markdown" . markdown-mode))
