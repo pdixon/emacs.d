@@ -32,7 +32,5 @@
 (use-package exec-path-from-shell
   :init (exec-path-from-shell-initialize))
 
-(setq magit-emacsclient-executable "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient")
-
 (provide 'pd-darwin)
 ;;; pd-darwin.el ends here
