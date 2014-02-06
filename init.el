@@ -265,10 +265,16 @@
 (use-package pd-autotyping)
 (use-package pd-programming)
 
-(use-package pd-darwin
-  :if (eq system-type 'darwin))
-(use-package pd-linux
-  :if (eq system-type 'gnu/linux))
+(use-package exec-path-from-shell
+  :if (eq system-type 'darwin)
+  :ensure exec-path-from-shell
+  :init (exec-path-from-shell-initialize))
+
+(setq mac-option-modifier 'meta)
+(setq mac-command-modifier 'none)
+
+(if (eq system-type 'darwin)
+    (setq insert-directory-program "gls"))
 
 (if (file-exists-p system-specific-config)
     (load system-specific-config)
