@@ -58,12 +58,57 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
-(require '10package)
+
+;; package.el setup
+(require 'package)
+
+(defun require-package (package)
+  "Ask elpa to install given PACKAGE."
+  (unless (package-installed-p package)
+    (pakage-install package)))
+
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+
+(package-initialize)
+
+(require-package 'use-package)
 (require 'use-package)
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
   (message "Basic Config...done (%.3fs)" elapsed))
+
+(require-package 'applescript-mode)
+(require-package 'auctex)
+(require-package 'cmake-mode)
+(require-package 'company)
+(require-package 'deft)
+(require-package 'diminish)
+(require-package 'elisp-slime-nav)
+(require-package 'expand-region)
+(require-package 'exec-path-from-shell)
+(require-package 'fill-column-indicator)
+(require-package 'find-file-in-project)
+(require-package 'flycheck)
+(require-package 'git-commit-mode)
+(require-package 'gitconfig-mode)
+(require-package 'gitignore-mode)
+(require-package 'go-mode)
+(require-package 'google-c-style)
+(require-package 'graphviz-dot-mode)
+(require-package 'haskell-mode)
+(require-package 'htmlize)
+(require-package 'ibuffer-vc)
+(require-package 'lua-mode)
+(require-package 'magit)
+(require-package 'markdown-mode)
+(require-package 'multiple-cursors)
+(require-package 'pkgbuild-mode)
+(require-package 'solarized-theme)
+(require-package 'window-number)
+(require-package 'yasnippet)
+(require-package 'zenburn-theme)
 
 ;; Basic Apperance
 (if (not (eq system-type 'darwin))
