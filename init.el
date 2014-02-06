@@ -83,7 +83,6 @@
 (require-package 'auctex)
 (require-package 'cmake-mode)
 (require-package 'company)
-(require-package 'deft)
 (require-package 'diminish)
 (require-package 'elisp-slime-nav)
 (require-package 'expand-region)
@@ -102,7 +101,6 @@
 (require-package 'ibuffer-vc)
 (require-package 'lua-mode)
 (require-package 'magit)
-(require-package 'markdown-mode)
 (require-package 'multiple-cursors)
 (require-package 'pkgbuild-mode)
 (require-package 'solarized-theme)
@@ -203,6 +201,7 @@
              (flyspell-mode 1)))
 
 (use-package deft
+  :ensure deft
   :bind ("<f5>" . deft)
   :config
   (progn
@@ -212,13 +211,13 @@
     (setq deft-use-filename-as-title t)))
 
 (use-package markdown-mode
+  :ensure markdown-mode
   :mode (("\\.md\\'" . markdown-mode)
          ("\\.mdwn\\'" . markdown-mode)
          ("\\.markdown" . markdown-mode))
   :config
   (progn
     (setq markdown-command "pandoc")
-
     (add-hook 'markdown-mode-hook 'imenu-add-menubar-index)))
 
 
@@ -227,9 +226,11 @@
              pd-blog-publish-post))
 
 (use-package writegood-mode
+  :ensure writegood-mode
   :commands (writegood-mode))
 
 (use-package wc-mode
+  :ensure wc-mode
   :commands (wc-mode))
 
 (use-package bibtex-mode
