@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ns-pop-up-frames nil)
- '(package-check-signature nil)
+ ;;'(package-check-signature nil)
  '(ns-use-srgb-colorspace t)
  '(safe-local-variable-values
    (quote
