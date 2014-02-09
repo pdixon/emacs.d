@@ -746,8 +746,21 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Setup for Org
 (use-package org-agenda
-  :bind (("<f6>" . org-agenda)
-         ("C-c a" . org-agenda)))
+  :bind (("<f6>" . my-org-agenda)
+         ("C-c a" . org-agenda))
+  :init
+  (progn
+    (defun my-org-agenda ()
+      (interactive)
+      (org-agenda nil "w")))
+  :config
+  (progn
+    (setq org-agenda-prefix-format
+          '((agenda . " %i %-12:c%?-12t% s %b")
+            (timeline . "  % s %b")
+            (todo . " %i %-12:c %b")
+            (tags . " %i %-12:c %b")
+            (search . " %i %-12:c %b")))))
 
 (use-package org-capture
   :bind (("C-c r" . org-capture)))
@@ -824,7 +837,8 @@ point reaches the beginning or end of the buffer, stop there."
                     ("@write" . ?w)
                     (:endgroup . nil)
                     ("REFILE" . ?f)
-                    ("SOMEDAY" . ?s)))
+                    ("SOMEDAY" . ?s)
+                    ("PROJECT" . ?p)))
             (setq org-use-tag-inheritance t)
             (setq org-tags-exclude-from-inheritance '("@call"
                                                       "@office"
