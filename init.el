@@ -309,7 +309,8 @@
     (put 'dired-find-alternate-file 'disabled nil)
     (setq dired-dwim-target t
           dired-recursive-copies 'always
-          dired-recursive-deletes 'top)
+          dired-recursive-deletes 'top
+          dired-listing-switches "-alh")
     (defun pd-dired-find-alternate-parent ()
       (interactive)
       (find-alternate-file ".."))
