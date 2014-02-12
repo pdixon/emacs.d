@@ -130,6 +130,7 @@
   :config
   (progn
     (setq global-auto-revert-non-file-buffers t
+          auto-revert-check-vc-info t
           auto-revert-verbose nil)))
 
 (electric-pair-mode 1)
