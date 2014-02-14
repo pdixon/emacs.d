@@ -68,6 +68,7 @@
   "Search all project files for REGEXP."
   (interactive "sRegexp grep: ")
   (let ((root (pd-project-get-root)))
+    (grep-compute-defaults)
     (rgrep regexp "* .*" root)))
 
 ;;;###autoload
