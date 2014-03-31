@@ -98,8 +98,8 @@
 (require-package 'zenburn-theme)
 
 ;; Basic Apperance
-(if (not (eq system-type 'darwin))
-    (menu-bar-mode 0))
+;; (if (not (eq system-type 'darwin))
+;;     (menu-bar-mode 0))
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 
@@ -1253,6 +1253,11 @@ point reaches the beginning or end of the buffer, stop there."
   :if (eq system-type 'darwin)
   :ensure t
   :init (exec-path-from-shell-initialize))
+
+(use-package server
+  :init (server-start))
+
+(pd/zenburn)
 
 (setq mac-option-modifier 'meta)
 (setq mac-command-modifier 'none)
