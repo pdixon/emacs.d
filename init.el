@@ -818,7 +818,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package org
   :mode ("\\.org\\'" . org-mode)
   :config (progn
-            (setq org-directory "~/org/")
+            (setq org-directory "~/work/org/")
             (setq org-default-notes-file (concat org-directory "inbox.org"))
             (setq org-agenda-diary-file (concat org-directory "diary.org"))
             (setq org-agenda-files (list org-directory (concat org-directory "projects/")))
@@ -929,19 +929,19 @@ point reaches the beginning or end of the buffer, stop there."
 
             (setq org-capture-templates
                   '(("i" "Interruption" entry
-                     (file "~/org/inbox.org")
+                     (file "~/work/org/inbox.org")
                      "* %?\n"
                      :clock-in t)
                     ("n" "Notes" entry
-                     (file "~/org/inbox.org")
+                     (file "~/work/org/inbox.org")
                      "* %?\n%U\n%i\n%a")
                     ("t" "Todo" entry
-                     (file "~/org/inbox.org")
+                     (file "~/work/org/inbox.org")
                      "* TODO %?\n%U\n%i\n%a")
                     ("w"
                      "Default template"
                      entry
-                     (file "~/org/inbox.org")
+                     (file "~/work/org/inbox.org")
                      "* %^{Title}\n\n  Source: %u, %c\n\n  %i"
                      :empty-lines 1)))
 
