@@ -719,7 +719,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :commands (wc-mode))
 
-(use-package bibtex-mode
+(use-package bibtex
   :mode (("\\.bibtex\\'" . bibtex-mode)
          ("\\.bib\\'". bibtex-mode)))
 
@@ -767,6 +767,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package org-capture
   :bind (("C-c r" . org-capture)))
+
+(use-package ox-bibtex
+  :defer t
+  :load-path "vendor/")
 
 (use-package htmlize
   :ensure t
