@@ -70,7 +70,6 @@
   (unless (package-installed-p package)
     (package-install package)))
 
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 
 (package-initialize)
@@ -517,29 +516,6 @@ point reaches the beginning or end of the buffer, stop there."
          (match-beginning 0)
        cur))))
 
-(defun bh-choose-header-mode ()
-  (interactive)
-  (if (string-equal (substring (buffer-file-name) -2) ".h")
-      (progn
-        ;; OK, we got a .h file, if a .m file exists we'll assume it's
-                                        ; an objective c file. Otherwise, we'll look for a .cpp file.
-        (let ((dot-m-file (concat (substring (buffer-file-name) 0 -1) "m"))
-              (dot-cpp-file (concat (substring (buffer-file-name) 0 -1) "cpp")))
-          (if (file-exists-p dot-m-file)
-              (progn
-                (objc-mode)
-                )
-            (if (file-exists-p dot-cpp-file)
-                (c++-mode)
-              )
-            )
-          )
-        )
-    )
-  )
-
-(add-hook 'find-file-hook 'bh-choose-header-mode)
-
 (defun clean-up-buffer-or-region ()
   "Untabifies, indents and deletes trailing whitespace from buffer or region."
   (interactive)
@@ -719,7 +695,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :commands (wc-mode))
 
-(use-package bibtex-mode
+(use-package bibtex
   :mode (("\\.bibtex\\'" . bibtex-mode)
          ("\\.bib\\'". bibtex-mode)))
 
@@ -767,6 +743,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package org-capture
   :bind (("C-c r" . org-capture)))
+
+(use-package ox-bibtex
+  :defer t
+  :load-path "vendor/")
 
 (use-package htmlize
   :ensure t
@@ -1132,6 +1112,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package conf-mode
   :mode ("hgrc" . conf-mode))
+
+(use-package dummy-h-mode
+  :ensure t
+  :mode ("\\.h$" . dummy-h-mode))
 
 (use-package cc-mode
   :defer t
