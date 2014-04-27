@@ -1157,7 +1157,7 @@ point reaches the beginning or end of the buffer, stop there."
            '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
 
     (add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
-    (add-hook 'objc-mode-hook 'company-clang)
+    ;;(add-hook 'objc-mode-hook 'company-clang)
 
     (use-package pd-cc-mode-extras
       :commands (pd/toggle-header
