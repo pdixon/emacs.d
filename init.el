@@ -1195,6 +1195,16 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
+(use-package switch-window
+  :ensure t
+  :bind ("C-x o" . switch-window))
+
+(use-package popwin
+  :ensure t
+  :init
+  (progn
+    (popwin-mode t)))
+
 ;; From emacs start kit v2.
 ;;; These belong in prog-mode-hook:
 
