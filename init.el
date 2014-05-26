@@ -307,6 +307,7 @@
   :defer t
   :config
   (progn
+    (setq dired-listing-switches "-alh --group-directories-first")
     (put 'dired-find-alternate-file 'disabled nil)
     (setq dired-dwim-target t
           dired-recursive-copies 'always
