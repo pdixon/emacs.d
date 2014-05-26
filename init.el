@@ -431,6 +431,13 @@ point reaches the beginning or end of the buffer, stop there."
   :bind (("C-<" . mc/mark-previous-like-this)
          ("C->" . mc/mark-next-like-this)))
 
+(use-package paredit
+  :ensure t
+  :defer t
+  :init
+  (progn
+    (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)))
+
 ;; Yank line or region
 (defadvice kill-ring-save (before slick-copy activate compile) "When called
   interactively with no active region, copy a single line instead."
@@ -469,12 +476,6 @@ point reaches the beginning or end of the buffer, stop there."
              pd/setup-windows
              pd/toggle-just-one-window))
 
-
-(defun my-toggle-fullscreen ()
-  (interactive)
-  (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
-                                           nil
-                                         'fullboth)))
 (defun my-kill-word ()
   (interactive)
   (save-excursion
