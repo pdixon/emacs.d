@@ -3,7 +3,8 @@
 ;; Copyright (C) 2014  Phillip Dixon
 
 ;; Author: Phillip Dixon <phil@dixon.gen.nz>
-;; Keywords: 
+;; Keywords: convenience
+;; Version: 0.0.1
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -36,6 +37,7 @@
 
 (defvar pd-cleanroom-mode nil)
 
+;;;###autoload
 (define-minor-mode pd-cleanroom-mode
   :init-value nil
   :global t
