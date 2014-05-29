@@ -79,16 +79,15 @@
           (if this-win-2nd (other-window 1))))))
 
 ;;;###autoload
-(defun my-toggle-window-dedicated ()
+(defun pd/toggle-window-dedicated ()
   "Toggle whether this window is dedicated to this buffer."
   (interactive)
-  (set-window-dedicated-p
-   (selected-window)
-   (not (window-dedicated-p (selected-window))))
-  (if (window-dedicated-p (selected-window))
-      (message "Window is now dedicated.")
-    (message "Window is no longer dedicated.")))
-
+  (let* ((window (selected-window))
+         (dedicated (window-dedicated-p window)))
+    (set-window-dedicated-p window (not dedicated))
+    (message "Window %sdedicated to %s"
+             (if dedicated "no longer " "")
+             (buffer-name))))
 
 ;;;###autoload
 (defun pd/setup-windows ()
