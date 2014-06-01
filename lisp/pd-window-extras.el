@@ -79,6 +79,20 @@
           (if this-win-2nd (other-window 1))))))
 
 ;;;###autoload
+(defun pd/vsplit-last-buffer ()
+  (interactive)
+  (split-window-vertically)
+  (other-window 1 nil)
+  (switch-to-next-buffer))
+
+;;;###autoload
+(defun pd/hsplit-last-buffer ()
+  (interactive)
+   (split-window-horizontally)
+  (other-window 1 nil)
+  (switch-to-next-buffer))
+
+;;;###autoload
 (defun pd/toggle-window-dedicated ()
   "Toggle whether this window is dedicated to this buffer."
   (interactive)
