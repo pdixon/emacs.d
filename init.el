@@ -35,6 +35,10 @@
 (defconst user-dir (concat dotfiles-dir "user/"))
 
 
+(defun my-system-name ()
+  ""
+  (car (split-string system-name "\\.")))
+
 ;; You can keep system-specific customizations here
 ;; Use the only the inital term if the system name is a FQDN.
 (defconst system-specific-config
@@ -57,6 +61,11 @@
 
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+
+(when (eq (my-system-name) "bigmacdev")
+    (setq url-proxy-services '(("no_proxy" . "\\.au.ivc")
+                               ("http" . "127.0.0.1:3128")
+                               ("https" . "127.0.0.1:3128"))))
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
