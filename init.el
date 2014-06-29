@@ -821,6 +821,8 @@ point reaches the beginning or end of the buffer, stop there."
 
             (setq org-hide-leading-stars t)
             (setq org-use-sub-superscripts "{}")
+            (setq org-footnote-define-inline t)
+            (setq org-footnote-auto-adjust nil)
 
             (setq org-fast-tag-selection-single-key 'expert)
             (setq org-log-into-drawer "LOGBOOK")
