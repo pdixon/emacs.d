@@ -851,7 +851,7 @@ point reaches the beginning or end of the buffer, stop there."
                                                       "@write"
                                                       "PROJECT"))
 
-
+            (setq org-use-speed-commands t)
             (setq org-use-fast-todo-selection t)
             (setq org-todo-keywords
                   '((sequence "TODO(t)" "|" "DONE(d!)")
