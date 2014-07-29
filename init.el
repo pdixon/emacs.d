@@ -786,8 +786,7 @@ point reaches the beginning or end of the buffer, stop there."
     (defun pd/publish-blog ()
       "Publish my blog"
       (interactive)
-      (org-publish-remove-all-timestamps)
-      (org-publish-project "blog"))
+      (org-publish-project "blog" t))
 
     (setq org-confirm-babel-evaluate nil)
 
@@ -797,10 +796,30 @@ point reaches the beginning or end of the buffer, stop there."
              :base-extension "org"
              :recursive t
              :publishing-directory "~/Sites/phil.dixon.gen.nz/"
-             :publishing-function pd-html-publish-to-html
+             :publishing-function (org-html-publish-to-html)
              :with-toc nil
              :section-numbers nil
-             :html-html5-fancy t)
+             :html-doctype "html5"
+             :html-html5-fancy t
+             :html-head-include-default-style nil
+             :html-head-include-scripts nil
+             :html-head-extra
+         "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"http://phil.dixon.gen.nz/rss.xml\" title=\"RSS feed for phil.dixon.gen.nz\">
+<link href= \"/css/style.css\" rel=\"stylesheet\" type=\"text/css\" />
+<meta name=\"viewport\" content=\"initial-scale=1,width=device-width,minimum-scale=1\">"
+         :html-preamble
+         "<div class=\"sidebar\">
+    <a class=\"home\" href=\"/\">
+        Home
+    </a>
+    <a class=\"github\" href=\"https://github.com/pdixon\">
+        Github
+    </a>
+    <a class=\"rss\" href=\"/index.xml\">
+        RSS
+    </a>
+</div>"
+             :html-postamble "")
             ("blog-static"
              :base-directory "~/personal/phil.dixon.gen.nz/"
              :base-extension "jpg\\|png\\|css\\|js\\|ico\\|gif"
