@@ -177,6 +177,11 @@
 
 (setq diff-switches "-u")
 
+(bind-keys :prefix-map my-toggle-map
+           :prefix "C-x t"
+           ("f" . auto-fill-mode)
+           ("r" . dired-toggle-read-only)
+           ("w" . whitespace-mode))
 
 (use-package ido
   :init
