@@ -181,7 +181,8 @@
            :prefix "C-x t"
            ("f" . auto-fill-mode)
            ("r" . dired-toggle-read-only)
-           ("w" . whitespace-mode))
+           ("w" . whitespace-mode)
+           ("v" . visual-line-mode))
 
 (use-package ido
   :init
