@@ -764,7 +764,24 @@ point reaches the beginning or end of the buffer, stop there."
             (search . " %i %-12:c %b")))))
 
 (use-package org-capture
-  :bind (("C-c r" . org-capture)))
+  :bind (("C-c r" . org-capture))
+  :config
+  (progn
+    (setq org-capture-templates
+          '(("i" "Interruption" entry
+             (file "~/work/org/inbox.org")
+             "* %?\n"
+             :clock-in t)
+            ("n" "Notes" entry
+             (file "~/work/org/inbox.org")
+             "* %?\n%U\n%i\n%a")
+            ("t" "Todo" entry
+             (file "~/work/org/inbox.org")
+             "* TODO %?\n%U\n%i\n%a")
+            ("b" "Book" entry
+             (file+headline "~/personal/notes/reading.org" "Read")
+             "** %^{Title}\n:PROPERTIES:\n:Author: %^{Author}p \n:Started: %u\n:Finished: \n:END:\n\n"
+             :immediate-finish t)))))
 
 (use-package ox-bibtex
   :defer t
@@ -930,24 +947,7 @@ point reaches the beginning or end of the buffer, stop there."
                                                (setq org-agenda-tags-column (- (window-width)))))
 
 
-            (setq org-capture-templates
-                  '(("i" "Interruption" entry
-                     (file "~/work/org/inbox.org")
-                     "* %?\n"
-                     :clock-in t)
-                    ("n" "Notes" entry
-                     (file "~/work/org/inbox.org")
-                     "* %?\n%U\n%i\n%a")
-                    ("t" "Todo" entry
-                     (file "~/work/org/inbox.org")
-                     "* TODO %?\n%U\n%i\n%a")
-                    ("w"
-                     "Default template"
-                     entry
-                     (file "~/work/org/inbox.org")
-                     "* %^{Title}\n\n  Source: %u, %c\n\n  %i"
-                     :empty-lines 1)))
-
+            
             ;; Refile setup
             (setq org-completion-use-ido t)
             (setq org-refile-targets (quote ((org-agenda-files :maxlevel . 3) (nil :maxlevel . 3))))
