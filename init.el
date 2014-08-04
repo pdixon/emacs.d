@@ -374,6 +374,19 @@
   :bind (("M-i" . change-inner)
          ("M-o" . change-outer)))
 
+(use-package hungry-delete
+  :ensure t
+  :init
+  (progn (global-hungry-delete-mode)))
+
+(use-package centered-window-mode
+  :ensure t
+  :defer t)
+
+(use-package git-auto-commit-mode
+  :ensure t
+  :defer t)
+
 (use-package magit
   :ensure t
   :bind ("<f7>" . magit-status)
