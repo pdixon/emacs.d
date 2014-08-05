@@ -25,35 +25,23 @@
 
 ;;; Code:
 
-(defun pd-cleanroom-adjust-window (&optional arg)
-  (let ((windows (window-list)))
-    (dolist (window windows)
-      (unless (window-minibuffer-p window)
-        (if (not arg)
-            (let* ((current-width (frame-total-cols))
-                   (margin (/ (- current-width 100) 2)))
-              (set-window-margins window margin margin))
-          (set-window-margins window nil nil))))))
-
-(defvar pd-cleanroom-mode nil)
+(require 'pd-centered-window)
 
 ;;;###autoload
 (define-minor-mode pd-cleanroom-mode
   :init-value nil
   :global t
-  :variable pd-cleanroom-mode
   :group 'editing-basics
   (toggle-frame-fullscreen)
   (if (not pd-cleanroom-mode)
       (progn
         (menu-bar-mode 1)
-        (pd-cleanroom-adjust-window t)
-        (remove-hook 'window-configuration-change-hook 'pd-cleanroom-adjust-window))
+        (pd-centered-window-mode -1)
+        )
     (progn
       (menu-bar-mode -1)
       (delete-other-windows)
-      (add-hook 'window-configuration-change-hook 'pd-cleanroom-adjust-window)
-      (pd-cleanroom-adjust-window nil))))
+      (pd-centered-window-mode 1))))
 
 (provide 'pd-cleanroom)
 ;;; pd-cleanroom.el ends here
