@@ -179,6 +179,7 @@
 
 (bind-keys :prefix-map my-toggle-map
            :prefix "C-x t"
+           ("c" . pd-cleanroom-mode)
            ("f" . auto-fill-mode)
            ("r" . dired-toggle-read-only)
            ("w" . whitespace-mode)
@@ -379,9 +380,13 @@
   :init
   (progn (global-hungry-delete-mode)))
 
-(use-package centered-window-mode
-  :ensure t
-  :defer t)
+(use-package pd-centered-window
+  :load-path "lisp/"
+  :commands (pd-centered-window))
+
+(use-package pd-cleanroom
+  :load-path "lisp/"
+  :commands (pd-cleanroom-mode))
 
 (use-package git-auto-commit-mode
   :ensure t
