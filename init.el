@@ -62,10 +62,10 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
-(when (eq (my-system-name) "bigmacdev")
-    (setq url-proxy-services '(("no_proxy" . "\\.au.ivc")
-                               ("http" . "127.0.0.1:3128")
-                               ("https" . "127.0.0.1:3128"))))
+(when (equal (my-system-name) "bigmacdev")
+  (setq url-proxy-services '(("no_proxy" . "\\.au.ivc")
+                             ("http" . "127.0.0.1:3128")
+                             ("https" . "127.0.0.1:3128"))))
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
