@@ -6,6 +6,7 @@
                 90)))
   (custom-theme-set-faces
    'pd-basic
-   `(default ((t (:height ,height :family "Source Code Pro"))))))
+   `(default ((t (:height ,height :family "Source Code Pro"))))
+   `(Info-quoted ((t (:weight bold))))))
 
 (provide-theme 'pd-basic)
