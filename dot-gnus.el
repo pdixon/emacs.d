@@ -3,6 +3,8 @@
 (setq mail-sources nil)
 (setq gnus-auto-subscribed-groups "^nnimap//")
 (setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+(setq gnus-message-archive-group nil) ; Don't save stuff I send
+(setq gnus-treat-display-smileys nil)                                      
 
 (setq gnus-select-method
       '(nnimap "dixon.gen.nz"
