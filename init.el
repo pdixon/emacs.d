@@ -1076,17 +1076,20 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package company
   :ensure t
   :defer t
+  :init
+  (add-hook 'c-mode-common-hook 'company-mode)
   :config
   (progn
+    (setq company-backends (delete 'company-semantic company-backends))
     (setq company-begin-commands '(self-insert-command))
     (setq company-idle-delay 0.3)
 
-    (setq company-clang-arguments nil)
-    (add-to-list 'company-clang-arguments "-fobjc-arc" t)
-    (add-to-list 'company-clang-arguments "-fblocks" t)
-    (add-to-list 'company-clang-arguments "-isysroot" t)
-    (add-to-list 'company-clang-arguments xcode:sdk t)
-    ;(add-to-list 'company-clang-arguments "-D__IPHONE_OS_VERSION_MIN_REQUIRED=60000" t)
+    ;;(setq company-clang-arguments nil)
+    ;;(add-to-list 'company-clang-arguments "-fobjc-arc" t)
+    ;;(add-to-list 'company-clang-arguments "-fblocks" t)
+    ;;(add-to-list 'company-clang-arguments "-isysroot" t)
+    ;;(add-to-list 'company-clang-arguments xcode:sdk t)
+    ;;(add-to-list 'company-clang-arguments "-D__IPHONE_OS_VERSION_MIN_REQUIRED=60000" t)
     ))
 
 (use-package autoinsert
@@ -1234,7 +1237,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package flycheck
   :ensure t
-  :defer t)
+  :defer t
+  :init
+  (add-hook 'c-mode-common-hook 'flycheck-mode))
 
 (use-package switch-window
   :ensure t
