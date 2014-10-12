@@ -378,7 +378,9 @@
 (use-package hungry-delete
   :ensure t
   :init
-  (progn (global-hungry-delete-mode)))
+  (global-hungry-delete-mode)
+  :config
+  (setq hungry-delete-chars-to-skip " \t"))
 
 (use-package pd-centered-window
   :load-path "lisp/"
