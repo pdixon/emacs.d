@@ -825,6 +825,7 @@ point reaches the beginning or end of the buffer, stop there."
   (progn
     (require 'ox-html)
     (require 'pd-html)
+    (require 'ox-rss)
 
     (defun pd/publish-blog ()
       "Publish my blog"
@@ -842,16 +843,29 @@ point reaches the beginning or end of the buffer, stop there."
              :publishing-function (pd-html-publish-to-html)
              :with-toc nil
              :html-html5-fancy t
-             :section-numbers nil)
+             :section-numbers nil
+             :exclude "rss.org")
             ("blog-static"
              :base-directory "~/personal/phil.dixon.gen.nz/"
              :base-extension "jpg\\|png\\|css\\|js\\|ico\\|gif"
              :recursive t
              :publishing-directory "~/Sites/phil.dixon.gen.nz/"
              :publishing-function org-publish-attachment)
+            ("blog-rss"
+             :base-directory "~/personal/phil.dixon.gen.nz/"
+             :base-extension "org"
+             :publishing-directory "~/Sites/phil.dixon.gen.nz/"
+             :publishing-function (org-rss-publish-to-rss)
+             :html-link-home "~/Sites/phil.dixon.gen.nz/"
+             :html-link-use-abs-url t
+             :exclude ".*"
+             :include ("rss.org")
+             :with-toc nil
+             :section-numbers nil
+             :title "Phillip Dixon")
             ("blog"
              :components
-             ("blog-content" "blog-static"))))))
+             ("blog-content" "blog-static" "blog-rss"))))))
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)
@@ -1054,10 +1068,11 @@ point reaches the beginning or end of the buffer, stop there."
                      org-mode-hook
                      message-mode-hook
                      markdown-mode-hook))
+  (setq yas-snippet-dirs (list (concat dotfiles-dir "snippets")))
   :config
   (progn
     (setq yas-prompt-functions '(yas-ido-prompt yas-complete-prompt))
-    (setq yas-snippet-dirs (list (concat dotfiles-dir "snippets")))
+    
     (yas-reload-all)))
 
 (use-package hippie-exp
@@ -1117,6 +1132,7 @@ point reaches the beginning or end of the buffer, stop there."
       ["template.m" pd-expand-buffer])))
 
 (use-package haskell-mode
+  :disabled t
   :ensure t
   :mode ("\\.l?hs\\'" . haskell-mode)
   :config
