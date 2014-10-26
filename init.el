@@ -79,7 +79,7 @@
   (unless (package-installed-p package)
     (package-install package)))
 
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
 (package-initialize)
 (setq package-enable-at-startup nil)
