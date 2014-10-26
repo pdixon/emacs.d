@@ -84,7 +84,6 @@
 (package-initialize)
 (setq package-enable-at-startup nil)
 (require-package 'use-package)
-(require 'ert) ; FIXME 2014-02-13 remove once upstream use-package unbreaks.
 (require 'use-package)
 (setq use-package-verbose t)
 
