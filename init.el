@@ -1251,7 +1251,8 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t
   :init
-  (add-hook 'c-mode-common-hook 'flycheck-mode))
+  (add-hook 'c-mode-common-hook 'flycheck-mode)
+  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode))
 
 (use-package switch-window
   :ensure t
