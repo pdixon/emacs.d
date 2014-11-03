@@ -216,11 +216,6 @@
 (setq whitespace-style '(face trailing tabs)
       whitespace-line-column 80)
 
-
-
-(setq split-height-threshold nil
-      split-width-threshold nil)
-
 (setq message-kill-buffer-on-exit t)
 (setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
@@ -1264,6 +1259,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package popwin
   :ensure t
+  :disabled t
   :init
   (progn
     (popwin-mode t)))
