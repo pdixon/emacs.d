@@ -24,8 +24,31 @@
 
 ;;; Code:
 
+(require 'f)
 (require 'ox)
 (require 'ox-html)
+(require 'vc-git)
+
+(defun pd-files-in-dir (extension dir)
+  ""
+  (f--files dir (equal (f-ext it) extension)))
+
+(defun pd-file-env (file)
+  ""
+  (let ((git-date (pd-git-timestamp file))
+        (env (org-babel-with-temp-filebuffer file (org-export-get-environment))))
+    (plist-put env :file file)
+    (plist-put env :git-date git-date)))
+
+(defun pd-git-timestamp (file)
+  ""
+  (date-to-time
+   (vc-git--run-command-string file "log" "-i" "--format=%ci")))
+
+(defun pd-org-timestamp< (a b)
+  ""
+  (org-time< (org-element-property :raw-value (car a))
+             (org-element-property :raw-value (car b))))
 
 (defun pd-export-html-string (filename)
   ""
