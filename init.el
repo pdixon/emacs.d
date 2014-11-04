@@ -1080,7 +1080,7 @@ point reaches the beginning or end of the buffer, stop there."
     ;; Add this back in at the end of the list.
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)))
 
-(defvar xcode:sdkver "7.0")
+(defvar xcode:sdkver "8.1")
 (defvar xcode:sdkpath "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer")
 (defvar xcode:sdk (concat xcode:sdkpath "/SDKs/iPhoneSimulator" xcode:sdkver ".sdk"))
 
@@ -1213,7 +1213,7 @@ point reaches the beginning or end of the buffer, stop there."
            '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
 
     (add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
-    ;;(add-hook 'objc-mode-hook 'company-clang)
+    (add-hook 'objc-mode-hook 'company-clang)
 
     (use-package pd-cc-mode-extras
       :commands (pd/toggle-header
