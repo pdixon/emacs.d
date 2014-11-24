@@ -32,10 +32,6 @@
         ("iChair Trac" "http://ichair.sw/report/7?format=rss&USER=pdixon"
          "~/org/inbox.org" "iChair Assigned Issues")))
 
-(setq url-proxy-services '(("no_proxy" . "\\.au.ivc")
-                           ("http" . "127.0.0.1:3128")
-                           ("https" . "127.0.0.1:3128")))
-
 (use-package mediawiki
   :config
   (progn
