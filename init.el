@@ -1080,28 +1080,17 @@ point reaches the beginning or end of the buffer, stop there."
     ;; Add this back in at the end of the list.
     (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)))
 
-(defvar xcode:sdkver "8.1")
-(defvar xcode:sdkpath "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer")
-(defvar xcode:sdk (concat xcode:sdkpath "/SDKs/iPhoneSimulator" xcode:sdkver ".sdk"))
-
 (use-package company
   :ensure t
   :defer t
   :init
   (add-hook 'c-mode-common-hook 'company-mode)
   :config
-  (progn
-    (setq company-backends (delete 'company-semantic company-backends))
-    (setq company-begin-commands '(self-insert-command))
-    (setq company-idle-delay 0.3)
-
-    ;;(setq company-clang-arguments nil)
-    ;;(add-to-list 'company-clang-arguments "-fobjc-arc" t)
-    ;;(add-to-list 'company-clang-arguments "-fblocks" t)
-    ;;(add-to-list 'company-clang-arguments "-isysroot" t)
-    ;;(add-to-list 'company-clang-arguments xcode:sdk t)
-    ;;(add-to-list 'company-clang-arguments "-D__IPHONE_OS_VERSION_MIN_REQUIRED=60000" t)
-    ))
+  (require 'company-irony)
+  (add-to-list 'company-backends 'company-irony)
+  (setq company-backends (delete 'company-semantic company-backends))
+  (setq company-begin-commands '(self-insert-command))
+  (setq company-idle-delay 0.3))
 
 (use-package autoinsert
   :defer t
@@ -1213,7 +1202,6 @@ point reaches the beginning or end of the buffer, stop there."
            '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
 
     (add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
-    (add-hook 'objc-mode-hook 'company-clang)
 
     (use-package pd-cc-mode-extras
       :commands (pd/toggle-header
@@ -1247,12 +1235,33 @@ point reaches the beginning or end of the buffer, stop there."
 
     (add-hook 'emacs-lisp-mode-hook 'pd/elisp-mode-hook)))
 
+(use-package irony
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'c-mode-common-hook 'irony-mode)
+  :config
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+(use-package company-irony
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands))
+
+(use-package flycheck-irony
+  :ensure t
+  :defer t)
+
 (use-package flycheck
   :ensure t
   :defer t
   :init
   (add-hook 'c-mode-common-hook 'flycheck-mode)
-  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode))
+  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
+  :config
+  (require 'flycheck-irony)
+  (add-to-list 'flycheck-checkers 'irony))
 
 (use-package switch-window
   :ensure t
