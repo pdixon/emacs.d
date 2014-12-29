@@ -100,7 +100,7 @@
 (require-package 'auctex)
 (require-package 'cmake-mode)
 (require-package 'diminish)
-(require-package 'git-commit-mode)
+;(require-package 'git-commit-mode)
 (require-package 'gitconfig-mode)
 (require-package 'gitignore-mode)
 (require-package 'go-mode)
@@ -390,21 +390,12 @@
   :load-path "lisp/"
   :commands (pd-cleanroom-mode))
 
-(use-package git-auto-commit-mode
-  :ensure t
-  :defer t)
-
 (use-package magit
-  :ensure t
+  ;:ensure t
+  :load-path "site-lisp/magit"
   :bind ("<f7>" . magit-status)
   :config
-  (progn
-    (setq magit-status-buffer-switch-function 'switch-to-buffer
-          magit-diff-refine-hunk t)
-    (add-hook 'magit-log-edit-mode-hook
-              #'(lambda ()
-                  (set-fill-column 72)
-                  (flyspell-mode)))))
+  (setq magit-status-buffer-switch-function 'switch-to-buffer))
 
 (use-package hg-commit-mode
   :mode ("hg-editor-.*\\.txt\\'" . hg-commit-mode))
