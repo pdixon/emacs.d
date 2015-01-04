@@ -1263,9 +1263,15 @@ point reaches the beginning or end of the buffer, stop there."
   (require 'flycheck-irony)
   (add-to-list 'flycheck-checkers 'irony))
 
-(use-package switch-window
+(use-package ace-window
   :ensure t
-  :bind ("C-x o" . switch-window))
+  :bind (("C-x o" . ace-window)))
+
+
+;; (use-package switch-window
+;;   :disabled t
+;;   :ensure t
+;;   :bind ("C-x o" . switch-window))
 
 (use-package popwin
   :ensure t
