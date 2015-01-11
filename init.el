@@ -25,6 +25,11 @@
 
 ;;; Code:
 
+(setq message-log-max 10000)
+
+;; Please don't load outdated byte code
+(setq load-prefer-newer t)
+
 (defconst *emacs-load-start* (current-time))
 (message "Loading %s..." load-file-name)
 
@@ -199,7 +204,8 @@
       ido-max-prospects 10)))
 
 (when window-system
-  (setq frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
+  (setq frame-resize-pixelwise t
+        frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
   (tooltip-mode -1)
   (blink-cursor-mode -1))
 
@@ -1262,6 +1268,12 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (require 'flycheck-irony)
   (add-to-list 'flycheck-checkers 'irony))
+
+(use-package flycheck-pos-tip
+  :ensure t
+  :defer t
+  :init
+  (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
 (use-package ace-window
   :ensure t
