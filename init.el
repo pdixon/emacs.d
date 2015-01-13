@@ -1091,6 +1091,7 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init
   (add-hook 'c-mode-common-hook 'company-mode)
+  (add-hook 'elisp-mode 'company-mode)
   :config
   (require 'company-irony)
   (add-to-list 'company-backends 'company-irony)
