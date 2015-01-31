@@ -1341,6 +1341,12 @@ point reaches the beginning or end of the buffer, stop there."
         mu4e-html2text-command 'mu4e-shr2text
         mu4e-use-fancy-chars t))
 
+(use-package clang-format
+  :ensure t
+  :config
+  (when (eq system-type 'darwin)
+    (setq clang-format-executable "/usr/local/opt/llvm/bin/clang-format")))
+
 (pd/zenburn)
 
 (setq mac-option-modifier 'meta)
