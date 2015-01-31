@@ -1332,6 +1332,15 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package server
   :init (server-start))
 
+(use-package mu4e
+  :load-path "/usr/local/share/emacs/site-lisp/mu4e"
+  :config
+  (require 'mu4e-contrib)
+  (setq mu4e-maildir "~/.mail/dixon.gen.nz"
+        mu4e-view-prefer-html t
+        mu4e-html2text-command 'mu4e-shr2text
+        mu4e-use-fancy-chars t))
+
 (pd/zenburn)
 
 (setq mac-option-modifier 'meta)
