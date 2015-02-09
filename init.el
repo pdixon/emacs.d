@@ -99,10 +99,6 @@
 (require-package 'applescript-mode)
 (require-package 'auctex)
 (require-package 'cmake-mode)
-(require-package 'diminish)
-;(require-package 'git-commit-mode)
-(require-package 'gitconfig-mode)
-(require-package 'gitignore-mode)
 (require-package 'go-mode)
 (require-package 'graphviz-dot-mode)
 (require-package 'ibuffer-vc)
@@ -231,7 +227,7 @@
 (setq whitespace-style '(face trailing tabs)
       whitespace-line-column 80)
 
-(setq message-kill-buffer-on-exit t)
+
 (setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
 (setq user-full-name "Phillip Dixon")
@@ -255,20 +251,28 @@
 (use-package message
   :defer t
   :config
-  (progn
-    (require 'eudc)))
+  (require 'eudc)
+  (setq message-send-mail-function 'smtpmail-send-it
+        message-kill-buffer-on-exit t))
 
-(setq send-mail-function 'smtpmail-send-it 
-      message-send-mail-function 'smtpmail-send-it
-      starttls-use-gnutls t
-      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "phil@dixon.gen.nz" nil))
-      smtpmail-default-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-service 587)
+(use-package sendmail
+  :defer t
+  :config
+  (setq send-mail-function 'smtpmail-send-it ))
 
-(setq ispell-dictionary "en_GB-ise"
-      ispell-extra-args `("--keyboard=dvorak"))
+(use-package smtpmail
+  :defer t
+  :config
+  (setq smtpmail-stream-type 'ssl
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 465))
+
+(use-package ispell
+  :defer t
+  :config
+  (setq ispell-dictionary "en_GB-ise"
+        ispell-extra-args `("--keyboard=dvorak")
+        ispell-silently-savep t))
 
 (use-package imenu
   :defer t
@@ -326,8 +330,8 @@
 
 (use-package files
   :config
-  (when-let (gnu-ls (and (eq system-type 'darwin) (executable-find "gls")))
-    (setq insert-directory-program gnu-ls)))
+  (when (and (eq system-type 'darwin) (executable-find "gls"))
+    (setq insert-directory-program "gls")))
 
 (use-package dired
   :defer t
@@ -420,6 +424,18 @@
   :bind ("<f7>" . magit-status)
   :config
   (setq magit-status-buffer-switch-function 'switch-to-buffer))
+
+(use-package gitconfig-mode
+  :ensure t
+  :defer t)
+
+(use-package gitignore-mode
+  :ensure t
+  :defer t)
+
+(use-package gitattributes-mode
+  :ensure t
+  :defer t)
 
 (use-package hg-commit-mode
   :mode ("hg-editor-.*\\.txt\\'" . hg-commit-mode))
@@ -1357,6 +1373,7 @@ point reaches the beginning or end of the buffer, stop there."
   :init (server-start))
 
 (use-package mu4e
+  :defer t
   :load-path "/usr/local/share/emacs/site-lisp/mu4e"
   :config
   (require 'mu4e-contrib)
@@ -1366,6 +1383,7 @@ point reaches the beginning or end of the buffer, stop there."
         mu4e-use-fancy-chars t))
 
 (use-package clang-format
+  :defer t
   :ensure t
   :config
   (when (eq system-type 'darwin)
