@@ -278,11 +278,6 @@
     (setq ibuffer-expert 1)
     (setq ibuffer-show-empty-filter-groups nil)
 
-    (defun pd/dired-do-multi-occur (regexp)
-      "Show all in lines in marked files containing REGEXP"
-      (interactive "MList lines matching regexp: ")
-      (multi-occur (mapcar 'find-file (dired-get-marked-files)) regexp))
-
     (add-hook 'ibuffer-hook
               (lambda ()
                 (ibuffer-vc-set-filter-groups-by-vc-root)
@@ -319,19 +314,39 @@
           uniquify-after-kill-buffer-p t
           uniquify-ignore-buffers-re "^\\*")))
 
+
+(use-package files
+  :config
+  (when-let (gnu-ls (and (eq system-type 'darwin) (executable-find "gls")))
+    (setq insert-directory-program gnu-ls)))
+
 (use-package dired
   :defer t
   :config
   (progn
-    (setq dired-listing-switches "-alh --group-directories-first")
     (put 'dired-find-alternate-file 'disabled nil)
     (setq dired-dwim-target t
           dired-recursive-copies 'always
           dired-recursive-deletes 'top
-          dired-listing-switches "-alh")
+          dired-listing-switches "-alhF")
+    (when (or (memq system-type '(gnu gnu/linux))
+              (string= (file-name-nondirectory insert-directory-program) "gls"))
+      ;; If we are on a GNU system or have GNU ls, add some more `ls' switches:
+      ;; `--group-directories-first' lists directories before files, and `-v'
+      ;; sorts numbers in file names naturally, i.e. "image1" goes before
+      ;; "image02"
+      (setq dired-listing-switches
+            (concat dired-listing-switches " --group-directories-first -v")))
+
+    (defun pd/dired-do-multi-occur (regexp)
+      "Show all in lines in marked files containing REGEXP"
+      (interactive "MList lines matching regexp: ")
+      (multi-occur (mapcar 'find-file (dired-get-marked-files)) regexp))
+
     (defun pd-dired-find-alternate-parent ()
       (interactive)
       (find-alternate-file ".."))
+
     (bind-key "^" 'pd-dired-find-alternate-parent dired-mode-map)))
 
 (use-package dired-x
@@ -1351,9 +1366,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (setq mac-option-modifier 'meta)
 (setq mac-command-modifier 'none)
-
-(if (eq system-type 'darwin)
-    (setq insert-directory-program "gls"))
 
 (if (file-exists-p system-specific-config)
     (load system-specific-config)
