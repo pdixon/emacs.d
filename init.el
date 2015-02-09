@@ -200,8 +200,17 @@
       ido-create-new-buffer 'always
       ido-use-filename-at-point 'guess
       ido-use-virtual-buffers t
-      ido-handle-duplicate-virtual-buffers 2
       ido-max-prospects 10)))
+
+(use-package flx-ido
+  :ensure t
+  :init
+  (flx-ido-mode))
+
+(use-package ido-vertical-mode
+  :ensure t
+  :init
+  (ido-vertical-mode))
 
 (when window-system
   (setq frame-resize-pixelwise t
