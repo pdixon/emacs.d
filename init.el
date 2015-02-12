@@ -30,15 +30,14 @@
 ;; Please don't load outdated byte code
 (setq load-prefer-newer t)
 
+(require 'subr-x)
+
 (defconst *emacs-load-start* (current-time))
 (message "Loading %s..." load-file-name)
 
 (defconst dotfiles-dir (file-name-directory load-file-name))
-(defconst tweaks-dir (concat dotfiles-dir "tweaks/"))
-(defconst vendor-dir (concat dotfiles-dir "vendor/"))
 (defconst lisp-dir (concat dotfiles-dir "lisp/"))
 (defconst user-dir (concat dotfiles-dir "user/"))
-
 
 (defun my-system-name ()
   ""
@@ -49,7 +48,6 @@
 (defconst system-specific-config
       (concat user-dir (car (split-string system-name "\\.")) ".el"))
 
-(add-to-list 'load-path tweaks-dir)
 (add-to-list 'load-path lisp-dir)
 (add-to-list 'load-path user-dir)
 
@@ -96,6 +94,11 @@
                                           *emacs-load-start*))))
   (message "Package Config...done (%.3fs)" elapsed))
 
+(use-package exec-path-from-shell
+  :if (eq system-type 'darwin)
+  :ensure t
+  :init (exec-path-from-shell-initialize))
+
 (require-package 'applescript-mode)
 (require-package 'auctex)
 (require-package 'cmake-mode)
@@ -129,25 +132,33 @@
 ;; Enable syntax highlighting for older Emacsen that have it off
 (global-font-lock-mode t)
 
-;; Save a list of recent files visited.
-(use-package recentf
-  :init
-  (recentf-mode 1))
+(when window-system
+  (setq frame-resize-pixelwise t
+        frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
+  (toolip-mode -1)
+  (blink-cursor-mode -1))
 
-(use-package autorevert
-  :init (global-auto-revert-mode)
-  :config
-  (progn
-    (setq global-auto-revert-non-file-buffers t
-          auto-revert-check-vc-info t
-          auto-revert-verbose nil)))
+;; Apperance
+(setq solarized-distinct-fringe-background t
+      solarized-use-variable-pitch nil
+      solarized-height-minus-1 1.0
+      solarized-height-plus-1 1.0
+      solarized-height-plus-2 1.0
+      solarized-height-plus-3 1.0
+      solarized-height-plus-4 1.0)
+
+(setq vc-handled-backends '(Git Hg))
+(setq whitespace-style '(face trailing tabs)
+      whitespace-line-column 80)
+
+
+(setq mail-user-agent 'message-user-agent)
+(setq user-mail-address "phil@dixon.gen.nz")
+(setq user-full-name "Phillip Dixon")
 
 (electric-pair-mode 1)
 ;;(electric-indent-mode 1)
 ;;(electric-layout-mode 1)
-
-(use-package savehist
-  :init (savehist-mode t))
 
 (put 'set-goal-column 'disabled nil)
 
@@ -164,7 +175,6 @@
 
 (set-default 'sentence-end-double-space nil)
 
-
 ;; Keep cursor away from edges when scrolling up/down
 ;;(require 'smooth-scrolling)
 (mouse-wheel-mode t)
@@ -176,6 +186,45 @@
 (set-default 'indicate-empty-lines t)
 
 (setq diff-switches "-u")
+
+;; make scripts executable on save.
+(add-hook 'after-save-hook
+          'executable-make-buffer-file-executable-if-script-p)
+
+(add-hook 'text-mode-hook
+          '(lambda ()
+             (auto-fill-mode 1)
+             (flyspell-mode 1)))
+
+(setq tab-always-indent 'complete)
+
+(setq mac-option-modifier 'meta)
+(setq mac-command-modifier 'none)
+
+(let ((elapsed (float-time (time-subtract (current-time)
+                                          *emacs-load-start*))))
+  (message "Non-use package stuff...done (%.3fs)" elapsed))
+
+;; Save a list of recent files visited.
+(use-package recentf
+  :defer t
+  :idle (recentf-mode)
+  :config
+  (setq  recentf-auto-cleanup 300
+         recentf-exclude (list "/\\.git/.*\\'" ; Git contents
+                               "/elpa/.*\\'" ; Package files
+                               )))
+
+(use-package autorevert
+  :init (global-auto-revert-mode)
+  :config
+  (progn
+    (setq global-auto-revert-non-file-buffers t
+          auto-revert-check-vc-info t
+          auto-revert-verbose nil)))
+
+(use-package savehist
+  :init (savehist-mode t))
 
 (bind-keys :prefix-map my-toggle-map
            :prefix "C-x t"
@@ -207,30 +256,6 @@
   :ensure t
   :init
   (ido-vertical-mode))
-
-(when window-system
-  (setq frame-resize-pixelwise t
-        frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
-  (tooltip-mode -1)
-  (blink-cursor-mode -1))
-
-;; Apperance
-(setq solarized-distinct-fringe-background t
-      solarized-use-variable-pitch nil
-      solarized-height-minus-1 1.0
-      solarized-height-plus-1 1.0
-      solarized-height-plus-2 1.0
-      solarized-height-plus-3 1.0
-      solarized-height-plus-4 1.0)
-
-(setq vc-handled-backends '(Git Hg))
-(setq whitespace-style '(face trailing tabs)
-      whitespace-line-column 80)
-
-
-(setq mail-user-agent 'message-user-agent)
-(setq user-mail-address "phil@dixon.gen.nz")
-(setq user-full-name "Phillip Dixon")
 
 (use-package eudc
   :defer t
@@ -329,9 +354,10 @@
 
 
 (use-package files
+  :defer t
   :config
-  (when (and (eq system-type 'darwin) (executable-find "gls"))
-    (setq insert-directory-program "gls")))
+  (when-let (gls (and (eq system-type 'darwin) (executable-find "gls")))
+    (setq insert-directory-program gls)))
 
 (use-package dired
   :defer t
@@ -386,12 +412,6 @@
   (load-theme 'zenburn t t)
   (load-theme 'pd-basic t t)
   (custom-set-variables '(custom-enabled-themes '(pd-basic zenburn))))
-
-
-;; make scripts executable on save.
-(add-hook 'after-save-hook
-          'executable-make-buffer-file-executable-if-script-p)
-
 
 (use-package expand-region
   :ensure t
@@ -729,11 +749,6 @@ point reaches the beginning or end of the buffer, stop there."
         (linum-mode 1)
         (goto-line (read-number "Goto line: ")))
     (linum-mode -1)))
-
-(add-hook 'text-mode-hook
-          '(lambda ()
-             (auto-fill-mode 1)
-             (flyspell-mode 1)))
 
 (use-package deft
   :ensure t
@@ -1087,8 +1102,6 @@ point reaches the beginning or end of the buffer, stop there."
   `(dolist (mode-hook ,modes)
      (add-hook mode-hook ,func)))
 
-(setq tab-always-indent 'complete)
-
 (use-package yasnippet
   :ensure t
   :commands (yas-minor-mode yas-expand yas-hippie-try-expand)
@@ -1363,14 +1376,8 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'prog-mode-hook 'pd/add-watchwords)
 (add-hook 'prog-mode-hook 'pd/turn-on-which-func)
 
-
-(use-package exec-path-from-shell
-  :if (eq system-type 'darwin)
-  :ensure t
-  :init (exec-path-from-shell-initialize))
-
 (use-package server
-  :init (server-start))
+  :idle (server-start))
 
 (use-package mu4e
   :defer t
@@ -1390,9 +1397,6 @@ point reaches the beginning or end of the buffer, stop there."
     (setq clang-format-executable "/usr/local/opt/llvm/bin/clang-format")))
 
 (pd/zenburn)
-
-(setq mac-option-modifier 'meta)
-(setq mac-command-modifier 'none)
 
 (if (file-exists-p system-specific-config)
     (load system-specific-config)
