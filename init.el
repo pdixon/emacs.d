@@ -135,7 +135,7 @@
 (when window-system
   (setq frame-resize-pixelwise t
         frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
-  (toolip-mode -1)
+  (tooltip-mode -1)
   (blink-cursor-mode -1))
 
 ;; Apperance
