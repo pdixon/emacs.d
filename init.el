@@ -187,9 +187,6 @@
 
 (setq fill-column 78)
 
-;; auto-complete in minibuffer
-(icomplete-mode 1)
-
 (set-default 'sentence-end-double-space nil)
 
 ;; Keep cursor away from edges when scrolling up/down
@@ -200,7 +197,10 @@
 (set-default 'indent-tabs-mode nil)
 
 ;; Show me empty lines after buffer end
-(set-default 'indicate-empty-lines t)
+(setq indicate-empty-lines t
+      require-final-newline t)
+
+(setq view-read-only t)
 
 (setq diff-switches "-u")
 
@@ -279,6 +279,10 @@
   :defer t
   :ensure t)
 
+(use-package delsel
+  :defer t
+  :init (delete-selection-mode))
+
 (use-package ido
   :init
   (ido-mode t)
@@ -301,6 +305,15 @@
   :ensure t
   :init
   (ido-vertical-mode))
+
+(use-package ido-ubiquitous
+  :ensure t
+  :init (ido-ubiquitous-mode))
+
+(use-package smex
+  :ensure t
+  :bind (([remap execute-extended-command] . smex)
+         ("M-X" . smex-major-mode-commands)))
 
 (use-package eudc
   :defer t
