@@ -77,16 +77,12 @@
 ;; package.el setup
 (require 'package)
 
-(defun require-package (package)
-  "Ask elpa to install given PACKAGE."
-  (unless (package-installed-p package)
-    (package-install package)))
-
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
 (package-initialize)
 (setq package-enable-at-startup nil)
-(require-package 'use-package)
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
 (require 'use-package)
 (setq use-package-verbose t)
 
@@ -99,14 +95,42 @@
   :ensure t
   :init (exec-path-from-shell-initialize))
 
-(require-package 'applescript-mode)
-(require-package 'auctex)
-(require-package 'cmake-mode)
-(require-package 'go-mode)
-(require-package 'graphviz-dot-mode)
-(require-package 'ibuffer-vc)
-(require-package 'window-number)
-(require-package 'zenburn-theme)
+(use-package zenburn
+  :ensure zenburn-theme
+  :defer t
+  :init
+  (defun pd/zenburn ()
+    (interactive)
+    (load-theme 'zenburn t t)
+    (load-theme 'pd-basic t t)
+    (custom-set-variables '(custom-enabled-themes '(pd-basic zenburn)))))
+
+(use-package solarized
+  :ensure solarized-theme
+  :defer t
+  :init
+  (defun pd/light ()
+    (interactive)
+    (load-theme 'solarized-light t t)
+    (load-theme 'pd-basic t t)
+    (custom-set-variables '(custom-enabled-themes '(pd-basic solarized-light))))
+
+  (defun pd/dark ()
+    (interactive)
+    (load-theme 'solarized-dark t t)
+    (load-theme 'pd-basic t t)
+    (custom-set-variables '(custom-enabled-themes '(pd-basic solarized-dark))))
+  :config
+  (setq solarized-distinct-fringe-background t
+        solarized-high-contrast-mode-line t
+        solarized-use-less-bold t
+        solarized-use-more-italic t
+        solarized-use-variable-pitch nil
+        solarized-height-minus-1 1.0
+        solarized-height-plus-1 1.0
+        solarized-height-plus-2 1.0
+        solarized-height-plus-3 1.0
+        solarized-height-plus-4 1.0))
 
 ;; Basic Apperance
 ;; (if (not (eq system-type 'darwin))
@@ -139,13 +163,6 @@
   (blink-cursor-mode -1))
 
 ;; Apperance
-(setq solarized-distinct-fringe-background t
-      solarized-use-variable-pitch nil
-      solarized-height-minus-1 1.0
-      solarized-height-plus-1 1.0
-      solarized-height-plus-2 1.0
-      solarized-height-plus-3 1.0
-      solarized-height-plus-4 1.0)
 
 (setq vc-handled-backends '(Git Hg))
 (setq whitespace-style '(face trailing tabs)
@@ -233,6 +250,34 @@
            ("r" . dired-toggle-read-only)
            ("w" . whitespace-mode)
            ("v" . visual-line-mode))
+
+(use-package applescript-mode
+  :defer t
+  :ensure t)
+
+(use-package auctex
+  :defer t
+  :ensure t)
+
+(use-package cmake-mode
+  :defer t
+  :ensure t)
+
+(use-package go-mode
+  :defer t
+  :ensure t)
+
+(use-package graphviz-dot-mode
+  :defer t
+  :ensure t)
+
+(use-package ibuffer-vc
+  :defer t
+  :ensure t)
+
+(use-package window-number
+  :defer t
+  :ensure t)
 
 (use-package ido
   :init
@@ -391,27 +436,6 @@
 (use-package dired-x
   :bind (("C-x C-j" . dired-jump)
          ("C-x 4 C-j" . dired-jump-other-window)))
-
-(defun pd/light ()
-  "Activate light theme."
-  (interactive)
-  (load-theme 'solarized-light t t)
-  (load-theme 'pd-basic t t)
-  (custom-set-variables '(custom-enabled-themes '(pd-basic solarized-light))))
-
-(defun pd/dark ()
-  "Activate dark theme."
-  (interactive)
-  (load-theme 'solarized-dark t t)
-  (load-theme 'pd-basic t t)
-  (custom-set-variables '(custom-enabled-themes '(pd-basic solarized-dark))))
-
-(defun pd/zenburn ()
-  "Activate dark theme."
-  (interactive)
-  (load-theme 'zenburn t t)
-  (load-theme 'pd-basic t t)
-  (custom-set-variables '(custom-enabled-themes '(pd-basic zenburn))))
 
 (use-package expand-region
   :ensure t
@@ -1401,7 +1425,7 @@ point reaches the beginning or end of the buffer, stop there."
 (if (file-exists-p system-specific-config)
     (load system-specific-config)
   (message "No system specific config for %s (i.e %s doesn't exist)"
-           system-name
+           (system-name)
            system-specific-config))
 
 (let ((elapsed (float-time (time-subtract (current-time)
