@@ -95,31 +95,47 @@
   :ensure t
   :init (exec-path-from-shell-initialize))
 
+(use-package dynamic-fonts
+  :ensure t
+  :init
+  (progn
+    (setq dynamic-fonts-preferred-monospace-fonts
+          '("Source Code Pro"
+            "Inconsolata"
+            "Consolas"
+            "Menlo"
+            "DejaVu Sans Mono"
+            "Bitstream Vera Mono")
+          dynamic-fonts-preferred-monospace-point-size (pcase system-type
+                                                         (`darwin 12)
+                                                         (_ 9))
+          dynamic-fonts-preferred-proportional-fonts
+          '("Helvetica"
+            "Segoe UI"
+            "DejaVu Sans"
+            "Bitstream Vera")
+          dynamic-fonts-preferred-proportional-point-size (pcase system-type
+                                                            (`darwin 12)
+                                                            (_ 9)))
+
+    (dynamic-fonts-setup)))
+
+(use-package unicode-fonts
+  :ensure t
+  :init (unicode-fonts-setup))
+
 (use-package zenburn
   :ensure zenburn-theme
   :defer t
   :init
-  (defun pd/zenburn ()
-    (interactive)
-    (load-theme 'zenburn t t)
-    (load-theme 'pd-basic t t)
-    (custom-set-variables '(custom-enabled-themes '(pd-basic zenburn)))))
+  (load-theme 'zenburn t))
 
 (use-package solarized
+  :disabled t
   :ensure solarized-theme
   :defer t
   :init
-  (defun pd/light ()
-    (interactive)
-    (load-theme 'solarized-light t t)
-    (load-theme 'pd-basic t t)
-    (custom-set-variables '(custom-enabled-themes '(pd-basic solarized-light))))
-
-  (defun pd/dark ()
-    (interactive)
-    (load-theme 'solarized-dark t t)
-    (load-theme 'pd-basic t t)
-    (custom-set-variables '(custom-enabled-themes '(pd-basic solarized-dark))))
+  (load-theme 'solarized-light t)
   :config
   (setq solarized-distinct-fringe-background t
         solarized-high-contrast-mode-line t
@@ -141,7 +157,8 @@
 ;; Load up my config stuff
 (setq inhibit-startup-message t)
 
-(fset 'yes-or-no-p 'y-or-n-p)
+(fset 'yes-or-no-p #'y-or-n-p)
+(fset 'display-startup-echo-area-message #'ignore)
 
 ;; Don't clutter up directories with files~
 (setq backup-directory-alist `(("." . ,(expand-file-name
@@ -161,6 +178,9 @@
         frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
   (tooltip-mode -1)
   (blink-cursor-mode -1))
+
+(use-package frame
+  :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
 
 ;; Apperance
 
@@ -1433,7 +1453,12 @@ point reaches the beginning or end of the buffer, stop there."
   (when (eq system-type 'darwin)
     (setq clang-format-executable "/usr/local/opt/llvm/bin/clang-format")))
 
-(pd/zenburn)
+(use-package info
+  :defer t
+  :config
+  (set-face-attribute 'Info-quoted nil
+                      :family 'unspecified
+                      :inherit font-lock-type-face))
 
 (if (file-exists-p system-specific-config)
     (load system-specific-config)
