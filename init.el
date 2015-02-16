@@ -1344,8 +1344,7 @@ point reaches the beginning or end of the buffer, stop there."
     (add-hook 'emacs-lisp-mode-hook 'pd/elisp-mode-hook)))
 
 (use-package irony
-  ;:ensure t
-  :load-path "site-lisp/irony-mode"
+  :ensure t
   :defer t
   :init
   (add-hook 'c-mode-common-hook 'irony-mode)
@@ -1359,19 +1358,19 @@ point reaches the beginning or end of the buffer, stop there."
   (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands))
 
 (use-package flycheck-irony
-  ;:ensure t
-  :load-path "site-lisp/flycheck-irony"
-  :defer t)
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'flycheck
+    (require 'flycheck-irony)
+    (add-to-list 'flycheck-checkers 'irony)))
 
 (use-package flycheck
   :ensure t
   :defer t
   :init
   (add-hook 'c-mode-common-hook 'flycheck-mode)
-  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
-  :config
-  (require 'flycheck-irony)
-  (add-to-list 'flycheck-checkers 'irony))
+  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode))
 
 (use-package flycheck-pos-tip
   :ensure t
