@@ -39,14 +39,10 @@
 (defconst lisp-dir (concat dotfiles-dir "lisp/"))
 (defconst user-dir (concat dotfiles-dir "user/"))
 
-(defun my-system-name ()
-  ""
-  (car (split-string system-name "\\.")))
-
 ;; You can keep system-specific customizations here
 ;; Use the only the inital term if the system name is a FQDN.
 (defconst system-specific-config
-      (concat user-dir (car (split-string system-name "\\.")) ".el"))
+  (concat user-dir (car (split-string (system-name) "\\.")) ".el"))
 
 (add-to-list 'load-path lisp-dir)
 (add-to-list 'load-path user-dir)
@@ -65,7 +61,7 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
-(when (equal (my-system-name) "bigMacDev")
+(when (equal (car (split-string (system-name) "\\.")) "bigMacDev")
   (setq url-proxy-services '(("no_proxy" . "\\.au.ivc")
                              ("http" . "127.0.0.1:3128")
                              ("https" . "127.0.0.1:3128"))))
@@ -153,6 +149,8 @@
 ;;     (menu-bar-mode 0))
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
+
+(setq use-dialog-box nil)
 
 ;; Load up my config stuff
 (setq inhibit-startup-message t)
@@ -309,12 +307,12 @@
   :config
   (progn
     (setq ido-enable-prefix nil
-      ido-enable-flex-matching t
-      ido-auto-merge-work-directories-length nil
-      ido-create-new-buffer 'always
-      ido-use-filename-at-point 'guess
-      ido-use-virtual-buffers t
-      ido-max-prospects 10)))
+          ido-enable-flex-matching t
+          ido-auto-merge-work-directories-length nil
+          ido-create-new-buffer 'always
+          ido-use-filename-at-point 'guess
+          ido-use-virtual-buffers t
+          ido-max-prospects 10)))
 
 (use-package flx-ido
   :ensure t
@@ -342,14 +340,7 @@
     (eudc-set-server "localhost" 'mab t)
     (eudc-protocol-set 'eudc-inline-expansion-format
                        '("%s %s <%s>" firstname lastname email)
-                       'mab)
-
-    (defun eudc-select (choices beg end)
-      (let ((replacement
-             (ido-completing-read "Multiple matches found; choose one: "
-                                  (mapcar 'list choices))))
-        (delete-region beg end)
-        (insert replacement)))))
+                       'mab)))
 
 (use-package message
   :defer t
@@ -582,19 +573,20 @@ point reaches the beginning or end of the buffer, stop there."
     (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)))
 
 ;; Yank line or region
-(defadvice kill-ring-save (before slick-copy activate compile) "When called
-  interactively with no active region, copy a single line instead."
-  (interactive (if mark-active (list (region-beginning) (region-end)) (message
-  "Copied line") (list (line-beginning-position) (line-beginning-position
-  2)))))
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
 
 ;; Kill line or region
 (defadvice kill-region (before slick-cut activate compile)
   "When called interactively with no active region, kill a single line instead."
   (interactive
-    (if mark-active (list (region-beginning) (region-end))
-      (list (line-beginning-position)
-        (line-beginning-position 2)))))
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
 
 (use-package hexl-mode
   :mode (("\\.exe\\'" . hexl-mode)
@@ -630,7 +622,7 @@ point reaches the beginning or end of the buffer, stop there."
       (kill-region p1 p2))))
 
 (defun my-copy-line (arg)
-  "Copy lines (as many as prefix argument) in the kill ring"
+  "Copy ARG lines in to the kill ring."
   (interactive "p")
   (kill-ring-save (line-beginning-position)
                   (line-beginning-position (+ 1 arg)))
@@ -725,7 +717,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; AppleScript Safari stuff
 (defun tell-app (app something)
-  "Use Applescript to tell an Application"
+  "Use Applescript to tell APP to do SOMETHING."
   (decode-coding-string
    (do-applescript
     (concat "tell application\""
@@ -766,8 +758,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (defun my-safari-url-as-markdown ()
   (interactive)
-  (let ((url my-safari-url)
-        (title my-safari-title))
+  (let ((url (my-safari-url))
+        (title (my-safari-title)))
     (insert (concat "[" title "](" url ")"))))
 
 (defun my-organisation ()
@@ -783,7 +775,7 @@ point reaches the beginning or end of the buffer, stop there."
            "\" waiting until completion false stopping current speech true")))
 
 (defun speak-buffer-or-region ()
-  "Reads a buffer or region aloud."
+  "Read buffer or region aloud."
   (interactive)
   (save-excursion
     (unless (region-active-p)
@@ -792,19 +784,19 @@ point reaches the beginning or end of the buffer, stop there."
       (say-text text))))
 
 (defun stop-speech ()
-  "stopping talking."
+  "Stopping talking."
   (interactive)
   (say-text ""))
 
 (global-set-key [remap goto-line] 'goto-line-with-feedback)
 
 (defun goto-line-with-feedback ()
-  "Show line numbers temporarily, while prompting for the line number input"
+  "Show line numbers temporarily, while prompting for the line number input."
   (interactive)
   (unwind-protect
       (progn
         (linum-mode 1)
-        (goto-line (read-number "Goto line: ")))
+        (call-interactively 'goto-line))
     (linum-mode -1)))
 
 (use-package deft
@@ -1015,7 +1007,7 @@ point reaches the beginning or end of the buffer, stop there."
             (setq org-todo-keywords
                   '((sequence "TODO(t)" "|" "DONE(d!)")
                     (sequence "WAITING(w@/!)" "|" "CANCELLED" "DELEGATED(e@)")))
-            (setq org-enforce-todo-depedencies t)
+            (setq org-enforce-todo-dependencies t)
             (defun pd/org-summary-todo (n-done n-not-done)
               "Switch entry to DONE when all subentries are done, to TODO otherwise."
               (let (org-log-done org-log-states)   ; turn off logging
