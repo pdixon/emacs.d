@@ -1205,6 +1205,9 @@ point reaches the beginning or end of the buffer, stop there."
       "Expand buffer in place as a yasnippet."
       (yas-expand-snippet (buffer-string) (point-min) (point-max)))
 
+    (define-auto-insert "setup.py\\'"
+      ["template-setup.py" pd-expand-buffer])
+
     (define-auto-insert "\\.markdown\\'"
       ["post.markdown" pd-expand-buffer])
 
@@ -1213,6 +1216,7 @@ point reaches the beginning or end of the buffer, stop there."
 
     (define-auto-insert "\\.m\\'"
       ["template.m" pd-expand-buffer])))
+
 
 (use-package haskell-mode
   :disabled t
