@@ -1192,6 +1192,10 @@ point reaches the beginning or end of the buffer, stop there."
   (setq company-begin-commands '(self-insert-command))
   (setq company-idle-delay 0.3))
 
+(use-package s
+  :defer t
+  :ensure t)
+
 (use-package autoinsert
   :defer t
   :init
@@ -1203,6 +1207,7 @@ point reaches the beginning or end of the buffer, stop there."
 
     (defun pd-expand-buffer ()
       "Expand buffer in place as a yasnippet."
+      (require 's)
       (yas-expand-snippet (buffer-string) (point-min) (point-max)))
 
     (define-auto-insert "setup.py\\'"
