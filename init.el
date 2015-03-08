@@ -1363,8 +1363,7 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init
   (with-eval-after-load 'flycheck
-    (require 'flycheck-irony)
-    (add-to-list 'flycheck-checkers 'irony)))
+    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
 
 (use-package flycheck
   :ensure t
