@@ -117,6 +117,7 @@
     (dynamic-fonts-setup)))
 
 (use-package unicode-fonts
+  :disabled t
   :ensure t
   :init (unicode-fonts-setup))
 
