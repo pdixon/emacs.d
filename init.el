@@ -79,8 +79,13 @@
 (setq package-enable-at-startup nil)
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
-(require 'use-package)
-(setq use-package-verbose t)
+
+(eval-when-compile
+  (require 'use-package)
+  ;(setq use-package-verbose t)
+  )
+(require 'bind-key)
+(require 'diminish)
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
@@ -243,8 +248,7 @@
 
 ;; Save a list of recent files visited.
 (use-package recentf
-  :defer t
-  :idle (recentf-mode)
+  :defer 1
   :config
   (setq  recentf-auto-cleanup 300
          recentf-exclude (list "/\\.git/.*\\'" ; Git contents
@@ -1434,7 +1438,7 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'prog-mode-hook 'pd/turn-on-which-func)
 
 (use-package server
-  :idle (server-start))
+  :defer t)
 
 (use-package mu4e
   :defer t
