@@ -1464,6 +1464,16 @@ point reaches the beginning or end of the buffer, stop there."
                       :family 'unspecified
                       :inherit font-lock-type-face))
 
+(use-package mediawiki
+  :ensure t
+  :defer t
+  :config
+  (
+    (add-to-list 'mediawiki-site-alist
+                 '("Software" "http://wiki.sw.au.ivc/mediawiki" "pdixon" "" "The PENSIEVE"))
+    (setq mediawiki-site-default "Software")))
+
+
 (if (file-exists-p system-specific-config)
     (load system-specific-config)
   (message "No system specific config for %s (i.e %s doesn't exist)"

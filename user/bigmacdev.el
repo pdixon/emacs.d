@@ -10,4 +10,3 @@
 (dir-locals-set-directory-class
  (expand-file-name "~/Documents/work/") 'work-directory)
 
-(require 'pd-work)
