@@ -1455,7 +1455,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :config
   (when (eq system-type 'darwin)
-    (setq clang-format-executable "/usr/local/opt/llvm/bin/clang-format")))
+    (setq clang-format-executable "/usr/local/opt/llvm36/bin/clang-format-3.6")))
 
 (use-package info
   :defer t
