@@ -98,28 +98,32 @@
 
 (use-package dynamic-fonts
   :ensure t
+  :defines (dynamic-fonts-preferred-monospace-fonts
+            dynamic-fonts-preferred-monospace-point-size
+            dynamic-fonts-preferred-proportional-fonts
+            dynamic-fonts-preferred-proportional-point-size)
   :init
-  (progn
-    (setq dynamic-fonts-preferred-monospace-fonts
-          '("Source Code Pro"
-            "Inconsolata"
-            "Consolas"
-            "Menlo"
-            "DejaVu Sans Mono"
-            "Bitstream Vera Mono")
-          dynamic-fonts-preferred-monospace-point-size (pcase system-type
-                                                         (`darwin 12)
-                                                         (_ 9))
-          dynamic-fonts-preferred-proportional-fonts
-          '("Helvetica"
-            "Segoe UI"
-            "DejaVu Sans"
-            "Bitstream Vera")
-          dynamic-fonts-preferred-proportional-point-size (pcase system-type
-                                                            (`darwin 12)
-                                                            (_ 9)))
-
-    (dynamic-fonts-setup)))
+  (setq dynamic-fonts-preferred-monospace-fonts
+        '("Source Code Pro"
+          "Inconsolata"
+          "Consolas"
+          "Menlo"
+          "DejaVu Sans Mono"
+          "Bitstream Vera Mono"))
+  (setq dynamic-fonts-preferred-monospace-point-size
+        (pcase system-type
+          (`darwin 12)
+          (_ 9)))
+  (setq dynamic-fonts-preferred-proportional-fonts
+        '("Helvetica"
+          "Segoe UI"
+          "DejaVu Sans"
+          "Bitstream Vera"))
+  (setq dynamic-fonts-preferred-proportional-point-size
+        (pcase system-type
+          (`darwin 12)
+          (_ 9)))
+  (dynamic-fonts-setup))
 
 (use-package unicode-fonts
   :disabled t
@@ -127,18 +131,16 @@
   :init (unicode-fonts-setup))
 
 (use-package zenburn
+  :disabled t
   :ensure zenburn-theme
   :defer t
   :init
   (load-theme 'zenburn t))
 
 (use-package solarized
-  :disabled t
   :ensure solarized-theme
   :defer t
   :init
-  (load-theme 'solarized-light t)
-  :config
   (setq solarized-distinct-fringe-background t
         solarized-high-contrast-mode-line t
         solarized-use-less-bold t
@@ -148,7 +150,8 @@
         solarized-height-plus-1 1.0
         solarized-height-plus-2 1.0
         solarized-height-plus-3 1.0
-        solarized-height-plus-4 1.0))
+        solarized-height-plus-4 1.0)
+    (load-theme 'solarized-light t))
 
 ;; Basic Apperance
 ;; (if (not (eq system-type 'darwin))
@@ -383,48 +386,47 @@
   :defer t
   :bind ("<f8>" . ibuffer)
   :init
-  (progn
-    (defalias 'list-buffers 'ibuffer))
+  (defalias 'list-buffers 'ibuffer)
   :config
-  (progn
-    (setq ibuffer-expert 1)
-    (setq ibuffer-show-empty-filter-groups nil)
+  (setq ibuffer-expert 1)
+  (setq ibuffer-show-empty-filter-groups nil)
 
-    (add-hook 'ibuffer-hook
-              (lambda ()
-                (ibuffer-vc-set-filter-groups-by-vc-root)
-                (unless (eq ibuffer-sorting-mode 'alphabetic)
-                  (ibuffer-do-sort-by-alphabetic))))
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (ibuffer-vc-set-filter-groups-by-vc-root)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic))))
 
     ;; Use human readable Size column instead of original one
-    (define-ibuffer-column size-h
-      (:name "Size" :inline t)
-      (cond
-       ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-       ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
-       (t (format "%8d" (buffer-size)))))
+
+  (define-ibuffer-column size-h
+    (:name "Size" :inline t)
+    (cond
+     ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+     ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+     (t (format "%8d" (buffer-size)))))
 
     ;; Modify the default ibuffer-formats
-    (setq ibuffer-formats
-          '((mark modified read-only " "
-                  (name 18 18 :left :elide)
-                  " "
-                  (size-h 9 -1 :right)
-                  " "
-                  (mode 16 16 :left :elide)
-                  " "
-                  (vc-status 16 16 :left)
-                  " "
-                  filename-and-process)))))
+
+  (setq ibuffer-formats
+        '((mark modified read-only " "
+                (name 18 18 :left :elide)
+                " "
+                (size-h 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " "
+                (vc-status 16 16 :left)
+                " "
+                filename-and-process))))
 
 
 (use-package uniquify
   :init
-  (progn
-    (setq uniquify-buffer-name-style 'reverse
-          uniquify-separator "/"
-          uniquify-after-kill-buffer-p t
-          uniquify-ignore-buffers-re "^\\*")))
+  (setq uniquify-buffer-name-style 'reverse
+        uniquify-separator "/"
+        uniquify-after-kill-buffer-p t
+        uniquify-ignore-buffers-re "^\\*"))
 
 
 (use-package files
@@ -436,31 +438,30 @@
 (use-package dired
   :defer t
   :config
-  (progn
-    (put 'dired-find-alternate-file 'disabled nil)
-    (setq dired-dwim-target t
-          dired-recursive-copies 'always
-          dired-recursive-deletes 'top
-          dired-listing-switches "-alhF")
-    (when (or (memq system-type '(gnu gnu/linux))
-              (string= (file-name-nondirectory insert-directory-program) "gls"))
-      ;; If we are on a GNU system or have GNU ls, add some more `ls' switches:
-      ;; `--group-directories-first' lists directories before files, and `-v'
-      ;; sorts numbers in file names naturally, i.e. "image1" goes before
-      ;; "image02"
-      (setq dired-listing-switches
-            (concat dired-listing-switches " --group-directories-first -v")))
+  (put 'dired-find-alternate-file 'disabled nil)
+  (setq dired-dwim-target t
+        dired-recursive-copies 'always
+        dired-recursive-deletes 'top
+        dired-listing-switches "-alhF")
+  (when (or (memq system-type '(gnu gnu/linux))
+            (string= (file-name-nondirectory insert-directory-program) "gls"))
+    ;; If we are on a GNU system or have GNU ls, add some more `ls' switches:
+    ;; `--group-directories-first' lists directories before files, and `-v'
+    ;; sorts numbers in file names naturally, i.e. "image1" goes before
+    ;; "image02"
+    (setq dired-listing-switches
+          (concat dired-listing-switches " --group-directories-first -v")))
 
-    (defun pd/dired-do-multi-occur (regexp)
-      "Show all in lines in marked files containing REGEXP"
-      (interactive "MList lines matching regexp: ")
-      (multi-occur (mapcar 'find-file (dired-get-marked-files)) regexp))
+  (defun pd/dired-do-multi-occur (regexp)
+    "Show all in lines in marked files containing REGEXP"
+    (interactive "MList lines matching regexp: ")
+    (multi-occur (mapcar 'find-file (dired-get-marked-files)) regexp))
 
-    (defun pd-dired-find-alternate-parent ()
-      (interactive)
-      (find-alternate-file ".."))
+  (defun pd-dired-find-alternate-parent ()
+    (interactive)
+    (find-alternate-file ".."))
 
-    (bind-key "^" 'pd-dired-find-alternate-parent dired-mode-map)))
+  (bind-key "^" 'pd-dired-find-alternate-parent dired-mode-map))
 
 (use-package dired-x
   :bind (("C-x C-j" . dired-jump)
@@ -516,8 +517,7 @@
 (use-package ediff
   :defer t
   :config
-  (progn
-    (setq ediff-split-window-function 'split-window-horizontally)))
+  (setq ediff-split-window-function 'split-window-horizontally))
 
 (use-package pd-editing-extras
   :bind (("C-c +" . my-increment)
@@ -574,8 +574,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t
   :init
-  (progn
-    (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)))
+  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode))
 
 ;; Yank line or region
 (defadvice kill-ring-save (before slick-copy activate compile)
@@ -601,9 +600,8 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :bind ("C-c C-f" . ffip)
   :config
-  (progn
-    (require 'pd-project)
-    (setq ffip-project-root-function 'pd-project-get-root)))
+  (require 'pd-project)
+  (setq ffip-project-root-function 'pd-project-get-root))
 
 (use-package pd-project
   :bind(("C-c b" . pd-project-compile))
@@ -808,11 +806,10 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :bind ("<f5>" . deft)
   :config
-  (progn
-    (setq deft-extension "org")
-    (setq deft-directory "~/personal/notes")
-    (setq deft-text-mode 'org-mode)
-    (setq deft-use-filename-as-title t)))
+  (setq deft-extension "org")
+  (setq deft-directory "~/personal/notes")
+  (setq deft-text-mode 'org-mode)
+  (setq deft-use-filename-as-title t))
 
 (use-package markdown-mode
   :ensure t
@@ -820,9 +817,8 @@ point reaches the beginning or end of the buffer, stop there."
          ("\\.mdwn\\'" . markdown-mode)
          ("\\.markdown" . markdown-mode))
   :config
-  (progn
-    (setq markdown-command "pandoc")
-    (add-hook 'markdown-mode-hook 'imenu-add-menubar-index)))
+  (setq markdown-command "pandoc")
+  (add-hook 'markdown-mode-hook 'imenu-add-menubar-index))
 
 
 (use-package pd-blog-helpers
@@ -844,64 +840,73 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package ansi-term
   :bind ("<f10>" . pd-visit-term)
   :init
-  (progn
-    (defun pd-visit-term ()
-      ""
-      (interactive)
-      (if (not (get-buffer "*ansi-term*"))
-          (ansi-term (getenv "SHELL"))
-        (switch-to-buffer "*ansi-term*"))))
+  (defun pd-visit-term ()
+    ""
+    (interactive)
+    (if (not (get-buffer "*ansi-term*"))
+        (ansi-term (getenv "SHELL"))
+      (switch-to-buffer "*ansi-term*")))
   :config
-  (progn
-    (defun my-term-paste (&optional string)
-      (interactive)
-      (process-send-string
-       (get-buffer-process (current-buffer))
-       (if string
-           string
-         (current-kill 0))))
+  (defun my-term-paste (&optional string)
+    (interactive)
+    (process-send-string
+     (get-buffer-process (current-buffer))
+     (if string
+         string
+       (current-kill 0))))
 
-    (defun my-term-hook ()
-      (goto-address-mode))
-    (add-hook 'term-mode-hook 'my-term-hook)))
+  (defun my-term-hook ()
+    (goto-address-mode))
+  (add-hook 'term-mode-hook 'my-term-hook))
 
 ;; Setup for Org
 (use-package org-agenda
   :bind (("<f6>" . my-org-agenda)
          ("C-c a" . org-agenda))
   :init
-  (progn
-    (defun my-org-agenda ()
-      (interactive)
-      (org-agenda nil "w")))
+  (defun my-org-agenda ()
+    (interactive)
+    (org-agenda nil "w"))
   :config
-  (progn
-    (setq org-agenda-prefix-format
-          '((agenda . " %i %-12:c%?-12t% s %b")
-            (timeline . "  % s %b")
-            (todo . " %i %-12:c %b")
-            (tags . " %i %-12:c %b")
-            (search . " %i %-12:c %b")))))
+  (setq org-agenda-prefix-format
+        '((agenda . " %i %-12:c%?-12t% s %b")
+          (timeline . "  % s %b")
+          (todo . " %i %-12:c %b")
+          (tags . " %i %-12:c %b")
+          (search . " %i %-12:c %b"))))
+
+(use-package org-mac-link
+  :ensure t
+  ;; :bind (:map org-mode-map
+  ;;             ("C-c g" . org-mac-grab-link))
+  :commands (org-mac-grab-link)
+  :config
+  (setq org-mac-grab-Addressbook-app-p nil)
+  (setq org-mac-grab-devonthink-app-p nil)
+  (setq org-mac-grab-Firefox-app-p nil)
+  (setq org-mac-grab-Firefox+Vimperator-p nil)
+  (setq org-mac-grab-Chrome-app-p nil)
+  (setq org-mac-grab-Together-app-p nil)
+  (setq org-mac-grab-Skim-app-p nil))
 
 (use-package org-capture
   :bind (("C-c r" . org-capture))
   :config
-  (progn
-    (setq org-capture-templates
-          '(("i" "Interruption" entry
-             (file "~/work/org/inbox.org")
-             "* %?\n"
-             :clock-in t)
-            ("n" "Notes" entry
-             (file "~/work/org/inbox.org")
-             "* %?\n%U\n%i\n%a")
-            ("t" "Todo" entry
-             (file "~/work/org/inbox.org")
-             "* TODO %?\n%U\n%i\n%a")
-            ("b" "Book" entry
-             (file+headline "~/personal/notes/reading.org" "Read")
-             "** %^{Title}\n:PROPERTIES:\n:Author: %^{Author}p \n:Started: %u\n:Finished: \n:END:\n\n"
-             :immediate-finish t)))))
+  (setq org-capture-templates
+        '(("i" "Interruption" entry
+           (file "~/work/org/inbox.org")
+           "* %?\n"
+           :clock-in t)
+          ("n" "Notes" entry
+           (file "~/work/org/inbox.org")
+           "* %?\n%U\n%i\n%a")
+          ("t" "Todo" entry
+           (file "~/work/org/inbox.org")
+           "* TODO %?\n%U\n%i\n%a")
+          ("b" "Book" entry
+           (file+headline "~/personal/notes/reading.org" "Read")
+           "** %^{Title}\n:PROPERTIES:\n:Author: %^{Author}p \n:Started: %u\n:Finished: \n:END:\n\n"
+           :immediate-finish t))))
 
 (use-package ox-bibtex
   :defer t
@@ -922,234 +927,232 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :commands pd/publish-blog
   :config
-  (progn
-    (require 'ox-html)
-    (require 'pd-html)
-    (require 'ox-rss)
+  (require 'ox-html)
+  (require 'pd-html)
+  (require 'ox-rss)
 
-    (defun pd/publish-blog ()
-      "Publish my blog"
-      (interactive)
-      (org-publish-project "blog" t))
+  (defun pd/publish-blog ()
+    "Publish my blog"
+    (interactive)
+    (org-publish-project "blog" t))
 
-    (setq org-confirm-babel-evaluate nil)
+  (setq org-confirm-babel-evaluate nil)
 
-    (setq org-publish-project-alist
-          '(("blog-content"
-             :base-directory "~/personal/phil.dixon.gen.nz/"
-             :base-extension "org"
-             :recursive t
-             :publishing-directory "~/Sites/phil.dixon.gen.nz/"
-             :publishing-function (pd-html-publish-to-html)
-             :with-toc nil
-             :html-html5-fancy t
-             :section-numbers nil
-             :exclude "rss.org")
-            ("blog-static"
-             :base-directory "~/personal/phil.dixon.gen.nz/"
-             :base-extension "jpg\\|png\\|css\\|js\\|ico\\|gif"
-             :recursive t
-             :publishing-directory "~/Sites/phil.dixon.gen.nz/"
-             :publishing-function org-publish-attachment)
-            ("blog-rss"
-             :base-directory "~/personal/phil.dixon.gen.nz/"
-             :base-extension "org"
-             :publishing-directory "~/Sites/phil.dixon.gen.nz/"
-             :publishing-function (org-rss-publish-to-rss)
-             :html-link-home "~/Sites/phil.dixon.gen.nz/"
-             :html-link-use-abs-url t
-             :exclude ".*"
-             :include ("rss.org")
-             :with-toc nil
-             :section-numbers nil
-             :title "Phillip Dixon")
-            ("blog"
-             :components
-             ("blog-content" "blog-static" "blog-rss"))))))
+  (setq org-publish-project-alist
+        '(("blog-content"
+           :base-directory "~/personal/phil.dixon.gen.nz/"
+           :base-extension "org"
+           :recursive t
+           :publishing-directory "~/Sites/phil.dixon.gen.nz/"
+           :publishing-function (pd-html-publish-to-html)
+           :with-toc nil
+           :html-html5-fancy t
+           :section-numbers nil
+           :exclude "rss.org")
+          ("blog-static"
+           :base-directory "~/personal/phil.dixon.gen.nz/"
+           :base-extension "jpg\\|png\\|css\\|js\\|ico\\|gif"
+           :recursive t
+           :publishing-directory "~/Sites/phil.dixon.gen.nz/"
+           :publishing-function org-publish-attachment)
+          ("blog-rss"
+           :base-directory "~/personal/phil.dixon.gen.nz/"
+           :base-extension "org"
+           :publishing-directory "~/Sites/phil.dixon.gen.nz/"
+           :publishing-function (org-rss-publish-to-rss)
+           :html-link-home "~/Sites/phil.dixon.gen.nz/"
+           :html-link-use-abs-url t
+           :exclude ".*"
+           :include ("rss.org")
+           :with-toc nil
+           :section-numbers nil
+           :title "Phillip Dixon")
+          ("blog"
+           :components
+           ("blog-content" "blog-static" "blog-rss")))))
 
 (use-package org
   :mode ("\\.org\\'" . org-mode)
-  :config (progn
-            (setq org-directory "~/work/org/")
-            (setq org-default-notes-file (concat org-directory "inbox.org"))
-            (setq org-agenda-diary-file (concat org-directory "diary.org"))
-            (setq org-agenda-files (list org-directory (concat org-directory "projects/")))
+  :config
+  (setq org-directory "~/work/org/")
+  (setq org-default-notes-file (concat org-directory "inbox.org"))
+  (setq org-agenda-diary-file (concat org-directory "diary.org"))
+  (setq org-agenda-files (list org-directory (concat org-directory "projects/")))
 
-            (setq org-hide-leading-stars t)
-            (setq org-use-sub-superscripts "{}")
-            (setq org-footnote-define-inline t)
-            (setq org-footnote-auto-adjust nil)
+  (setq org-hide-leading-stars t)
+  (setq org-use-sub-superscripts "{}")
+  (setq org-footnote-define-inline t)
+  (setq org-footnote-auto-adjust nil)
 
-            (setq org-fast-tag-selection-single-key 'expert)
-            (setq org-log-into-drawer "LOGBOOK")
-            (setq org-tag-alist
-                  '((:startgroup . nil)
-                    ("@call" . ?c)
-                    ("@office" . ?o)
-                    ("@home" . ?h)
-                    ("@read" . ?r)
-                    ("@computer" . ?m)
-                    ("@shops" . ?s)
-                    ("@dev" . ?d)
-                    ("@write" . ?w)
-                    (:endgroup . nil)
-                    ("REFILE" . ?f)
-                    ("SOMEDAY" . ?s)
-                    ("PROJECT" . ?p)))
-            (setq org-use-tag-inheritance t)
-            (setq org-tags-exclude-from-inheritance '("@call"
-                                                      "@office"
-                                                      "@home"
-                                                      "@read"
-                                                      "@computer"
-                                                      "@shops"
-                                                      "@dev"
-                                                      "@write"
-                                                      "PROJECT"))
+  (setq org-fast-tag-selection-single-key 'expert)
+  (setq org-log-into-drawer "LOGBOOK")
+  (setq org-tag-alist
+        '((:startgroup . nil)
+          ("@call" . ?c)
+          ("@office" . ?o)
+          ("@home" . ?h)
+          ("@read" . ?r)
+          ("@computer" . ?m)
+          ("@shops" . ?s)
+          ("@dev" . ?d)
+          ("@write" . ?w)
+          (:endgroup . nil)
+          ("REFILE" . ?f)
+          ("SOMEDAY" . ?s)
+          ("PROJECT" . ?p)))
+  (setq org-use-tag-inheritance t)
+  (setq org-tags-exclude-from-inheritance '("@call"
+                                            "@office"
+                                            "@home"
+                                            "@read"
+                                            "@computer"
+                                            "@shops"
+                                            "@dev"
+                                            "@write"
+                                            "PROJECT"))
 
-            (setq org-use-speed-commands t)
-            (setq org-use-fast-todo-selection t)
-            (setq org-todo-keywords
-                  '((sequence "TODO(t)" "|" "DONE(d!)")
-                    (sequence "WAITING(w@/!)" "|" "CANCELLED" "DELEGATED(e@)")))
-            (setq org-enforce-todo-dependencies t)
-            (defun pd/org-summary-todo (n-done n-not-done)
-              "Switch entry to DONE when all subentries are done, to TODO otherwise."
-              (let (org-log-done org-log-states)   ; turn off logging
-                (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-            (add-hook 'org-after-todo-statistics-hook 'pd/org-summary-todo)
+  (setq org-use-speed-commands t)
+  (setq org-use-fast-todo-selection t)
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "|" "DONE(d!)")
+          (sequence "WAITING(w@/!)" "|" "CANCELLED" "DELEGATED(e@)")))
+  (setq org-enforce-todo-dependencies t)
+  (defun pd/org-summary-todo (n-done n-not-done)
+    "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let (org-log-done org-log-states)   ; turn off logging
+      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+  (add-hook 'org-after-todo-statistics-hook 'pd/org-summary-todo)
 
-            (setq org-agenda-todo-ignore-with-date t)
-            (setq org-agenda-skip-deadline-if-done t)
-            (setq org-agenda-skip-scheduled-if-done t)
-            (setq org-agenda-tags-todo-honor-ignore-options t)
-            (setq org-agenda-window-setup 'current-window)
-            (setq org-agenda-compact-blocks t)
-            (setq org-agenda-custom-commands
-                  '(("w" "Day's Agenda and Tasks"
-                     ((agenda "" (( org-agenda-span 1)))
-                      (tags-todo "-SOMEDAY/!"
-                                 ((org-agenda-overriding-header "Stuck Projects")
-                                  (org-agenda-skip-function 'bh/skip-non-stuck-projects)))
-                      (tags-todo "-SOMEDAY/!"
-                                 ((org-agenda-overriding-header "Projects")
-                                  (org-agenda-skip-function 'bh/skip-non-projects)
-                                  (org-agenda-ignore-scheduled 'future)
-                                  (org-agenda-ignore-deadlines 'future)
-                                  (org-agenda-sorting-strategy
-                                   '(category-keep))))
-                      (tags-todo "-CANCELLED/!WAITING"
-                                 ((org-agenda-overriding-header "Waiting and Postponed Tasks")
-                                  (org-agenda-skip-function 'pd/skip-projects)
-                                  (org-agenda-todo-ignore-scheduled t)
-                                  (org-agenda-todo-ignore-deadlines t)))
-                      (tags-todo "-SOMEDAY/!-WAITING"
-                                 ((org-agenda-overriding-header "Tasks")
-                                  (org-agenda-skip-function 'pd/skip-projects)
-                                  (org-agenda-todo-ignore-scheduled t)
-                                  (org-agenda-todo-ignore-deadlines t)
-                                  (org-agenda-sorting-strategy
-                                   '(category-keep))))
-                      nil))
-                    ("#" "Stuck Projects" tags-todo "-SOMEDAY/!"
-                     ((org-agenda-overriding-header "Stuck Projects")
-                      (org-agenda-skip-function 'bh/skip-non-stuck-projects)))
-                    ("R" "Tasks" tags-todo "-REFILE-CANCELLED/!-WAITING"
-                     ((org-agenda-overriding-header "Tasks")
-                      (org-agenda-skip-function 'pd/skip-projects)
-                      (org-agenda-sorting-strategy
-                       '(category-keep))))
-                    ("p" "Project Lists" tags-todo "-SOMEDAY/!"
-                     ((org-agenda-overriding-header "Projects")
-                      (org-agenda-skip-function 'bh/skip-non-projects)
-                      (org-agenda-ignore-scheduled 'future)
-                      (org-agenda-ignore-deadlines 'future)
-                      (org-agenda-sorting-strategy
-                       '(category-keep))))
-                    ("b" "Waiting Tasks" tags-todo "-CANCELLED/!WAITING"
-                     ((org-agenda-overriding-header "Waiting and Postponed tasks")
-                      (org-agenda-skip-function 'pd/skip-projects)
-                      (org-agenda-todo-ignore-scheduled 'future)
-                      (org-agenda-todo-ignore-deadlines 'future)))
-                    ("e" "Errand List" tags-todo "@shops"
-                     ((org-agenda-prefix-format "[ ]")
-                      (org-agenda-todo-keyword-format "")))
-                    ("c" todo "TODO"
-                     ((org-agenda-sorting-strategy '(tag-up priority-down))))))
+  (setq org-agenda-todo-ignore-with-date t)
+  (setq org-agenda-skip-deadline-if-done t)
+  (setq org-agenda-skip-scheduled-if-done t)
+  (setq org-agenda-tags-todo-honor-ignore-options t)
+  (setq org-agenda-window-setup 'current-window)
+  (setq org-agenda-compact-blocks t)
+  (setq org-agenda-custom-commands
+        '(("w" "Day's Agenda and Tasks"
+           ((agenda "" (( org-agenda-span 1)))
+            (tags-todo "-SOMEDAY/!"
+                       ((org-agenda-overriding-header "Stuck Projects")
+                        (org-agenda-skip-function 'bh/skip-non-stuck-projects)))
+            (tags-todo "-SOMEDAY/!"
+                       ((org-agenda-overriding-header "Projects")
+                        (org-agenda-skip-function 'bh/skip-non-projects)
+                        (org-agenda-ignore-scheduled 'future)
+                        (org-agenda-ignore-deadlines 'future)
+                        (org-agenda-sorting-strategy
+                         '(category-keep))))
+            (tags-todo "-CANCELLED/!WAITING"
+                       ((org-agenda-overriding-header "Waiting and Postponed Tasks")
+                        (org-agenda-skip-function 'pd/skip-projects)
+                        (org-agenda-todo-ignore-scheduled t)
+                        (org-agenda-todo-ignore-deadlines t)))
+            (tags-todo "-SOMEDAY/!-WAITING"
+                       ((org-agenda-overriding-header "Tasks")
+                        (org-agenda-skip-function 'pd/skip-projects)
+                        (org-agenda-todo-ignore-scheduled t)
+                        (org-agenda-todo-ignore-deadlines t)
+                        (org-agenda-sorting-strategy
+                         '(category-keep))))
+            nil))
+          ("#" "Stuck Projects" tags-todo "-SOMEDAY/!"
+           ((org-agenda-overriding-header "Stuck Projects")
+            (org-agenda-skip-function 'bh/skip-non-stuck-projects)))
+          ("R" "Tasks" tags-todo "-REFILE-CANCELLED/!-WAITING"
+           ((org-agenda-overriding-header "Tasks")
+            (org-agenda-skip-function 'pd/skip-projects)
+            (org-agenda-sorting-strategy
+             '(category-keep))))
+          ("p" "Project Lists" tags-todo "-SOMEDAY/!"
+           ((org-agenda-overriding-header "Projects")
+            (org-agenda-skip-function 'bh/skip-non-projects)
+            (org-agenda-ignore-scheduled 'future)
+            (org-agenda-ignore-deadlines 'future)
+            (org-agenda-sorting-strategy
+             '(category-keep))))
+          ("b" "Waiting Tasks" tags-todo "-CANCELLED/!WAITING"
+           ((org-agenda-overriding-header "Waiting and Postponed tasks")
+            (org-agenda-skip-function 'pd/skip-projects)
+            (org-agenda-todo-ignore-scheduled 'future)
+            (org-agenda-todo-ignore-deadlines 'future)))
+          ("e" "Errand List" tags-todo "@shops"
+           ((org-agenda-prefix-format "[ ]")
+            (org-agenda-todo-keyword-format "")))
+          ("c" todo "TODO"
+           ((org-agenda-sorting-strategy '(tag-up priority-down))))))
 
-            (add-hook 'org-agenda-mode-hook '(lambda ()
-                                               (setq org-agenda-tags-column (- (window-width)))))
+  (add-hook 'org-agenda-mode-hook '(lambda ()
+                                     (setq org-agenda-tags-column (- (window-width)))))
 
+    ;; Refile setup
 
-            
-            ;; Refile setup
-            (setq org-completion-use-ido t)
-            (setq org-refile-targets (quote ((org-agenda-files :maxlevel . 3) (nil :maxlevel . 3))))
-            (setq org-refile-use-outline-path (quote file))
-            (setq org-outline-path-complete-in-steps t)
+  (setq org-completion-use-ido t)
+  (setq org-refile-targets (quote ((org-agenda-files :maxlevel . 3) (nil :maxlevel . 3))))
+  (setq org-refile-use-outline-path (quote file))
+  (setq org-outline-path-complete-in-steps t)
 
-            (defun bh/is-project-p ()
-              "Any task with a todo keyword subtask"
-              (save-restriction
-                (widen)
-                (let ((has-subtask)
-                      (subtree-end (save-excursion (org-end-of-subtree t)))
-                      (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
-                  (save-excursion
-                    (forward-line 1)
-                    (while (and (not has-subtask)
-                                (< (point) subtree-end)
-                                (re-search-forward "^\*+ " subtree-end t))
-                      (when (member (org-get-todo-state) org-todo-keywords-1)
-                        (setq has-subtask t))))
-                  (and is-a-task has-subtask))))
+  (defun bh/is-project-p ()
+    "Any task with a todo keyword subtask"
+    (save-restriction
+      (widen)
+      (let ((has-subtask)
+            (subtree-end (save-excursion (org-end-of-subtree t)))
+            (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+        (save-excursion
+          (forward-line 1)
+          (while (and (not has-subtask)
+                      (< (point) subtree-end)
+                      (re-search-forward "^\*+ " subtree-end t))
+            (when (member (org-get-todo-state) org-todo-keywords-1)
+              (setq has-subtask t))))
+        (and is-a-task has-subtask))))
 
-            (defun bh/list-sublevels-for-projects-indented ()
-              "Set org-tags-match-list-sublevels so when restricted to a subtree we list all subtasks.
+  (defun bh/list-sublevels-for-projects-indented ()
+    "Set org-tags-match-list-sublevels so when restricted to a subtree we list all subtasks.
   This is normally used by skipping functions where this variable is already local to the agenda."
-              (if (marker-buffer org-agenda-restrict-begin)
-                  (setq org-tags-match-list-sublevels 'indented)
-                (setq org-tags-match-list-sublevels nil))
-              nil)
+    (if (marker-buffer org-agenda-restrict-begin)
+        (setq org-tags-match-list-sublevels 'indented)
+      (setq org-tags-match-list-sublevels nil))
+    nil)
 
-            (defun bh/skip-non-stuck-projects ()
-              "Skip trees that are not stuck projects"
-              (save-restriction
-                (widen)
-                (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-                  (if (bh/is-project-p)
-                      (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
-                             (has-next (save-excursion
-                                         (forward-line 1)
-                                         (and (< (point) subtree-end)
-                                              (re-search-forward "^\\*+ \\(TODO\\) " subtree-end t)))))
-                        (if has-next
-                            next-headline
-                          nil)) ; a stuck project, has subtasks but no next task
-                    next-headline))))
+  (defun bh/skip-non-stuck-projects ()
+    "Skip trees that are not stuck projects"
+    (save-restriction
+      (widen)
+      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+        (if (bh/is-project-p)
+            (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+                   (has-next (save-excursion
+                               (forward-line 1)
+                               (and (< (point) subtree-end)
+                                    (re-search-forward "^\\*+ \\(TODO\\) " subtree-end t)))))
+              (if has-next
+                  next-headline
+                nil)) ; a stuck project, has subtasks but no next task
+          next-headline))))
 
-            (defun bh/skip-non-projects ()
-              "Skip trees that are not projects"
-              (bh/list-sublevels-for-projects-indented)
-              (if (save-excursion (bh/skip-non-stuck-projects))
-                  (save-restriction
-                    (widen)
-                    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-                      (if (bh/is-project-p)
-                          nil
-                        subtree-end)))
-                (org-end-of-subtree t)))
+  (defun bh/skip-non-projects ()
+    "Skip trees that are not projects"
+    (bh/list-sublevels-for-projects-indented)
+    (if (save-excursion (bh/skip-non-stuck-projects))
+        (save-restriction
+          (widen)
+          (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+            (if (bh/is-project-p)
+                nil
+              subtree-end)))
+      (org-end-of-subtree t)))
 
-            (defun pd/skip-projects ()
-              "Skip trees that are projects"
-              (save-restriction
-                (widen)
-                (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-                  (cond
-                   ((bh/is-project-p)
-                    next-headline)
-                   (t
-                    nil)))))))
+  (defun pd/skip-projects ()
+    "Skip trees that are projects"
+    (save-restriction
+      (widen)
+      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+        (cond
+         ((bh/is-project-p)
+          next-headline)
+         (t
+          nil))))))
 
 
 (defmacro hook-into-modes (func modes)
@@ -1168,21 +1171,18 @@ point reaches the beginning or end of the buffer, stop there."
                      markdown-mode-hook))
   (setq yas-snippet-dirs (list (concat dotfiles-dir "snippets")))
   :config
-  (progn
-    (setq yas-prompt-functions '(yas-ido-prompt yas-complete-prompt))
-    
-    (yas-reload-all)))
+  (setq yas-prompt-functions '(yas-ido-prompt yas-complete-prompt))
+  (yas-reload-all))
 
 (use-package hippie-exp
   :defer t
   :config
-  (progn
-    ;; Hippie expand: at times perhaps too hip
-    (dolist (f '(try-expand-line try-expand-list try-complete-file-name-partially))
-      (delete f hippie-expand-try-functions-list))
+  ;; Hippie expand: at times perhaps too hip
+  (dolist (f '(try-expand-line try-expand-list try-complete-file-name-partially))
+    (delete f hippie-expand-try-functions-list))
 
-    ;; Add this back in at the end of the list.
-    (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)))
+  ;; Add this back in at the end of the list.
+  (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t))
 
 (use-package company
   :ensure t
@@ -1206,26 +1206,25 @@ point reaches the beginning or end of the buffer, stop there."
   :init
   (add-hook 'find-file-hooks 'auto-insert)
   :config
-  (progn
-    (setq auto-insert-directory (concat dotfiles-dir "mytemplates/")
-          auto-insert-query nil)
+  (setq auto-insert-directory (concat dotfiles-dir "mytemplates/")
+        auto-insert-query nil)
 
-    (defun pd-expand-buffer ()
-      "Expand buffer in place as a yasnippet."
-      (require 's)
-      (yas-expand-snippet (buffer-string) (point-min) (point-max)))
+  (defun pd-expand-buffer ()
+    "Expand buffer in place as a yasnippet."
+    (require 's)
+    (yas-expand-snippet (buffer-string) (point-min) (point-max)))
 
-    (define-auto-insert "setup.py\\'"
-      ["template-setup.py" pd-expand-buffer])
+  (define-auto-insert "setup.py\\'"
+    ["template-setup.py" pd-expand-buffer])
 
-    (define-auto-insert "\\.markdown\\'"
-      ["post.markdown" pd-expand-buffer])
+  (define-auto-insert "\\.markdown\\'"
+    ["post.markdown" pd-expand-buffer])
 
-    (define-auto-insert "\\.mdwn\\'"
-      ["template.mdwn" pd-expand-buffer])
+  (define-auto-insert "\\.mdwn\\'"
+    ["template.mdwn" pd-expand-buffer])
 
-    (define-auto-insert "\\.m\\'"
-      ["template.m" pd-expand-buffer])))
+  (define-auto-insert "\\.m\\'"
+    ["template.m" pd-expand-buffer]))
 
 
 (use-package haskell-mode
@@ -1233,9 +1232,8 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :mode ("\\.l?hs\\'" . haskell-mode)
   :config
-  (progn
-    (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-    (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)))
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indent))
 
 (use-package lua-mode
   :ensure t
@@ -1243,20 +1241,17 @@ point reaches the beginning or end of the buffer, stop there."
   :interpreter (("lua" . lua-mode)
                 ("luajit" . lua-mode))
   :config
-  (progn
-    (setq lua-indent-level 4)))
+  (setq lua-indent-level 4))
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter (("python" . python-mode)
                 ("python3" . python-mode))
   :config
-  (progn
-    (defun pd-python-mode-hook ()
-      (electric-indent-mode -1) ;; This isn't useful in python
-      )
+  (defun pd-python-mode-hook ()
+    (electric-indent-mode -1)) ;; This isn't useful in python
 
-    (add-hook 'python-mode-hook 'pd-python-mode-hook)))
+  (add-hook 'python-mode-hook 'pd-python-mode-hook))
 
 (use-package wizard-db
   :mode ("\\.xmd\\'" . wizard-db-mode))
@@ -1279,56 +1274,54 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package cc-mode
   :defer t
   :config
-  (progn
-    (use-package google-c-style
-      :ensure t
-      :init
-      (progn
-        (c-add-style "Google" google-c-style)
+  (use-package google-c-style
+    :ensure t
+    :init
+    (c-add-style "Google" google-c-style)
 
-        (defconst my-c-style
-          '("Google"
-            (c-basic-offset . 4)
-            (c-offsets-alist . ((inextern-lang . -)))))
-        (c-add-style "PERSONAL" my-c-style)
-
-        (defconst dcl-c-style
-          '("Google"
-            (c-basic-offset . 3)))
-        (c-add-style "DCL" dcl-c-style)))
-
-    (defconst my-obj-c-style
-      '("bsd"
+    (defconst my-c-style
+      '("Google"
         (c-basic-offset . 4)
-        (indent-tabs-mode . nil)
-        (c-offsets-alist . ((case-label . +)))))
-    (c-add-style "my-obj-c" my-obj-c-style)
+        (c-offsets-alist . ((inextern-lang . -)))))
+    (c-add-style "PERSONAL" my-c-style)
+
+    (defconst dcl-c-style
+      '("Google"
+        (c-basic-offset . 3)))
+    (c-add-style "DCL" dcl-c-style))
+
+  (defconst my-obj-c-style
+    '("bsd"
+      (c-basic-offset . 4)
+      (indent-tabs-mode . nil)
+      (c-offsets-alist . ((case-label . +)))))
+  (c-add-style "my-obj-c" my-obj-c-style)
 
     ;; Customizations for all modes in CC Mode.
-    (defun my-c-mode-common-hook ()
-      (c-set-style "PERSONAL")
-      (setq ff-always-in-other-window nil))
 
-    (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+  (defun my-c-mode-common-hook ()
+    (c-set-style "PERSONAL")
+    (setq ff-always-in-other-window nil))
 
-    (defun pd/objc-ff-setup-hook ()
-      (set (make-local-variable 'cc-other-file-alist)
-           '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
+  (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
-    (add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
+  (defun pd/objc-ff-setup-hook ()
+    (set (make-local-variable 'cc-other-file-alist)
+         '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
 
-    (use-package pd-cc-mode-extras
-      :commands (pd/toggle-header
-                 pd/toggle-test))))
+  (add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
+
+  (use-package pd-cc-mode-extras
+    :commands (pd/toggle-header
+               pd/toggle-test)))
 
 (use-package compile
   :defer t
   :config
-  (progn
-    (defun pd/compilation-hook ()
-      (setq truncate-lines t))
+  (defun pd/compilation-hook ()
+    (setq truncate-lines t))
 
-    (add-hook 'compilation-mode-hook 'pd/compilation-hook)))
+  (add-hook 'compilation-mode-hook 'pd/compilation-hook))
 
 (use-package eldoc
   :diminish eldoc-mode
@@ -1342,12 +1335,8 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package lisp-mode
   :defer t
   :config
-  (progn
-    (defun pd/elisp-mode-hook ()
-      (elisp-slime-nav-mode)
-      (eldoc-mode))
-
-    (add-hook 'emacs-lisp-mode-hook 'pd/elisp-mode-hook)))
+  (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode)
+  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode))
 
 (use-package irony
   :ensure t
@@ -1397,8 +1386,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :disabled t
   :init
-  (progn
-    (popwin-mode t)))
+  (popwin-mode t))
 
 ;; From emacs start kit v2.
 ;;; These belong in prog-mode-hook:
@@ -1468,10 +1456,9 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t
   :config
-  (
-    (add-to-list 'mediawiki-site-alist
+  (add-to-list 'mediawiki-site-alist
                  '("Software" "http://wiki.sw.au.ivc/mediawiki" "pdixon" "" "The PENSIEVE"))
-    (setq mediawiki-site-default "Software")))
+  (setq mediawiki-site-default "Software"))
 
 
 (if (file-exists-p system-specific-config)
