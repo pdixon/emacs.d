@@ -1203,16 +1203,23 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package autoinsert
   :defer t
+  :preface
+  (defun pd-expand-by-uuid (mode uuid)
+    "Expand snippet template in MODE by its UUID"
+    (let ((template (yas--get-template-by-uuid mode uuid)))
+      (yas-expand-snippet
+       (yas--template-content template)
+       nil
+       nil
+       (yas--template-expand-env template))))
+  (defun pd-expand-buffer ()
+    "Expand buffer in place as a yasnippet."
+    (yas-expand-snippet (buffer-string) (point-min) (point-max)))
   :init
   (add-hook 'find-file-hooks 'auto-insert)
   :config
   (setq auto-insert-directory (concat dotfiles-dir "mytemplates/")
         auto-insert-query nil)
-
-  (defun pd-expand-buffer ()
-    "Expand buffer in place as a yasnippet."
-    (require 's)
-    (yas-expand-snippet (buffer-string) (point-min) (point-max)))
 
   (define-auto-insert "setup.py\\'"
     ["template-setup.py" pd-expand-buffer])
@@ -1224,7 +1231,10 @@ point reaches the beginning or end of the buffer, stop there."
     ["template.mdwn" pd-expand-buffer])
 
   (define-auto-insert "\\.m\\'"
-    ["template.m" pd-expand-buffer]))
+    ["template.m" pd-expand-buffer])
+
+  (define-auto-insert "\\.org\\'"
+    #'(lambda () (pd-expand-by-uuid 'org-mode "header.yasnippet"))))
 
 
 (use-package haskell-mode
@@ -1375,7 +1385,6 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package ace-window
   :ensure t
   :bind (("C-x o" . ace-window)))
-
 
 ;; (use-package switch-window
 ;;   :disabled t
