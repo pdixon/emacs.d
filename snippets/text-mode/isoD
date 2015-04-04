@@ -1,4 +1,0 @@
-#name : Iso Date
-#contributor : Phillip Dixon <phillip.dixon@gmail.com>
-# --
-`(format-time-string "%Y-%02m-%d")`
