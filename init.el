@@ -492,6 +492,10 @@
   :load-path "lisp/"
   :commands (pd-cleanroom-mode))
 
+(use-package pinboard
+  :load-path "lisp/pinboard"
+  :commands (pinboard-list-bookmarks))
+
 (use-package magit
   ;:ensure t
   :load-path "site-lisp/magit"
