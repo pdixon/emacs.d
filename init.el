@@ -1154,23 +1154,17 @@ point reaches the beginning or end of the buffer, stop there."
          (t
           nil))))))
 
-
-(defmacro hook-into-modes (func modes)
-  `(dolist (mode-hook ,modes)
-     (add-hook mode-hook ,func)))
-
 (use-package yasnippet
   :ensure t
   :commands (yas-minor-mode yas-expand yas-hippie-try-expand)
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
   :init
-  (hook-into-modes #'(lambda () (yas-minor-mode 1))
-                   '(prog-mode-hook
-                     org-mode-hook
-                     message-mode-hook
-                     markdown-mode-hook))
-  (setq yas-snippet-dirs (list (concat dotfiles-dir "snippets")))
+  (eval-after-load 'text-mode
+    (add-hook 'text-mode-hook 'yas-minor-mode))
+  (eval-after-load 'prog-mode
+    (add-hook 'prog-mode-hook 'yas-minor-mode))
   :config
+  (setq yas-snippet-dirs (list (concat dotfiles-dir "snippets")))
   (setq yas-prompt-functions '(yas-ido-prompt yas-complete-prompt))
   (yas-reload-all))
 
