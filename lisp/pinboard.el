@@ -53,7 +53,7 @@
   "Last time all bookmarks were successfully fetched.")
 
 (defvar pinboard-bookmarks nil
-  "List of pinboard-bookmark structs.")
+  "Hash table mapping url to pinboard-bookmark structs.")
 
 (defvar pinboard-tags nil
   "List of pinboard-tag-detail structs.")
@@ -138,7 +138,10 @@
             (time-less-p pinboard-bookmarks-last-fetched
                          (pinboard-request-posts-updated)))
     (when-let ((bookmarks (pinboard-request-posts-all)))
-      (setq pinboard-bookmarks bookmarks)
+      (setq pinboard-bookmarks (make-hash-table))
+      (mapc (lambda (item)
+              (puthash (pinboard-bookmark-url item) item pinboard-bookmarks))
+            bookmarks)
       (setq pinboard-bookmarks-last-fetched (current-time)))))
 
 (defun pinboard-bookmark-list-entry (bookmark)
@@ -147,23 +150,37 @@
    (pinboard-bookmark-url bookmark)
    (vector
     (format-time-string "%F" (pinboard-bookmark-time bookmark))
-    (format "%s" (pinboard-bookmark-tags bookmark))
+    (mapconcat 'identity (pinboard-bookmark-tags bookmark) " ")
     (pinboard-bookmark-title bookmark))))
 
 (define-derived-mode pinboard-bookmark-list-mode
     tabulated-list-mode
     "Pinboard-Bookmarks"
-  "Major mode for viewing lists of pinboard.in bookmarks."
+  "Major mode for viewing lists of pinboard.in bookmarks.
+\\{pinboard-bookmark-list-mode-map}"
   (setq tabulated-list-format
-        (vector '("Time" 13 t)
+        (vector '("Time" 11 t)
                 '("Tags" 30 t)
                 '("Title" 46 t)))
   (setq tabulated-list-entries
         #'(lambda ()
-            (mapcar #'pinboard-bookmark-list-entry pinboard-bookmarks)))
+            (mapcar #'pinboard-bookmark-list-entry
+                    (hash-table-values pinboard-bookmarks))))
   (add-hook 'tabulated-list-revert-hook #'pinboard-refresh-bookmarks nil t)
-  (tabulated-list-init-header))
+  (tabulated-list-init-header)
+  (let ((map pinboard-bookmark-list-mode-map))
+    (define-key map (kbd "RET") #'pinboard-bookmark-open)))
 
+(defun pinboard-bookmark-at-point ()
+  ""
+  (if-let ((bookmark (gethash (tabulated-list-get-id) pinboard-bookmarks)))
+      bookmark
+    (error "No bookmark at point")))
+
+(defun pinboard-bookmark-open (bookmark)
+  ""
+  (interactive (list (pinboard-bookmark-at-point)))
+  (browse-url (pinboard-bookmark-url bookmark)))
 
 (defun pinboard-list-bookmarks ()
   (interactive)
