@@ -499,6 +499,10 @@
   :config
   (setq magit-status-buffer-switch-function 'switch-to-buffer))
 
+(use-package orgit
+  :ensure t
+  :defer t)
+
 (use-package gitconfig-mode
   :ensure t
   :defer t)
