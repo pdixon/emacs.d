@@ -982,6 +982,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package org
   :mode ("\\.org\\'" . org-mode)
   :config
+  (require 'pd-org-extras)
   (setq org-directory "~/work/org/")
   (setq org-default-notes-file (concat org-directory "inbox.org"))
   (setq org-agenda-diary-file (concat org-directory "diary.org"))
@@ -1025,10 +1026,6 @@ point reaches the beginning or end of the buffer, stop there."
         '((sequence "TODO(t)" "|" "DONE(d!)")
           (sequence "WAITING(w@/!)" "|" "CANCELLED" "DELEGATED(e@)")))
   (setq org-enforce-todo-dependencies t)
-  (defun pd/org-summary-todo (n-done n-not-done)
-    "Switch entry to DONE when all subentries are done, to TODO otherwise."
-    (let (org-log-done org-log-states)   ; turn off logging
-      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
   (add-hook 'org-after-todo-statistics-hook 'pd/org-summary-todo)
 
   (setq org-agenda-todo-ignore-with-date t)
@@ -1089,78 +1086,14 @@ point reaches the beginning or end of the buffer, stop there."
           ("c" todo "TODO"
            ((org-agenda-sorting-strategy '(tag-up priority-down))))))
 
-  (add-hook 'org-agenda-mode-hook '(lambda ()
-                                     (setq org-agenda-tags-column (- (window-width)))))
+  (add-hook 'org-agenda-mode-hook #'pd-org-agenda-width)
 
     ;; Refile setup
 
   (setq org-completion-use-ido t)
-  (setq org-refile-targets (quote ((org-agenda-files :maxlevel . 3) (nil :maxlevel . 3))))
-  (setq org-refile-use-outline-path (quote file))
-  (setq org-outline-path-complete-in-steps t)
-
-  (defun bh/is-project-p ()
-    "Any task with a todo keyword subtask"
-    (save-restriction
-      (widen)
-      (let ((has-subtask)
-            (subtree-end (save-excursion (org-end-of-subtree t)))
-            (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
-        (save-excursion
-          (forward-line 1)
-          (while (and (not has-subtask)
-                      (< (point) subtree-end)
-                      (re-search-forward "^\*+ " subtree-end t))
-            (when (member (org-get-todo-state) org-todo-keywords-1)
-              (setq has-subtask t))))
-        (and is-a-task has-subtask))))
-
-  (defun bh/list-sublevels-for-projects-indented ()
-    "Set org-tags-match-list-sublevels so when restricted to a subtree we list all subtasks.
-  This is normally used by skipping functions where this variable is already local to the agenda."
-    (if (marker-buffer org-agenda-restrict-begin)
-        (setq org-tags-match-list-sublevels 'indented)
-      (setq org-tags-match-list-sublevels nil))
-    nil)
-
-  (defun bh/skip-non-stuck-projects ()
-    "Skip trees that are not stuck projects"
-    (save-restriction
-      (widen)
-      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-        (if (bh/is-project-p)
-            (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
-                   (has-next (save-excursion
-                               (forward-line 1)
-                               (and (< (point) subtree-end)
-                                    (re-search-forward "^\\*+ \\(TODO\\) " subtree-end t)))))
-              (if has-next
-                  next-headline
-                nil)) ; a stuck project, has subtasks but no next task
-          next-headline))))
-
-  (defun bh/skip-non-projects ()
-    "Skip trees that are not projects"
-    (bh/list-sublevels-for-projects-indented)
-    (if (save-excursion (bh/skip-non-stuck-projects))
-        (save-restriction
-          (widen)
-          (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-            (if (bh/is-project-p)
-                nil
-              subtree-end)))
-      (org-end-of-subtree t)))
-
-  (defun pd/skip-projects ()
-    "Skip trees that are projects"
-    (save-restriction
-      (widen)
-      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-        (cond
-         ((bh/is-project-p)
-          next-headline)
-         (t
-          nil))))))
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 3) (nil :maxlevel . 3)))
+  (setq org-refile-use-outline-path 'file)
+  (setq org-outline-path-complete-in-steps t))
 
 (use-package yasnippet
   :ensure t
