@@ -34,7 +34,7 @@
 (require 'tabulated-list)
 (require 'url)
 
-(defconst pinboard-host "pinboard.in")
+(defconst pinboard-host "api.pinboard.in")
 
 (cl-defstruct pinboard-bookmark
   title
@@ -60,29 +60,9 @@
 
 ;;; web api stuff
 
-(defun pinboard-credentials ()
-  "Look up credentials in auth-source."
-  (let* ((auth-source-creation-prompts
-          '((user . "pinboard.in username: ")
-            (secret . "pinboard.in password: ")))
-         (found (nth 0 (auth-source-search :max 1
-                                           :host pinboard-host
-                                           :require '(:user :secret)
-                                           :create t))))
-    (if found
-        (list (plist-get found :user)
-              (let ((secret (plist-get found :secret)))
-                (if (functionp secret)
-                    (funcall secret)
-                  secret))
-              (plist-get found :save-function))
-      nil)))
-
-(defun pinboard-build-url (method user password &optional arguments)
+(defun pinboard-build-url (method &optional arguments)
   ""
-  (format "https://%s:%s@api.%s/v1/%s?%s"
-          user
-          password
+  (format "https://%s/v1/%s?%s"
           pinboard-host
           method
           (url-build-query-string
@@ -91,17 +71,13 @@
 
 (defun pinboard-request (method &optional arguments)
   ""
-  (let* ((creds (pinboard-credentials))
-         (creds-save-func (nth 2 creds))
-         (url (pinboard-build-url method (nth 0 creds) (nth 1 creds) arguments)))
+  (let ((url (pinboard-build-url method arguments)))
     (with-current-buffer (url-retrieve-synchronously url)
       (goto-char (point-min))
       (unless (string-match "200" (thing-at-point 'line))
         (error "Page not found: %s" (thing-at-point 'line)))
       (when (boundp 'url-http-end-of-headers)
         (goto-char url-http-end-of-headers))
-      (when creds-save-func
-        (funcall creds-save-func))
       (let ((json-object-type 'plist)
             (json-array-type 'list)
             (json-key-type 'keyword))
