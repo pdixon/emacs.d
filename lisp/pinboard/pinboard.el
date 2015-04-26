@@ -53,7 +53,7 @@
   "Last time all bookmarks were successfully fetched.")
 
 (defvar pinboard-bookmarks nil
-  "Hash table mapping url to pinboard-bookmark structs.")
+  "List of pinboard-bookmark structs.")
 
 (defvar pinboard-tags nil
   "List of pinboard-tag-detail structs.")
@@ -114,10 +114,7 @@
             (time-less-p pinboard-bookmarks-last-fetched
                          (pinboard-request-posts-updated)))
     (when-let ((bookmarks (pinboard-request-posts-all)))
-      (setq pinboard-bookmarks (make-hash-table))
-      (mapc (lambda (item)
-              (puthash (pinboard-bookmark-url item) item pinboard-bookmarks))
-            bookmarks)
+      (setq pinboard-bookmarks bookmarks)
       (setq pinboard-bookmarks-last-fetched (current-time)))))
 
 (defun pinboard-bookmark-list-entry (bookmark)
@@ -141,22 +138,22 @@
   (setq tabulated-list-entries
         #'(lambda ()
             (mapcar #'pinboard-bookmark-list-entry
-                    (hash-table-values pinboard-bookmarks))))
+                    pinboard-bookmarks)))
   (add-hook 'tabulated-list-revert-hook #'pinboard-refresh-bookmarks nil t)
   (tabulated-list-init-header)
   (let ((map pinboard-bookmark-list-mode-map))
     (define-key map (kbd "RET") #'pinboard-bookmark-open)))
 
-(defun pinboard-bookmark-at-point ()
-  ""
-  (if-let ((bookmark (gethash (tabulated-list-get-id) pinboard-bookmarks)))
-      bookmark
-    (error "No bookmark at point")))
+;; (defun pinboard-bookmark-at-point ()
+;;   ""
+;;   (if-let ((bookmark ( (tabulated-list-get-id) pinboard-bookmarks)))
+;;       bookmark
+;;     (error "No bookmark at point")))
 
-(defun pinboard-bookmark-open (bookmark)
+(defun pinboard-bookmark-open (url)
   ""
-  (interactive (list (pinboard-bookmark-at-point)))
-  (browse-url (pinboard-bookmark-url bookmark)))
+  (interactive (list (tabulated-list-get-id)))
+  (browse-url url))
 
 (defun pinboard-list-bookmarks ()
   (interactive)
