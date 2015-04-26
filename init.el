@@ -341,6 +341,15 @@
   :bind (([remap execute-extended-command] . smex)
          ("M-X" . smex-major-mode-commands)))
 
+(use-package auth-source
+  :defer t
+  :config
+  (setq auth-sources
+        (pcase system-type
+          ('darwin '(macsox-keychain-internet macosx-keychain-generic))
+          ('gnu/linux '("secrets:Login"))
+          (_ '("~/.authinfo.gpg")))))
+
 (use-package eudc
   :defer t
   :config
