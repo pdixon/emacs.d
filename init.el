@@ -1172,7 +1172,8 @@ point reaches the beginning or end of the buffer, stop there."
   :preface
   (defun pd-expand-by-uuid (mode uuid)
     "Expand snippet template in MODE by its UUID"
-    (let ((template (yas--get-template-by-uuid mode uuid)))
+    ;;FIXME figure out why template is nil.
+    (if-let ((template (yas--get-template-by-uuid mode uuid)))
       (yas-expand-snippet
        (yas--template-content template)
        nil
