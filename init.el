@@ -940,6 +940,28 @@ point reaches the beginning or end of the buffer, stop there."
     (require 'htmlize)
     (setq org-html-htmlize-output-type 'css)))
 
+(use-package ox-latex
+  :defer t
+  :config
+  (setq org-latex-pdf-process
+        '("xelatex -interaction nonstopmode -output-directory %o %f"
+          "xelatex -interaction nonstopmode -output-directory %o %f"))
+   (setq org-latex-default-packages-alist
+         '(("" "fixltx2e" nil)
+           ("" "graphicx" t)
+           ("" "longtable" nil)
+           ("" "float" nil)
+           ("" "wrapfig" nil)
+           ("" "rotating" nil)
+           ("normalem" "ulem" t)
+           ("" "amsmath" t)
+           ("" "textcomp" t)
+           ("" "marvosym" t)
+           ("" "wasysym" t)
+           ("" "amssymb" t)
+           ("hidelinks" "hyperref" nil)
+           "\\tolerance=1000")))
+
 (use-package ox-publish
   :defer t
   :commands pd/publish-blog
