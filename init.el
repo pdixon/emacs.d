@@ -1307,7 +1307,6 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package lisp-mode
   :defer t
   :config
-  (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode)
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode))
 
 (use-package irony
