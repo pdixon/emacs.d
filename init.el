@@ -1304,11 +1304,6 @@ point reaches the beginning or end of the buffer, stop there."
   :diminish eldoc-mode
   :defer t)
 
-(use-package elisp-slime-nav
-  :ensure t
-  :diminish elisp-slime-nav-mode
-  :defer t)
-
 (use-package lisp-mode
   :defer t
   :config
