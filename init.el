@@ -1205,7 +1205,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 
 (use-package haskell-mode
-  :disabled t
   :ensure t
   :mode ("\\.l?hs\\'" . haskell-mode)
   :config
