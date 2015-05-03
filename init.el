@@ -346,7 +346,7 @@
   :config
   (setq auth-sources
         (pcase system-type
-          ('darwin '(macsox-keychain-internet macosx-keychain-generic))
+          ('darwin '(macos-keychain-internet macos-keychain-generic))
           ('gnu/linux '("secrets:Login"))
           (_ '("~/.authinfo.gpg")))))
 
