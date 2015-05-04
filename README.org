@@ -1,3 +1,5 @@
+#+STARTUP: showall
+
 * File Structure
 Everything lives under ~.emacs.d~. ~init.el~ is the entry point. This
 file set up the paths where everything else is found.
@@ -10,14 +12,12 @@ Paths:
 - ~vendor~ :: Third party packages. Where possible I'm moving to using
               submodules to track these from upstream.
 
-
 * Packages
 Where ever possible I'm using package.el to manage these. I have
 [[http://mepla.org][melpa]] set up in addition to the default gnu elpa.
 
 There are still a very modes that aren't available as packages. These
 are checked in under ~vendor/~.
-
 
 * Applications
 
@@ -35,11 +35,8 @@ are checked in under ~vendor/~.
 I like to make the computer do as much of my work as I possibly can.
 Hence I've spend a bit of time on the various auto typing features.
 
-** yasnippet
-[[https://github.com/capitaomorte/yasnippet][yasnippet]]
-
-** autoinsert
-As bundled with emacs.
+- [[https://github.com/capitaomorte/yasnippet][yasnippet]]
+- autoinsert
 
 * External Programs
 - ~aspell~
