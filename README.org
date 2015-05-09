@@ -42,3 +42,4 @@ Hence I've spend a bit of time on the various auto typing features.
 - ~aspell~
 - ~clang-format~
 - ~libclang~
+- ~gpg~
