@@ -37,15 +37,8 @@
 
 (defconst dotfiles-dir (file-name-directory load-file-name))
 (defconst lisp-dir (concat dotfiles-dir "lisp/"))
-(defconst user-dir (concat dotfiles-dir "user/"))
-
-;; You can keep system-specific customizations here
-;; Use the only the inital term if the system name is a FQDN.
-(defconst system-specific-config
-  (concat user-dir (car (split-string (system-name) "\\.")) ".el"))
 
 (add-to-list 'load-path lisp-dir)
-(add-to-list 'load-path user-dir)
 
 (setq custom-file (concat dotfiles-dir "custom.el"))
 (setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
@@ -1424,12 +1417,13 @@ point reaches the beginning or end of the buffer, stop there."
                  '("Software" "http://wiki.sw.au.ivc/mediawiki" "pdixon" "" "The PENSIEVE"))
   (setq mediawiki-site-default "Software"))
 
+(dir-locals-set-class-variables
+ 'work-directory
+ '((nil . ((user-company . "Dynamic Controls")
+           (user-mail-address . "pdixon@dynamiccontrols.com")))))
 
-(if (file-exists-p system-specific-config)
-    (load system-specific-config)
-  (message "No system specific config for %s (i.e %s doesn't exist)"
-           (system-name)
-           system-specific-config))
+(dir-locals-set-directory-class
+ (expand-file-name "~/work/") 'work-directory)
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
