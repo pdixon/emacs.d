@@ -344,11 +344,7 @@
 (use-package auth-source
   :defer t
   :config
-  (setq auth-sources
-        (pcase system-type
-          ('darwin '(macos-keychain-internet macos-keychain-generic))
-          ('gnu/linux '("secrets:Login"))
-          (_ '("~/.authinfo.gpg")))))
+  (setq auth-sources '("~/.authinfo.gpg")))
 
 (use-package eudc
   :defer t
