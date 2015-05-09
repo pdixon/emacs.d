@@ -26,7 +26,6 @@
 
 ;;; Code:
 
-(require 'auth-source)
 (require 'cl-lib)
 (require 'json)
 (require 'parse-time)
@@ -61,7 +60,7 @@
 ;;; web api stuff
 
 (defun pinboard-build-url (method &optional arguments)
-  ""
+  "Build url to call pinboard api METHOD with ARGUMENTS."
   (format "https://%s/v1/%s?%s"
           pinboard-host
           method
@@ -70,12 +69,13 @@
              ,@arguments))))
 
 (defun pinboard-request (method &optional arguments)
-  ""
+  "Synchronously call api METHOD with ARGUMENTS."
   (let ((url (pinboard-build-url method arguments)))
     (with-current-buffer (url-retrieve-synchronously url)
       (goto-char (point-min))
-      (unless (string-match "200" (thing-at-point 'line))
-        (error "Page not found: %s" (thing-at-point 'line)))
+      (let ((status (thing-at-point 'line)))
+        (unless (string-match "200" status)
+          (error "Page not found: %s" status)))
       (when (boundp 'url-http-end-of-headers)
         (goto-char url-http-end-of-headers))
       (let ((json-object-type 'plist)
@@ -84,13 +84,13 @@
         (json-read)))))
 
 (defun pinboard-request-posts-updated ()
-  ""
+  "Fetch time posts last updated."
   (when-let ((response (pinboard-request "posts/update")))
     (let ((time-string (plist-get response :update_time)))
       (parse-iso8601-time-string time-string))))
 
 (defun pinboard-request-posts-all ()
-  ""
+  "Fetch all posts."
   (when-let ((response (pinboard-request "posts/all")))
     (mapcar
      (lambda (item)
@@ -105,10 +105,16 @@
           :tags tags)))
      response)))
 
+(defun pinboard-request-tags-all ()
+  "Fetch all tags."
+  (when-let ((response (pinboard-request "tags/get")))
+    ;; TODO figure out how to turn the plist in a list of tag-detail objects.
+    ))
+
 ;;; bookmark list mode stuff
 
 (defun pinboard-refresh-bookmarks ()
-  ""
+  "Update bookmark list if it's changed since last fetch."
   (when (or (not pinboard-bookmarks)
             (not pinboard-bookmarks-last-fetched)
             (time-less-p pinboard-bookmarks-last-fetched
@@ -117,14 +123,7 @@
       (setq pinboard-bookmarks bookmarks)
       (setq pinboard-bookmarks-last-fetched (current-time)))))
 
-(defun pinboard-bookmark-list-entry (bookmark)
-  ""
-  (list
-   (pinboard-bookmark-url bookmark)
-   (vector
-    (format-time-string "%F" (pinboard-bookmark-time bookmark))
-    (mapconcat 'identity (pinboard-bookmark-tags bookmark) " ")
-    (pinboard-bookmark-title bookmark))))
+
 
 (define-derived-mode pinboard-bookmark-list-mode
     tabulated-list-mode
@@ -136,26 +135,39 @@
                 '("Tags" 30 t)
                 '("Title" 46 t)))
   (setq tabulated-list-entries
-        #'(lambda ()
-            (mapcar #'pinboard-bookmark-list-entry
-                    pinboard-bookmarks)))
+       (lambda ()
+         (mapcar (lambda (bookmark)
+                   (list (pinboard-bookmark-url bookmark)
+                         (vector
+                          (format-time-string "%F"
+                                              (pinboard-bookmark-time bookmark))
+                          (mapconcat 'identity
+                                     (pinboard-bookmark-tags bookmark) " ")
+                          (pinboard-bookmark-title bookmark))))
+                 pinboard-bookmarks)))
   (add-hook 'tabulated-list-revert-hook #'pinboard-refresh-bookmarks nil t)
   (tabulated-list-init-header)
   (let ((map pinboard-bookmark-list-mode-map))
     (define-key map (kbd "RET") #'pinboard-bookmark-open)))
 
-;; (defun pinboard-bookmark-at-point ()
-;;   ""
-;;   (if-let ((bookmark ( (tabulated-list-get-id) pinboard-bookmarks)))
-;;       bookmark
-;;     (error "No bookmark at point")))
+(defun pinboard-bookmark-at-point ()
+  "Get pinboard-book object for line at point."
+  (if-let ((bookmark (seq-some-p
+                      (lambda (item)
+                        (string= (pinboard-bookmark-url item)
+                                 (tabulated-list-get-id)))
+                      pinboard-bookmarks)))
+      bookmark
+    (error "No bookmark at point")))
 
-(defun pinboard-bookmark-open (url)
-  ""
-  (interactive (list (tabulated-list-get-id)))
-  (browse-url url))
+(defun pinboard-bookmark-open ()
+  "Open the url of the current bookmark."
+  (interactive)
+  (if-let ((bookmark (pinboard-bookmark-at-point)))
+      (browse-url (pinboard-bookmark-url bookmark))))
 
 (defun pinboard-list-bookmarks ()
+  "Show pinboard bookmarks in a buffer."
   (interactive)
   (with-current-buffer (get-buffer-create "*pinboard*")
     (let ((inhibit-read-only t))
@@ -172,10 +184,6 @@
   ""
   )
 
-(defun pinboard-tag-list-entries ()
-  ""
-  )
-
 (define-derived-mode pinboard-tag-list-mode
     tabulated-list-mode
     "Pinboard-Tags"
@@ -183,7 +191,16 @@
   (setq tabulated-list-format
         '(("Count" 10 t)
           ("Tag" 50) t))
-  (setq tabulated-list-entries #'pinboard-tag-list-entries)
+  (setq tabulated-list-entries
+        (lambda ()
+          (mapcar (lambda (tag)
+                    (list
+                     (pinboard-tag-detail-name tag)
+                     (vector
+                      (format "%d"
+                              (pinboard-tag-detail-count tag))
+                      (pinboard-tag-detail-name tag))))
+                  pinboard-tags)))
   (add-hook 'tabulated-list-revert-hook #'pinboard-refresh-tags nil t)
   (tabulated-list-init-header))
 
