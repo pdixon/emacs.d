@@ -497,8 +497,8 @@
 (use-package magit
   :bind ("<f7>" . magit-status)
   :config
-  (setq magit-completing-read-function 'magit-ido-completing-read)
-  (setq magit-status-buffer-switch-function 'switch-to-buffer))
+  (setq magit-completing-read-function #'magit-ido-completing-read)
+  (setq magit-status-buffer-switch-function #'switch-to-buffer))
 
 (use-package orgit
   :ensure t
@@ -522,7 +522,7 @@
 (use-package ediff
   :defer t
   :config
-  (setq ediff-split-window-function 'split-window-horizontally))
+  (setq ediff-split-window-function #'split-window-horizontally))
 
 (use-package pd-editing-extras
   :bind (("C-c +" . my-increment)
@@ -534,12 +534,12 @@
   (interactive)
   (delete-indentation t))
 
-(bind-key "M-J" 'delete-indentation-forward)
-(bind-key "M-j" 'delete-indentation)
+(bind-key "M-J" #'delete-indentation-forward)
+(bind-key "M-j" #'delete-indentation)
 
-(bind-key "C-h a" 'apropos)
+(bind-key "C-h a" #'apropos)
 
-(bind-key "C-c y" 'bury-buffer)
+(bind-key "C-c y" #'bury-buffer)
 
 (defun smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
@@ -565,7 +565,7 @@ point reaches the beginning or end of the buffer, stop there."
       (move-beginning-of-line 1))))
 
 (global-set-key [remap move-beginning-of-line]
-                'smarter-move-beginning-of-line)
+                #'smarter-move-beginning-of-line)
 
 (use-package bookmark
   :bind ("<f9>" . bookmark-bmenu-list))
@@ -579,7 +579,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t
   :init
-  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode))
+  (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode))
 
 ;; Yank line or region
 (defadvice kill-ring-save (before slick-copy activate compile)
@@ -606,7 +606,7 @@ point reaches the beginning or end of the buffer, stop there."
   :bind ("C-c C-f" . ffip)
   :config
   (require 'pd-project)
-  (setq ffip-project-root-function 'pd-project-get-root))
+  (setq ffip-project-root-function #'pd-project-get-root))
 
 (use-package pd-project
   :bind(("C-c b" . pd-project-compile))
@@ -796,7 +796,7 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (say-text ""))
 
-(global-set-key [remap goto-line] 'goto-line-with-feedback)
+(global-set-key [remap goto-line] #'goto-line-with-feedback)
 
 (defun goto-line-with-feedback ()
   "Show line numbers temporarily, while prompting for the line number input."
@@ -823,7 +823,7 @@ point reaches the beginning or end of the buffer, stop there."
          ("\\.markdown" . markdown-mode))
   :config
   (setq markdown-command "pandoc")
-  (add-hook 'markdown-mode-hook 'imenu-add-menubar-index))
+  (add-hook 'markdown-mode-hook #'imenu-add-menubar-index))
 
 
 (use-package pd-blog-helpers
@@ -1120,9 +1120,9 @@ point reaches the beginning or end of the buffer, stop there."
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
   :init
   (eval-after-load 'text-mode
-    (add-hook 'text-mode-hook 'yas-minor-mode))
+    (add-hook 'text-mode-hook #'yas-minor-mode))
   (eval-after-load 'prog-mode
-    (add-hook 'prog-mode-hook 'yas-minor-mode))
+    (add-hook 'prog-mode-hook #'yas-minor-mode))
   :config
   (setq yas-snippet-dirs (list (concat dotfiles-dir "snippets")))
   (setq yas-prompt-functions '(yas-ido-prompt yas-complete-prompt))
@@ -1142,8 +1142,8 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t
   :init
-  (add-hook 'c-mode-common-hook 'company-mode)
-  (add-hook 'elisp-mode 'company-mode)
+  (add-hook 'c-mode-common-hook #'company-mode)
+  (add-hook 'elisp-mode #'company-mode)
   :config
   (require 'company-irony)
   (add-to-list 'company-backends 'company-irony)
@@ -1196,8 +1196,8 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :mode ("\\.l?hs\\'" . haskell-mode)
   :config
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-indent))
+  (add-hook 'haskell-mode-hook #'turn-on-haskell-doc-mode)
+  (add-hook 'haskell-mode-hook #'turn-on-haskell-indent))
 
 (use-package lua-mode
   :ensure t
@@ -1215,7 +1215,7 @@ point reaches the beginning or end of the buffer, stop there."
   (defun pd-python-mode-hook ()
     (electric-indent-mode -1)) ;; This isn't useful in python
 
-  (add-hook 'python-mode-hook 'pd-python-mode-hook))
+  (add-hook 'python-mode-hook #'pd-python-mode-hook))
 
 (use-package wizard-db
   :mode ("\\.xmd\\'" . wizard-db-mode))
@@ -1267,13 +1267,13 @@ point reaches the beginning or end of the buffer, stop there."
     (c-set-style "PERSONAL")
     (setq ff-always-in-other-window nil))
 
-  (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+  (add-hook 'c-mode-common-hook #'my-c-mode-common-hook)
 
   (defun pd/objc-ff-setup-hook ()
     (set (make-local-variable 'cc-other-file-alist)
          '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
 
-  (add-hook 'objc-mode-hook 'pd/objc-ff-setup-hook)
+  (add-hook 'objc-mode-hook #'pd/objc-ff-setup-hook)
 
   (use-package pd-cc-mode-extras
     :commands (pd/toggle-header
@@ -1285,7 +1285,7 @@ point reaches the beginning or end of the buffer, stop there."
   (defun pd/compilation-hook ()
     (setq truncate-lines t))
 
-  (add-hook 'compilation-mode-hook 'pd/compilation-hook))
+  (add-hook 'compilation-mode-hook #'pd/compilation-hook))
 
 (use-package eldoc
   :diminish eldoc-mode
@@ -1300,15 +1300,15 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t
   :init
-  (add-hook 'c-mode-common-hook 'irony-mode)
+  (add-hook 'c-mode-common-hook #'irony-mode)
   :config
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+  (add-hook 'irony-mode-hook #'irony-cdb-autosetup-compile-options))
 
 (use-package company-irony
   :ensure t
   :defer t
   :init
-  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands))
+  (add-hook 'irony-mode-hook #'company-irony-setup-begin-commands))
 
 (use-package flycheck-irony
   :ensure t
@@ -1321,8 +1321,8 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t
   :init
-  (add-hook 'c-mode-common-hook 'flycheck-mode)
-  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode))
+  (add-hook 'c-mode-common-hook #'flycheck-mode)
+  (add-hook 'emacs-lisp-mode-hook #'flycheck-mode))
 
 (use-package flycheck-pos-tip
   :ensure t
