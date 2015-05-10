@@ -1345,6 +1345,12 @@ point reaches the beginning or end of the buffer, stop there."
   :init
   (popwin-mode t))
 
+(use-package which-func
+  :init (which-function-mode))
+
+(use-package saveplace
+  :init (save-place-mode))
+
 ;; From emacs start kit v2.
 ;;; These belong in prog-mode-hook:
 
@@ -1357,30 +1363,17 @@ point reaches the beginning or end of the buffer, stop there."
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
   (auto-fill-mode t))
 
-(defun pd/turn-on-hl-line-mode ()
-  (when window-system (hl-line-mode t)))
-
-(defun pd/turn-on-save-place-mode ()
-  (require 'saveplace)
-  (setq save-place t))
-
-(defun pd/turn-on-whitespace ()
-  (whitespace-mode t))
-
 (defun pd/add-watchwords ()
   (font-lock-add-keywords
    nil '(("\\<\\(FIXME\\|TODO\\|FIX\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
           1 font-lock-warning-face t))))
 
-(defun pd/turn-on-which-func ()
-  (which-function-mode t))
-
-(add-hook 'prog-mode-hook 'pd/local-comment-auto-fill)
-(add-hook 'prog-mode-hook 'pd/turn-on-hl-line-mode)
-(add-hook 'prog-mode-hook 'pd/turn-on-save-place-mode)
-(add-hook 'prog-mode-hook 'pd/turn-on-whitespace)
-(add-hook 'prog-mode-hook 'pd/add-watchwords)
-(add-hook 'prog-mode-hook 'pd/turn-on-which-func)
+(use-package prog-mode
+  :config
+  (add-hook 'prog-mode-hook 'pd/local-comment-auto-fill)
+  (add-hook 'prog-mode-hook 'hl-line-mode)
+  (add-hook 'prog-mode-hook 'whitespace-mode)
+  (add-hook 'prog-mode-hook 'pd/add-watchwords))
 
 (use-package server
   :defer t)
