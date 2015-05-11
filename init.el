@@ -235,8 +235,11 @@
 
 (setq tab-always-indent 'complete)
 
-(setq mac-option-modifier 'meta)
-(setq mac-command-modifier 'none)
+(use-package ns-win
+    :if (eq system-type 'darwin)
+    :config
+    (setq mac-option-modifier 'meta)
+    (setq mac-command-modifier 'none))
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
@@ -342,7 +345,7 @@
 (use-package eudc
   :defer t
   :config
-  (progn
+  (when (eq system-type 'darwin)
     (eudc-set-server "localhost" 'mab t)
     (eudc-protocol-set 'eudc-inline-expansion-format
                        '("%s %s <%s>" firstname lastname email)
