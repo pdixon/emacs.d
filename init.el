@@ -55,9 +55,10 @@
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 (when (equal (car (split-string (system-name) "\\.")) "bigMacDev")
-  (setq url-proxy-services '(("no_proxy" . "\\.au.ivc")
-                             ("http" . "127.0.0.1:3128")
-                             ("https" . "127.0.0.1:3128"))))
+  (eval-after-load 'url-vars
+    (setq url-proxy-services '(("no_proxy" . "\\.au.ivc")
+                               ("http" . "127.0.0.1:3128")
+                               ("https" . "127.0.0.1:3128")))))
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
@@ -73,12 +74,7 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
-(eval-when-compile
-  (require 'use-package)
-  ;(setq use-package-verbose t)
-  )
-(require 'bind-key)
-(require 'diminish)
+(require 'use-package)
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
@@ -160,11 +156,6 @@
 (fset 'yes-or-no-p #'y-or-n-p)
 (fset 'display-startup-echo-area-message #'ignore)
 
-;; Don't clutter up directories with files~
-(setq backup-directory-alist `(("." . ,(expand-file-name
-                                        (concat dotfiles-dir "backups")))))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
 (show-paren-mode 1)
 
 ;; Transparently open compressed files
@@ -182,12 +173,9 @@
 (use-package frame
   :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
 
-;; Apperance
-
 (setq vc-handled-backends '(Git Hg))
 (setq whitespace-style '(face trailing tabs)
       whitespace-line-column 80)
-
 
 (setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
@@ -220,18 +208,10 @@
 (setq indicate-empty-lines t
       require-final-newline t)
 
-(setq view-read-only t)
-
 (setq diff-switches "-u")
 
-;; make scripts executable on save.
-(add-hook 'after-save-hook
-          'executable-make-buffer-file-executable-if-script-p)
-
-(add-hook 'text-mode-hook
-          '(lambda ()
-             (auto-fill-mode 1)
-             (flyspell-mode 1)))
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'text-mode-hook #'auto-fill-mode)
 
 (setq tab-always-indent 'complete)
 
@@ -354,7 +334,6 @@
 (use-package message
   :defer t
   :config
-  (require 'eudc)
   (setq message-send-mail-function 'smtpmail-send-it
         message-kill-buffer-on-exit t))
 
@@ -421,7 +400,6 @@
                 " "
                 filename-and-process))))
 
-
 (use-package uniquify
   :init
   (setq uniquify-buffer-name-style 'reverse
@@ -429,12 +407,18 @@
         uniquify-after-kill-buffer-p t
         uniquify-ignore-buffers-re "^\\*"))
 
-
 (use-package files
   :defer t
   :config
   (when-let (gls (and (eq system-type 'darwin) (executable-find "gls")))
-    (setq insert-directory-program gls)))
+    (setq insert-directory-program gls))
+  (setq view-read-only t)
+  (setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
+  (setq backup-directory-alist `(("." . ,(expand-file-name
+                                          (concat dotfiles-dir "backups")))))
+  (add-hook 'after-save-hook
+          'executable-make-buffer-file-executable-if-script-p))
 
 (use-package dired
   :defer t
