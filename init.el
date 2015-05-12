@@ -33,7 +33,6 @@
 (require 'subr-x)
 
 (defconst *emacs-load-start* (current-time))
-(message "Loading %s..." load-file-name)
 
 (defconst dotfiles-dir (file-name-directory load-file-name))
 (defconst lisp-dir (concat dotfiles-dir "lisp/"))
@@ -171,7 +170,8 @@
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
-  (message "Non-use package stuff...done (%.3fs)" elapsed))
+  (message "Non use-package stuff...done (%.3fs)" elapsed))
+
 (use-package exec-path-from-shell
   :if (eq system-type 'darwin)
   :ensure t
@@ -1096,6 +1096,7 @@ point reaches the beginning or end of the buffer, stop there."
   (eval-after-load 'prog-mode
     (add-hook 'prog-mode-hook #'yas-minor-mode))
   :config
+  (setq yas-verbosity 1)
   (setq yas-snippet-dirs (list (concat dotfiles-dir "snippets")))
   (setq yas-prompt-functions '(yas-ido-prompt yas-complete-prompt))
   (yas-reload-all))
