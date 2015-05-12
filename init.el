@@ -66,15 +66,26 @@
 
 ;; package.el setup
 (require 'package)
-
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-directory-list (concat dotfiles-dir "site-lisp"))
-(package-initialize)
 (setq package-enable-at-startup nil)
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+(setq package-selected-packages nil)
+(package-initialize)
 
+(defun pd-ensure-elpa (package)
+  "Make sure PACKAGE is installed and mark it as user selected."
+  (unless (package-installed-p package)
+    (package-install package))
+  (when (package-installed-p package)
+    (add-to-list 'package-selected-packages package)))
+
+;; Boot strap use-package
+(pd-ensure-elpa 'use-package)
 (require 'use-package)
+
+;; Redefine so we hook in with the package-selected-package mechanism
+(fset 'use-package-ensure-elpa 'pd-ensure-elpa)
+
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
