@@ -971,6 +971,7 @@ point reaches the beginning or end of the buffer, stop there."
            ("blog-content" "blog-static" "blog-rss")))))
 
 (use-package org
+  :ensure t
   :mode ("\\.org\\'" . org-mode)
   :config
   (require 'pd-org-extras)
