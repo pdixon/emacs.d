@@ -85,39 +85,13 @@
   :ensure t
   :init (exec-path-from-shell-initialize))
 
-(use-package dynamic-fonts
-  :ensure t
-  :defines (dynamic-fonts-preferred-monospace-fonts
-            dynamic-fonts-preferred-monospace-point-size
-            dynamic-fonts-preferred-proportional-fonts
-            dynamic-fonts-preferred-proportional-point-size)
-  :init
-  (setq dynamic-fonts-preferred-monospace-fonts
-        '("Source Code Pro"
-          "Inconsolata"
-          "Consolas"
-          "Menlo"
-          "DejaVu Sans Mono"
-          "Bitstream Vera Mono"))
-  (setq dynamic-fonts-preferred-monospace-point-size
-        (pcase system-type
-          (`darwin 12)
-          (_ 9)))
-  (setq dynamic-fonts-preferred-proportional-fonts
-        '("Helvetica"
-          "Segoe UI"
-          "DejaVu Sans"
-          "Bitstream Vera"))
-  (setq dynamic-fonts-preferred-proportional-point-size
-        (pcase system-type
-          (`darwin 12)
-          (_ 9)))
-  (dynamic-fonts-setup))
-
-(use-package unicode-fonts
-  :disabled t
-  :ensure t
-  :init (unicode-fonts-setup))
+(let* ((point-size (pcase system-type
+                     (`darwin 12)
+                     (_ 9)))
+       (height (round (* 10 point-size))))
+  (set-face-attribute 'default nil :font "Source Code Pro" :height height)
+  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height height)
+  (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height height))
 
 (use-package zenburn
   :disabled t
