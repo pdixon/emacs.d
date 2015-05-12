@@ -91,11 +91,6 @@
                                           *emacs-load-start*))))
   (message "Package Config...done (%.3fs)" elapsed))
 
-(use-package exec-path-from-shell
-  :if (eq system-type 'darwin)
-  :ensure t
-  :init (exec-path-from-shell-initialize))
-
 (let* ((point-size (pcase system-type
                      (`darwin 12)
                      (_ 9)))
@@ -103,29 +98,6 @@
   (set-face-attribute 'default nil :font "Source Code Pro" :height height)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height height)
   (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height height))
-
-(use-package zenburn
-  :disabled t
-  :ensure zenburn-theme
-  :defer t
-  :init
-  (load-theme 'zenburn t))
-
-(use-package solarized
-  :ensure solarized-theme
-  :defer t
-  :init
-  (setq solarized-distinct-fringe-background t
-        solarized-high-contrast-mode-line t
-        solarized-use-less-bold t
-        solarized-use-more-italic t
-        solarized-use-variable-pitch nil
-        solarized-height-minus-1 1.0
-        solarized-height-plus-1 1.0
-        solarized-height-plus-2 1.0
-        solarized-height-plus-3 1.0
-        solarized-height-plus-4 1.0)
-    (load-theme 'solarized-light t))
 
 ;; Basic Apperance
 ;; (if (not (eq system-type 'darwin))
@@ -154,9 +126,6 @@
         frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
   (tooltip-mode -1)
   (blink-cursor-mode -1))
-
-(use-package frame
-  :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
 
 (setq vc-handled-backends '(Git Hg))
 (setq whitespace-style '(face trailing tabs)
@@ -200,15 +169,45 @@
 
 (setq tab-always-indent 'complete)
 
-(use-package ns-win
-    :if (eq system-type 'darwin)
-    :config
-    (setq mac-option-modifier 'meta)
-    (setq mac-command-modifier 'none))
-
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
   (message "Non-use package stuff...done (%.3fs)" elapsed))
+(use-package exec-path-from-shell
+  :if (eq system-type 'darwin)
+  :ensure t
+  :init (exec-path-from-shell-initialize))
+
+(use-package zenburn
+  :disabled t
+  :ensure zenburn-theme
+  :defer t
+  :init
+  (load-theme 'zenburn t))
+
+(use-package solarized
+  :ensure solarized-theme
+  :defer t
+  :init
+  (setq solarized-distinct-fringe-background t
+        solarized-high-contrast-mode-line t
+        solarized-use-less-bold t
+        solarized-use-more-italic t
+        solarized-use-variable-pitch nil
+        solarized-height-minus-1 1.0
+        solarized-height-plus-1 1.0
+        solarized-height-plus-2 1.0
+        solarized-height-plus-3 1.0
+        solarized-height-plus-4 1.0)
+    (load-theme 'solarized-light t))
+
+(use-package frame
+  :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
+
+(use-package ns-win
+  :if (eq system-type 'darwin)
+  :config
+  (setq mac-option-modifier 'meta)
+  (setq mac-command-modifier 'none))
 
 ;; Save a list of recent files visited.
 (use-package recentf
