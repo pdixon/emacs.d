@@ -469,7 +469,8 @@
   :bind ("<f7>" . magit-status)
   :config
   (setq magit-completing-read-function #'magit-ido-completing-read)
-  (setq magit-status-buffer-switch-function #'switch-to-buffer))
+  (setq magit-status-buffer-switch-function #'switch-to-buffer)
+  (setq magit-revert-buffers t))
 
 (use-package orgit
   :ensure t
