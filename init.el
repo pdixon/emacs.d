@@ -454,7 +454,7 @@
 
 (use-package pd-centered-window
   :load-path "lisp/"
-  :commands (pd-centered-window))
+  :commands (pd-centered-window-mode))
 
 (use-package pd-cleanroom
   :load-path "lisp/"
