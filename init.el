@@ -54,7 +54,7 @@
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 (when (equal (car (split-string (system-name) "\\.")) "bigMacDev")
-  (setq url-proxy-services '(("no_proxy" . "\\.au.ivc")
+  (setq url-proxy-services '(("no_proxy" . "^.*\\(au\\.ivc\\)")
                              ("http" . "127.0.0.1:3128")
                              ("https" . "127.0.0.1:3128"))))
 
