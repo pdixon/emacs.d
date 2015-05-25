@@ -835,6 +835,12 @@ point reaches the beginning or end of the buffer, stop there."
     (goto-address-mode))
   (add-hook 'term-mode-hook 'my-term-hook))
 
+;; Used in my blog infrastructure. Remove once that code is a package
+;; with dependencies.
+(use-package f
+  :ensure t
+  :defer t)
+
 ;; Setup for Org
 (use-package org-agenda
   :bind (("<f6>" . my-org-agenda)

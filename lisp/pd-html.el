@@ -24,9 +24,56 @@
 
 ;;; Code:
 (require 'ox-html)
+(eval-when-compile (require 'cl))
+
 
 (org-export-define-derived-backend 'pd-html 'html
-  :translate-alist '((template . pd-html-template)))
+  :translate-alist '((inner-template . pd-html-inner-template)
+                     (template . pd-html-template)))
+
+(defun pd-html-format-footnote-definition (fn)
+  "Format the footnote definition FN."
+  (let ((n (car fn)) (def (cdr fn)))
+    (concat
+     (format
+      "<li id=\"fn.%s\">" n)
+     def
+     (format
+      "<a href=\"#fnr.%s\">↩</a>" n)
+     "</li>\n")))
+
+(defun pd-html-footnote-section (info)
+  "Format the footnote section.
+INFO is a plist used as a communication channel."
+  (let* ((fn-alist (org-export-collect-footnote-definitions
+		    (plist-get info :parse-tree) info))
+	 (fn-alist
+	  (loop for (n type raw) in fn-alist collect
+		(cons n (if (eq (org-element-type raw) 'org-data)
+			    (org-trim (org-export-data raw info))
+			  (format "<p>%s</p>"
+				  (org-trim (org-export-data raw info))))))))
+    (when fn-alist
+      (concat
+       "<section class=\"footnotes\">\n"
+       "<hr />\n"
+       "<ol>\n"
+       (mapconcat 'pd-html-format-footnote-definition fn-alist "\n")
+       "</ol>\n"
+       "</section>\n"))))
+
+(defun pd-html-inner-template (contents info)
+  "Return body of document string after HTML conversion.
+CONTENTS is the transcoded contents string.  INFO is a plist
+holding export options."
+  (concat
+   ;; Table of contents.
+   (let ((depth (plist-get info :with-toc)))
+     (when depth (org-html-toc depth info)))
+   ;; Document contents.
+   contents
+   ;; Footnotes section.
+   (pd-html-footnote-section info)))
 
 (defun pd-html-template (contents info)
   "Return complete document string after HTML conversion.
@@ -47,19 +94,16 @@ holding export options."
    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
    "</head>\n"
    "<body>\n"
-   "<div id=\"wrap\">\n"
    ;; Preamble.
-   "<div class=\"navbar navbar-default navbar-static-top\" role=\"navigation\">\n"
-   "<div class=\"container\">\n"
-   "<div class=\"navbar-header\">\n"
-   "<a class=\"navbar-brand\" href=\"/\">Phillip Dixon</a>\n"
-   "</div>\n"
-   "<ul class=\"nav navbar-nav\">\n"
+   "<header class=\"container\">\n"
+   "<h1 href=\"/\">Phillip Dixon</h1>\n"
+   "<nav>\n"
+   "<ul>\n"
    "<li><a href=\"/\">Home</a></li>\n"
    "<li><a href=\"/posts/\">Posts</a></li>\n"
    "</ul>\n"
-   "</div>\n"
-   "</div>\n"
+   "</nav>\n"
+   "</header>\n"
    ;; Document contents.
    "<article class=\"container\">\n"
    ;; Document title.
@@ -67,7 +111,6 @@ holding export options."
            (org-export-data (or (plist-get info :title) "") info))
    contents
    "</article>\n"
-   "</div>\n"
    ;; Postamble.
    "<footer>\n"
    "<div class=\"container\">\n"
