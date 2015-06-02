@@ -842,6 +842,10 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
+(use-package s
+  :ensure t
+  :defer t)
+
 ;; Setup for Org
 (use-package org-agenda
   :bind (("<f6>" . my-org-agenda)

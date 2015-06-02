@@ -29,19 +29,13 @@
 
 ;;; Code:
 
+(require 'subr-x)
+(require 'cl-lib)
+(require 's)
+
 (defgroup pd-project nil
   "PD Project settings."
   :group 'programming)
-
-(defcustom pd-project-root-changed-hook nil
-  "Hook to run when the current project root is set or changed."
-  :type 'hook
-  :group 'pd-project)
-
-(defcustom pd-project-vc-root-marker '(".git" ".hg")
-  "Files or directories present in the root of a repository."
-  :type '(repeat string)
-  :group 'pd-project)
 
 (defcustom pd-project-todo-regexp
   '("TODO" "HACK" "FIXME")
@@ -53,23 +47,23 @@
 (defun pd-project-compile ()
   "Call compile at the project root."
   (interactive)
-  (let ((comp-buffer-name (concat "*compilation: " (pd-project-get-root) "*"))
-        (default-directory (pd-project-get-root)))
-    (if (get-buffer comp-buffer-name)
-        (with-current-buffer comp-buffer-name
-          (recompile))
-      (progn
-        (compile compile-command)
-        (with-current-buffer "*compilation*"
-          (rename-buffer comp-buffer-name))))))
+  (when-let (root (pd-project-get-root))
+    (let ((comp-buffer-name (concat "*compilation: " root "*"))
+          (default-directory root))
+      (if (get-buffer comp-buffer-name)
+          (with-current-buffer comp-buffer-name
+            (recompile))
+        (progn
+          (compile compile-command)
+          (with-current-buffer "*compilation*"
+            (rename-buffer comp-buffer-name)))))))
 
 ;;;###autoload
 (defun pd-project-grep (regexp)
   "Search all project files for REGEXP."
   (interactive "sRegexp grep: ")
-  (let ((root (pd-project-get-root)))
-    (grep-compute-defaults)
-    (rgrep regexp "* .*" root)))
+  (when-let (root (pd-project-get-root))
+    (vc-git-grep regexp "* .*" root)))
 
 ;;;###autoload
 (defun pd-project-todo ()
@@ -79,42 +73,62 @@
   (interactive)
   (pd-project-grep (regexp-opt pd-project-todo-regexp)))
 
+
+(defun pd-completing-read (prompt collection)
+  (let (rlt)
+    (cond
+     ( (= 1 (length collection))
+       ;; open file directly
+       (setq rlt (car collection)))
+     ((and (boundp 'ido-mode) ido-mode)
+      (setq rlt (ido-completing-read prompt collection)))
+     (t
+      (setq rlt (completing-read prompt collection))))
+    rlt))
+
+(defun pd-project-files ()
+  "Return an alist of all filenames in the project and their path.
+
+Files with duplicate filenames are suffixed with the name of the
+directory they are found in so that they are unique."
+  (let (file-alist
+        (old-dir default-directory))
+    (with-temp-buffer
+      (cd (pd-project-get-root))
+      (vc-git-command t nil "ls-files" nil)
+      (goto-char (point-min))
+      (cl-loop until (eobp)
+               do ((lambda ()
+                     (let* ((file (s-trim (thing-at-point 'line)))
+                            (file-cons (cons (file-name-nondirectory file)
+                                             (expand-file-name file))))
+                        (add-to-list 'file-alist file-cons))))
+               (forward-line 1))
+      (cd old-dir))
+    file-alist))
+
+(defun pd-find-files ()
+  (let* ((project-files (pd-project-files))
+         (files (mapcar 'car project-files))
+         file
+         root)
+    (cond
+     ((and files (> (length files) 0))
+      (setq root (file-name-nondirectory (directory-file-name (pd-project-get-root))))
+      (setq file (pd-completing-read (format "Find file in %s/: " root)  files))
+      (find-file (cdr (assoc file project-files))))
+     (t (message "No match file exist!")))))
+
+
 ;;;###autoload
 (defun pd-project-find-file ()
   "Open a file in the project."
-  (interactive))
+  (interactive)
+  (pd-find-files))
 
-(defvar pd-project-root nil
-  "The current project root.")
-(make-variable-buffer-local 'pd-project-root)
-(put 'pd-project-root 'safe-local-variable 'file-directory-p)
-
-;;;###autoload
 (defun pd-project-get-root ()
-  "Return the current project root directory.
-
-If there is no current project root find one using pd-project-guess-root."
-  (when (not pd-project-root)
-    (pd-project-set-root  (pd-project-guess-root)))
-  pd-project-root)
-
-;;;###autoload
-(defun pd-project-set-root (new-root)
-  "Set the current project root directory to NEW-ROOT."
-  (interactive "DProject root: ")
-  (setq pd-project-root new-root)
-  (run-hooks 'pd-project-root-changed-hook))
-
-(defun pd-project-guess-root ()
-  "Guess the project root from version control files."
-  (locate-dominating-file
-   (buffer-file-name)
-   (lambda (dir)
-     (catch 'return
-       (dolist (marker pd-project-vc-root-marker)
-         (when (file-exists-p (concat dir "/" marker))
-           (throw 'return t)))
-       nil))))
+    ""
+    (vc-find-root (or (buffer-file-name) default-directory) ".git"))
 
 (provide 'pd-project)
 ;;; pd-project.el ends here
