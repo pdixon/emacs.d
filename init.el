@@ -164,6 +164,7 @@
 
 (add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'text-mode-hook #'auto-fill-mode)
+(add-hook 'text-mode-hook #'bug-reference-mode)
 
 (setq tab-always-indent 'complete)
 
@@ -1352,7 +1353,8 @@ point reaches the beginning or end of the buffer, stop there."
   (add-hook 'prog-mode-hook 'pd/local-comment-auto-fill)
   (add-hook 'prog-mode-hook 'hl-line-mode)
   (add-hook 'prog-mode-hook 'whitespace-mode)
-  (add-hook 'prog-mode-hook 'pd/add-watchwords))
+  (add-hook 'prog-mode-hook 'pd/add-watchwords)
+  (add-hook 'prog-mode-hook #'bug-reference-prog-mode))
 
 (use-package server
   :defer t)
