@@ -573,15 +573,9 @@ point reaches the beginning or end of the buffer, stop there."
   :mode (("\\.exe\\'" . hexl-mode)
          ("\\.dll\\'" . hexl-mode)))
 
-(use-package find-file-in-project
-  :ensure t
-  :bind ("C-c C-f" . ffip)
-  :config
-  (require 'pd-project)
-  (setq ffip-project-root-function #'pd-project-get-root))
-
 (use-package pd-project
-  :bind(("C-c b" . pd-project-compile))
+  :bind(("C-c b" . pd-project-compile)
+        ("C-c f" . pd-project-find-file))
   :commands (pd-project-grep
              pd-project-todo))
 
