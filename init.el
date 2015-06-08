@@ -1389,6 +1389,15 @@ point reaches the beginning or end of the buffer, stop there."
                  '("Software" "http://wiki.sw.au.ivc/mediawiki" "pdixon" "" "The PENSIEVE"))
   (setq mediawiki-site-default "Software"))
 
+(use-package time
+  :config
+  (setq display-time-world-time-format "%H:%M %d %b, %Z"
+        display-time-world-list '(("Pacific/Auckland" "Christchurch")
+                                  ("Australia/Brisbane" "Brisbane")
+                                  ("Asia/Shanghai" "Suzhou")
+                                  ("Europe/London"    "London")
+                                  ("America/Los_Angeles" "San Francisco"))))
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
