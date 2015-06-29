@@ -1398,6 +1398,15 @@ point reaches the beginning or end of the buffer, stop there."
                                   ("Europe/London"    "London")
                                   ("America/Los_Angeles" "San Francisco"))))
 
+(use-package eww
+  :init
+  (setq browse-url-browser-function 'eww-browse-url)
+  :config
+  (defun rename-eww-buffer ()
+    (rename-buffer (format "*eww : %s *" (plist-get eww-data :title)) t))
+
+  (add-hook 'eww-after-render-hook 'rename-eww-buffer))
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
