@@ -65,7 +65,6 @@
 ;; package.el setup
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-directory-list (concat dotfiles-dir "site-lisp"))
 (setq package-enable-at-startup nil)
 (setq package-selected-packages nil)
 (package-initialize)
@@ -466,6 +465,7 @@
   :commands (pinboard-list-bookmarks))
 
 (use-package magit
+  :ensure t
   :bind ("<f7>" . magit-status)
   :config
   (setq magit-completing-read-function #'magit-ido-completing-read)
