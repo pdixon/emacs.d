@@ -1403,6 +1403,10 @@ point reaches the beginning or end of the buffer, stop there."
 
   (add-hook 'eww-after-render-hook 'rename-eww-buffer))
 
+(use-package epg
+  :config
+  (setq epg-gpgconf-program "gpg"))
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
