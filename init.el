@@ -177,13 +177,14 @@
   :init (exec-path-from-shell-initialize))
 
 (use-package zenburn
-  :disabled t
+  ;:disabled t
   :ensure zenburn-theme
   :defer t
   :init
   (load-theme 'zenburn t))
 
 (use-package solarized
+  :disabled t
   :ensure solarized-theme
   :defer t
   :init
