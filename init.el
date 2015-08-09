@@ -471,7 +471,8 @@
   :config
   (setq magit-completing-read-function #'magit-ido-completing-read)
   (setq magit-status-buffer-switch-function #'switch-to-buffer)
-  (setq magit-revert-buffers t))
+  (setq magit-revert-buffers t)
+  (setq magit-push-always-verify nil))
 
 (use-package orgit
   :ensure t
