@@ -1408,6 +1408,9 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq epg-gpgconf-program "gpg"))
 
+(use-package swift-mode
+  :ensure t)
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
