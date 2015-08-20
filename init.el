@@ -469,6 +469,7 @@
   :ensure t
   :bind ("<f7>" . magit-status)
   :config
+  (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (setq magit-completing-read-function #'magit-ido-completing-read)
   (setq magit-status-buffer-switch-function #'switch-to-buffer)
   (setq magit-revert-buffers t)
