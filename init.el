@@ -1092,7 +1092,15 @@ point reaches the beginning or end of the buffer, stop there."
   (setq org-completion-use-ido t)
   (setq org-refile-targets '((org-agenda-files :maxlevel . 3) (nil :maxlevel . 3)))
   (setq org-refile-use-outline-path 'file)
-  (setq org-outline-path-complete-in-steps t))
+  (setq org-outline-path-complete-in-steps t)
+  (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (dot . t)
+       (gnuplot . t)
+       (plantuml . t)
+       (latex . t)))
+  (setq org-plantuml-jar-path "/usr/local/opt/plantuml/plantuml.8024.jar"))
 
 (use-package yasnippet
   :ensure t
