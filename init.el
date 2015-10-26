@@ -780,10 +780,14 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :bind ("<f5>" . deft)
   :config
-  (setq deft-extension "org")
+  (setq deft-default-extension "org")
   (setq deft-directory "~/personal/notes")
   (setq deft-text-mode 'org-mode)
-  (setq deft-use-filename-as-title t))
+  (setq deft-use-filename-as-title t)
+  (setq deft-use-filter-string-for-filename t)
+  (setq deft-file-naming-rules '((noslash . "-")
+                                 (nospace . "-")
+                                 (case-fn . downcase))))
 
 (use-package markdown-mode
   :ensure t
