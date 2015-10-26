@@ -1427,6 +1427,9 @@ point reaches the beginning or end of the buffer, stop there."
   (with-eval-after-load 'flycheck
     (add-to-list 'flycheck-checkers 'swift)))
 
+(use-package ninja-mode
+  :ensure t)
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
