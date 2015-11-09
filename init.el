@@ -465,13 +465,15 @@
   :load-path "lisp/pinboard"
   :commands (pinboard-list-bookmarks))
 
+(use-package diff-hl
+  :ensure t)
+
 (use-package magit
   :ensure t
   :bind ("<f7>" . magit-status)
   :config
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (setq magit-completing-read-function #'magit-ido-completing-read)
-  (setq magit-status-buffer-switch-function #'switch-to-buffer)
   (setq magit-revert-buffers t)
   (setq magit-push-always-verify nil))
 
