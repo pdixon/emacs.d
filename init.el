@@ -1158,6 +1158,7 @@ point reaches the beginning or end of the buffer, stop there."
        (yas--template-expand-env template))))
   (defun pd-expand-buffer ()
     "Expand buffer in place as a yasnippet."
+    (require 's)
     (yas-expand-snippet (buffer-string) (point-min) (point-max)))
   :init
   (add-hook 'find-file-hooks 'auto-insert)
