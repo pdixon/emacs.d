@@ -473,6 +473,7 @@
   :bind ("<f7>" . magit-status)
   :config
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
+  (setq magit-display-buffer-function #'display-buffer)
   (setq magit-completing-read-function #'magit-ido-completing-read)
   (setq magit-revert-buffers t)
   (setq magit-push-always-verify nil))
@@ -1412,8 +1413,8 @@ point reaches the beginning or end of the buffer, stop there."
                                   ("America/Los_Angeles" "San Francisco"))))
 
 (use-package eww
-  :init
-  (setq browse-url-browser-function 'eww-browse-url)
+  ;;:init
+  ;;(setq browse-url-browser-function 'eww-browse-url)
   :config
   (defun rename-eww-buffer ()
     (rename-buffer (format "*eww : %s *" (plist-get eww-data :title)) t))
