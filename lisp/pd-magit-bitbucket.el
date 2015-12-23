@@ -26,6 +26,8 @@
 
 (require 'magit-git)
 
+;; https://{stash-root}/{repo-slug}/pull-requests?create&targetBranch=refs%2Fheads%2Fmaster&sourceBranch=refs%2Fheads%2Ffeature%2FLA-375
+
 ;;;#autoload
 (defun pd-magit-bb-visit-pull-request ()
   "Visit the current branch's PR on bitbucket."
