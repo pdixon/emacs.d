@@ -34,13 +34,11 @@
 
 (defconst *emacs-load-start* (current-time))
 
-(defconst dotfiles-dir (file-name-directory load-file-name))
-(defconst lisp-dir (concat dotfiles-dir "lisp/"))
+(defconst lisp-dir (concat user-emacs-directory "lisp/"))
 
 (add-to-list 'load-path lisp-dir)
 
-(setq custom-file (concat dotfiles-dir "custom.el"))
-(setq gnus-init-file (concat dotfiles-dir "dot-gnus.el"))
+(setq custom-file (concat user-emacs-directory "custom.el"))
 
 ;; load the customize stuff
 (load custom-file 'noerror)
@@ -125,8 +123,6 @@
   (blink-cursor-mode -1))
 
 (setq vc-handled-backends '(Git Hg))
-(setq whitespace-style '(face trailing tabs)
-      whitespace-line-column 80)
 
 (setq mail-user-agent 'message-user-agent)
 (setq user-mail-address "phil@dixon.gen.nz")
@@ -301,6 +297,12 @@
   :bind (([remap execute-extended-command] . smex)
          ("M-X" . smex-major-mode-commands)))
 
+(use-package whitespace
+  :defer t
+  :config
+  (setq whitespace-style '(face trailing tabs)
+        whitespace-line-column 80))
+
 (use-package auth-source
   :defer t
   :config
@@ -400,7 +402,7 @@
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
   (setq backup-directory-alist `(("." . ,(expand-file-name
-                                          (concat dotfiles-dir "backups")))))
+                                          (concat user-emacs-directory "backups")))))
   (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p))
 
@@ -475,8 +477,7 @@
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (setq magit-display-buffer-function #'display-buffer)
   (setq magit-completing-read-function #'magit-ido-completing-read)
-  (setq magit-revert-buffers t)
-  (setq magit-push-always-verify nil))
+  (setq magit-revert-buffers 'silent))
 
 (use-package orgit
   :ensure t
@@ -641,14 +642,11 @@ point reaches the beginning or end of the buffer, stop there."
 (defun clean-up-buffer-or-region ()
   "Untabifies, indents and deletes trailing whitespace from buffer or region."
   (interactive)
-  (save-excursion
-    (unless (region-active-p)
-      (mark-whole-buffer))
-    (untabify (region-beginning) (region-end))
-    (indent-region (region-beginning) (region-end))
-    (save-restriction
-      (narrow-to-region (region-beginning) (region-end))
-      (delete-trailing-whitespace))))
+  (let ((beginning (if (region-active-p) (region-beginning) (point-min)))
+        (end (if (region-active-p) (region-end) (point-max))))
+    (untabify beginning end)
+    (indent-region beginning end)
+    (delete-trailing-whitespace beginning end)))
 
 
 (defun esk-sudo-edit (&optional arg)
@@ -757,11 +755,10 @@ point reaches the beginning or end of the buffer, stop there."
 (defun speak-buffer-or-region ()
   "Read buffer or region aloud."
   (interactive)
-  (save-excursion
-    (unless (region-active-p)
-      (mark-whole-buffer))
-    (let ((text (buffer-substring (region-beginning) (region-end))))
-      (say-text text))))
+  (let ((text (if (region-active-p)
+                  (buffer-substring (region-beginning) (region-end))
+                (buffer-string))))
+    (say-text text)))
 
 (defun stop-speech ()
   "Stopping talking."
@@ -785,7 +782,6 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq deft-default-extension "org")
   (setq deft-directory "~/personal/notes")
-  (setq deft-text-mode 'org-mode)
   (setq deft-use-filename-as-title t)
   (setq deft-use-filter-string-for-filename t)
   (setq deft-file-naming-rules '((noslash . "-")
@@ -849,6 +845,11 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package s
   :ensure t
   :defer t)
+
+(use-package gnus-start
+  :defer t
+  :config
+  (setq gnus-init-file (concat user-emacs-directory "dot-gnus.el")))
 
 ;; Setup for Org
 (use-package org-agenda
@@ -1106,7 +1107,11 @@ point reaches the beginning or end of the buffer, stop there."
        (dot . t)
        (gnuplot . t)
        (plantuml . t)
-       (latex . t)))
+       (latex . t))))
+
+(use-package ob-plantuml
+  :defer t
+  :config
   (setq org-plantuml-jar-path "/usr/local/opt/plantuml/plantuml.8024.jar"))
 
 (use-package yasnippet
@@ -1120,7 +1125,7 @@ point reaches the beginning or end of the buffer, stop there."
     (add-hook 'prog-mode-hook #'yas-minor-mode))
   :config
   (setq yas-verbosity 1)
-  (setq yas-snippet-dirs (list (concat dotfiles-dir "snippets")))
+  (setq yas-snippet-dirs (list (concat user-emacs-directory "snippets")))
   (setq yas-prompt-functions '(yas-ido-prompt yas-complete-prompt))
   (yas-reload-all))
 
@@ -1166,7 +1171,7 @@ point reaches the beginning or end of the buffer, stop there."
   :init
   (add-hook 'find-file-hooks 'auto-insert)
   :config
-  (setq auto-insert-directory (concat dotfiles-dir "mytemplates/")
+  (setq auto-insert-directory (concat user-emacs-directory "mytemplates/")
         auto-insert-query nil)
 
   (define-auto-insert "setup.py\\'"
@@ -1320,8 +1325,9 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package flycheck-pos-tip
   :ensure t
   :defer t
+  :after flycheck
   :init
-  (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+  (flycheck-pos-tip-mode))
 
 (use-package ace-window
   :ensure t
