@@ -45,11 +45,6 @@
 
 (prefer-coding-system 'utf-8)
 
-;; (when (equal (car (split-string (system-name) "\\.")) "bigMacDev")
-;;   (setq url-proxy-services '(("no_proxy" . "^.*\\(au\\.ivc\\)")
-;;                              ("http" . "127.0.0.1:3128")
-;;                              ("https" . "127.0.0.1:3128"))))
-
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
   (message "Basic Config...done (%.3fs)" elapsed))
@@ -1326,17 +1321,6 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package ace-window
   :ensure t
   :bind (("C-x o" . ace-window)))
-
-;; (use-package switch-window
-;;   :disabled t
-;;   :ensure t
-;;   :bind ("C-x o" . switch-window))
-
-(use-package popwin
-  :ensure t
-  :disabled t
-  :init
-  (popwin-mode t))
 
 (use-package which-func
   :init (which-function-mode))
