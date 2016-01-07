@@ -1,4 +1,3 @@
-(require 'nnir)
 
 (setq mail-sources nil)
 (setq gnus-auto-subscribed-groups "^nnimap//")
@@ -37,6 +36,10 @@
 (remove-hook 'gnus-mark-article-hook
              'gnus-summary-mark-read-and-unread-as-read)
 (add-hook 'gnus-mark-article-hook 'gnus-summary-mark-unread-as-read)
+
+(setq
+   mm-discouraged-alternatives '("text/html" "text/richtext" "text/enriched")
+   mm-automatic-display (remove "text/html" mm-automatic-display))
 
 (gnus-add-configuration
  '(article
