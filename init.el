@@ -151,6 +151,7 @@
 (add-hook 'text-mode-hook #'bug-reference-mode)
 
 (setq tab-always-indent 'complete)
+(setq split-height-threshold 100)
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
