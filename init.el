@@ -1145,15 +1145,10 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package autoinsert
   :defer t
   :preface
-  (defun pd-expand-by-uuid (mode uuid)
-    "Expand snippet template in MODE by its UUID"
-    ;;FIXME figure out why template is nil.
-    (if-let ((template (yas--get-template-by-uuid mode uuid)))
-      (yas-expand-snippet
-       (yas--template-content template)
-       nil
-       nil
-       (yas--template-expand-env template))))
+  (defun pd-expand-template (name mode)
+    "Expand template NAME in MODE"
+    (if-let ((template (yas-lookup-snippet name mode)))
+      (yas-expand-snippet template)))
   (defun pd-expand-buffer ()
     "Expand buffer in place as a yasnippet."
     (require 's)
@@ -1177,7 +1172,7 @@ point reaches the beginning or end of the buffer, stop there."
     ["template.m" pd-expand-buffer])
 
   (define-auto-insert "\\.org\\'"
-    #'(lambda () (pd-expand-by-uuid 'org-mode "header.yasnippet"))))
+    #'(lambda () (pd-expand-template "Org-mode file header" 'org-mode))))
 
 
 (use-package haskell-mode
