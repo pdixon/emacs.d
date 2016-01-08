@@ -571,10 +571,8 @@ point reaches the beginning or end of the buffer, stop there."
          ("\\.dll\\'" . hexl-mode)))
 
 (use-package pd-project
-  :bind(("C-c b" . pd-project-compile)
-        ("C-c f" . pd-project-find-file))
-  :commands (pd-project-grep
-             pd-project-todo))
+  :bind(("C-c b" . pd-project-compile))
+  :commands (pd-project-todo))
 
 (use-package pd-window-extras
   :commands (pd/rotate-windows
