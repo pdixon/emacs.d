@@ -1218,25 +1218,27 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :mode ("\\.h$" . dummy-h-mode))
 
+(use-package google-c-style
+  :ensure t
+  :defer t
+  :after cc-mode
+  :init
+  (c-add-style "Google" google-c-style)
+
+  (defconst my-c-style
+    '("Google"
+      (c-basic-offset . 4)
+      (c-offsets-alist . ((inextern-lang . -)))))
+  (c-add-style "PERSONAL" my-c-style)
+
+  (defconst dcl-c-style
+    '("Google"
+      (c-basic-offset . 3)))
+  (c-add-style "DCL" dcl-c-style))
+
 (use-package cc-mode
   :defer t
   :config
-  (use-package google-c-style
-    :ensure t
-    :init
-    (c-add-style "Google" google-c-style)
-
-    (defconst my-c-style
-      '("Google"
-        (c-basic-offset . 4)
-        (c-offsets-alist . ((inextern-lang . -)))))
-    (c-add-style "PERSONAL" my-c-style)
-
-    (defconst dcl-c-style
-      '("Google"
-        (c-basic-offset . 3)))
-    (c-add-style "DCL" dcl-c-style))
-
   (defconst my-obj-c-style
     '("bsd"
       (c-basic-offset . 4)
