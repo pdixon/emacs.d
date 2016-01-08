@@ -79,7 +79,7 @@
                      (`darwin 12)
                      (_ 9)))
        (height (round (* 10 point-size))))
-  (set-face-attribute 'default nil :font "Source Code Pro" :height height)
+  (set-face-attribute 'default nil :font "Source Code Pro" :height height :weight 'light)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height height)
   (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height height))
 
@@ -163,14 +163,14 @@
   :init (exec-path-from-shell-initialize))
 
 (use-package zenburn
-  :disabled t
+  ;;:disabled t
   :ensure zenburn-theme
   :defer t
   :init
   (load-theme 'zenburn t))
 
 (use-package solarized
-  ;:disabled t
+  :disabled t
   :ensure solarized-theme
   :defer t
   :init
