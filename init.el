@@ -1142,18 +1142,13 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package autoinsert
   :defer t
-  :preface
-  (defun pd-expand-template (name mode)
-    "Expand template NAME in MODE"
-    (if-let ((template (yas-lookup-snippet name mode)))
-      (yas-expand-snippet template)))
-  (defun pd-expand-buffer ()
-    "Expand buffer in place as a yasnippet."
-    (require 's)
-    (yas-expand-snippet (buffer-string) (point-min) (point-max)))
   :init
   (add-hook 'find-file-hooks 'auto-insert)
   :config
+  (defun pd-expand-buffer ()
+    "Expand buffer in place as a yasnippet."
+    (yas-expand-snippet (buffer-string) (point-min) (point-max)))
+
   (setq auto-insert-directory (concat user-emacs-directory "mytemplates/")
         auto-insert-query nil)
 
@@ -1170,7 +1165,7 @@ point reaches the beginning or end of the buffer, stop there."
     ["template.m" pd-expand-buffer])
 
   (define-auto-insert "\\.org\\'"
-    #'(lambda () (pd-expand-template "Org-mode file header" 'org-mode))))
+    ["template.org" pd-expand-buffer]))
 
 
 (use-package haskell-mode

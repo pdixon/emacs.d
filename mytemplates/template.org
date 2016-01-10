@@ -1,0 +1,4 @@
+#+TITLE: $1
+#+AUTHOR: Phillip Dixon
+
+* $0
