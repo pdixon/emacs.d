@@ -81,7 +81,7 @@
        (height (round (* 10 point-size))))
   (set-face-attribute 'default nil :font "Source Code Pro" :height height :weight 'light)
   (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height height)
-  (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height height))
+  (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 130 :weight 'normal))
 
 ;; Basic Apperance
 ;; (if (not (eq system-type 'darwin))
