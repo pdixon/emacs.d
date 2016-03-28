@@ -1406,6 +1406,12 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package ninja-mode
   :ensure t)
 
+(use-package excorporate
+  :ensure t
+  :config
+  (setq excorporate-configuration
+        '("pdixon@dynamiccontrols.com" . "https://outlook.office365.com/EWS/Exchange.asmx")))
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
