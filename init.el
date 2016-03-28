@@ -1401,10 +1401,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq epg-gpgconf-program "gpg"))
 
 (use-package swift-mode
-  :ensure t
-  :config
-  (with-eval-after-load 'flycheck
-    (add-to-list 'flycheck-checkers 'swift)))
+  :ensure t)
 
 (use-package ninja-mode
   :ensure t)
