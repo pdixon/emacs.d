@@ -1100,7 +1100,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package ob-plantuml
   :defer t
   :config
-  (setq org-plantuml-jar-path "/usr/local/opt/plantuml/plantuml.8024.jar"))
+  (setq org-plantuml-jar-path "/usr/local/opt/plantuml/plantuml.8041.jar"))
 
 (use-package yasnippet
   :ensure t
