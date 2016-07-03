@@ -1141,6 +1141,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq company-idle-delay 0.3))
 
 (use-package autoinsert
+  :disabled t
   :defer t
   :init
   (add-hook 'find-file-hooks 'auto-insert)
@@ -1350,19 +1351,22 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package mu4e
   :defer t
   :load-path "/usr/local/share/emacs/site-lisp/mu4e"
+  :commands (mu4e)
   :config
   (require 'mu4e-contrib)
-  (setq mu4e-maildir "~/.mail/dixon.gen.nz"
+  (setq mu4e-maildir "~/.mail/gmail"
+        mu4e-sent-folder "/sent"
+        mu4e-drafts-folder "/drafts"
+        mu4e-trash-folder "/trash"
+        mu4e-refile-folder "/archive"
+        mu4e-get-mail-command "mbsync -a"
         mu4e-view-prefer-html t
         mu4e-html2text-command 'mu4e-shr2text
-        mu4e-use-fancy-chars t))
+        mu4e-change-filenames-when-moving t))
 
 (use-package clang-format
   :defer t
-  :ensure t
-  :config
-  (when (eq system-type 'darwin)
-    (setq clang-format-executable "/usr/local/opt/llvm/bin/clang-format")))
+  :ensure t)
 
 (use-package info
   :defer t
