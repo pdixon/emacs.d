@@ -1416,6 +1416,10 @@ point reaches the beginning or end of the buffer, stop there."
   (setq excorporate-configuration
         '("pdixon@dynamiccontrols.com" . "https://outlook.office365.com/EWS/Exchange.asmx")))
 
+(use-package restclient
+  :ensure t
+  :defer t)
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
