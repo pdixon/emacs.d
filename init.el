@@ -464,10 +464,12 @@
   :ensure t
   :bind ("<f7>" . magit-status)
   :config
+  (magit-auto-revert-mode)
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (setq magit-display-buffer-function #'display-buffer)
   (setq magit-completing-read-function #'magit-ido-completing-read)
-  (setq magit-revert-buffers 'silent))
+  (setq magit-branch-prefer-remote-upstream '("master"))
+  (add-to-list 'git-commit-known-pseudo-headers "Ticket"))
 
 (use-package orgit
   :ensure t
