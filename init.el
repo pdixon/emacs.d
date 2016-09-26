@@ -133,9 +133,10 @@
 
 (set-default 'sentence-end-double-space nil)
 
-;; Keep cursor away from edges when scrolling up/down
-;;(require 'smooth-scrolling)
-(mouse-wheel-mode t)
+(use-package mwheel
+  :config
+  (setq mouse-wheel-scroll-amount '(1))
+  (setq mouse-wheel-progressive-speed nil))
 
 ;; Never insert tabs
 (set-default 'indent-tabs-mode nil)
