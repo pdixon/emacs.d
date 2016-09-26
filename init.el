@@ -153,6 +153,9 @@
 (setq tab-always-indent 'complete)
 (setq split-height-threshold 100)
 
+(bind-key "C-x w" 'delete-frame)
+(bind-key "C-x k" 'kill-this-buffer)
+
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
   (message "Non use-package stuff...done (%.3fs)" elapsed))
