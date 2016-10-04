@@ -54,6 +54,16 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (setq package-enable-at-startup nil)
 (setq package-selected-packages nil)
+
+(defun pd-package--save-selected-packages (&optional value)
+  "Set `package-selected-packages' to VALUE."
+  (when value
+    (setq package-selected-packages value)))
+
+;; Since I'm managing packings with `use-package' I don't ever want to
+;; save `package-selected-packages'.
+(fset 'package--save-selected-packages 'pd-package--save-selected-packages)
+
 (package-initialize)
 
 (defun pd-ensure-elpa (package)
