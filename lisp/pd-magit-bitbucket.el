@@ -39,7 +39,7 @@
             (magit-get "remote"
                        (magit-get-remote (magit-branch-at-point))
                        "url"))
-           (cdr (or (magit-get-remote-branch (magit-branch-at-point))
+           (cdr (or (magit-get-upstream-branch (magit-branch-at-point))
                     (user-error "No remote branch"))))))
 
 (provide 'pd-magit-bitbucket)
