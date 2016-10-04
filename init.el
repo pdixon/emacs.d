@@ -576,6 +576,10 @@ point reaches the beginning or end of the buffer, stop there."
   :mode (("\\.exe\\'" . hexl-mode)
          ("\\.dll\\'" . hexl-mode)))
 
+(use-package groovy-mode
+  :ensure t
+  :mode (("/Jenkinsfile\\'" . groovy-mode)))
+
 (use-package pd-project
   :bind(("C-c b" . pd-project-compile))
   :commands (pd-project-todo))
