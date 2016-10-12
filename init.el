@@ -1301,7 +1301,9 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t
   :init
-  (add-hook 'c-mode-common-hook #'irony-mode)
+  (add-hook 'c-mode-hook #'irony-mode)
+  (add-hook 'c++-mode-hook #'irony-mode)
+  (add-hook 'objc-mode-hook #'irony-mode)
   :config
   (add-hook 'irony-mode-hook #'irony-cdb-autosetup-compile-options))
 
