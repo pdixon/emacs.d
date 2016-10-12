@@ -476,7 +476,9 @@
 
 (use-package magit
   :ensure t
-  :bind ("<f7>" . magit-status)
+  :bind (([remap magit-fetch-popup] . magit-pull-and-fetch-popup)
+         ([remap magit-pull-popup] . magit-pull-and-fetch-popup)
+         ("<f7>" . magit-status))
   :config
   (magit-auto-revert-mode)
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
