@@ -1432,7 +1432,8 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t)
 
 (use-package swift-mode
-  :ensure t)
+  :ensure t
+  :interpreter "swift")
 
 (use-package ninja-mode
   :ensure t)
