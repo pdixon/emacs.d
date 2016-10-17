@@ -88,9 +88,12 @@
 (let* ((point-size (pcase system-type
                      (`darwin 12)
                      (_ 9)))
-       (height (round (* 10 point-size))))
-  (set-face-attribute 'default nil :font "Source Code Pro" :height height :weight 'light)
-  (set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height height)
+       (height (round (* 10 point-size)))
+       (font (pcase system-type
+               (`darwin "SF Mono")
+               (_ "Source Code Pro"))))
+  (set-face-attribute 'default nil :font font :height height :weight 'light)
+  (set-face-attribute 'fixed-pitch nil :font font :height height)
   (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 130 :weight 'normal))
 
 ;; Basic Apperance
@@ -177,19 +180,19 @@
   :init (exec-path-from-shell-initialize))
 
 (use-package zenburn
-  ;;:disabled t
+  :disabled t
   :ensure zenburn-theme
   :defer t
   :init
   (load-theme 'zenburn t))
 
 (use-package solarized
-  :disabled t
+  ;;:disabled t
   :ensure solarized-theme
   :defer t
   :init
   (setq solarized-distinct-fringe-background t
-        solarized-high-contrast-mode-line t
+        solarized-high-contrast-mode-line nil
         solarized-use-less-bold t
         solarized-use-more-italic t
         solarized-use-variable-pitch nil
@@ -198,7 +201,7 @@
         solarized-height-plus-2 1.0
         solarized-height-plus-3 1.0
         solarized-height-plus-4 1.0)
-    (load-theme 'solarized-light t))
+    (load-theme 'solarized-dark t))
 
 (use-package frame
   :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
