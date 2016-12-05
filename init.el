@@ -206,11 +206,10 @@
 (use-package frame
   :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
 
-(use-package ns-win
-  :if (eq system-type 'darwin)
-  :config
-  (setq mac-option-modifier 'meta)
-  (setq mac-command-modifier 'none))
+(if (eq system-type 'darwin)
+    (progn
+      (setq mac-option-modifier 'meta)
+      (setq mac-command-modifier 'none)))
 
 ;; Save a list of recent files visited.
 (use-package recentf
