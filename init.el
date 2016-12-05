@@ -160,9 +160,11 @@
 
 (setq diff-switches "-u")
 
-(add-hook 'text-mode-hook #'flyspell-mode)
-(add-hook 'text-mode-hook #'auto-fill-mode)
-(add-hook 'text-mode-hook #'bug-reference-mode)
+(use-package text-mode
+  :config
+  (add-hook 'text-mode-hook #'flyspell-mode)
+  (add-hook 'text-mode-hook #'auto-fill-mode)
+  (add-hook 'text-mode-hook #'bug-reference-mode))
 
 (setq tab-always-indent 'complete)
 (setq split-height-threshold 100)
@@ -1132,10 +1134,8 @@ point reaches the beginning or end of the buffer, stop there."
   :commands (yas-minor-mode yas-expand yas-hippie-try-expand)
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
   :init
-  (eval-after-load 'text-mode
-    (add-hook 'text-mode-hook #'yas-minor-mode))
-  (eval-after-load 'prog-mode
-    (add-hook 'prog-mode-hook #'yas-minor-mode))
+  (add-hook 'text-mode-hook #'yas-minor-mode)
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
   :config
   (setq yas-verbosity 1)
   (setq yas-snippet-dirs (list (concat user-emacs-directory "snippets")))
