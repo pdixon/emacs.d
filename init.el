@@ -51,7 +51,7 @@
 
 ;; package.el setup
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (setq package-enable-at-startup nil)
 (setq package-selected-packages nil)
 
