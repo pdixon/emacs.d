@@ -160,17 +160,277 @@
 
 (setq diff-switches "-u")
 
-(use-package text-mode
-  :config
-  (add-hook 'text-mode-hook #'flyspell-mode)
-  (add-hook 'text-mode-hook #'auto-fill-mode)
-  (add-hook 'text-mode-hook #'bug-reference-mode))
+(defun delete-indentation-forward ()
+  (interactive)
+  (delete-indentation t))
+
+(bind-key "M-J" #'delete-indentation-forward)
+(bind-key "M-j" #'delete-indentation)
+
+(bind-key "C-h a" #'apropos)
+
+(bind-key "C-c y" #'bury-buffer)
+
+(defun smarter-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+(global-set-key [remap move-beginning-of-line]
+                #'smarter-move-beginning-of-line)
+
 
 (setq tab-always-indent 'complete)
 (setq split-height-threshold 100)
 
 (bind-key "C-x w" 'delete-frame)
 (bind-key "C-x k" 'kill-this-buffer)
+
+(bind-keys :prefix-map my-toggle-map
+           :prefix "C-x t"
+           ("c" . pd-cleanroom-mode)
+           ("f" . auto-fill-mode)
+           ("r" . dired-toggle-read-only)
+           ("w" . whitespace-mode)
+           ("v" . visual-line-mode))
+
+
+;; Yank line or region
+(defadvice kill-ring-save (before slick-copy activate compile)
+  "When called interactively with no active region, copy a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
+
+;; Kill line or region
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+   (if mark-active (list (region-beginning) (region-end))
+     (list (line-beginning-position)
+           (line-beginning-position 2)))))
+
+
+(defun my-kill-word ()
+  (interactive)
+  (save-excursion
+    (let (p1 p2)
+      (skip-syntax-backward "w_")
+      (setq p1 (point))
+      (skip-syntax-forward "w_")
+      (setq p2 (point))
+      (kill-region p1 p2))))
+
+(defun my-copy-line (arg)
+  "Copy ARG lines in to the kill ring."
+  (interactive "p")
+  (kill-ring-save (line-beginning-position)
+                  (line-beginning-position (+ 1 arg)))
+  (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
+
+(defun my-isearch-yank-current-word ()
+  "Pull current word from buffer into search string."
+  (interactive)
+  (save-excursion
+    (skip-syntax-backward "w_")
+    (isearch-yank-internal
+     (lambda ()
+       (skip-syntax-forward "w_")
+       (point)))))
+
+(defun my-search-word-backward ()
+  "Find the previous occurrence of the current word."
+  (interactive)
+  (let ((cur (point)))
+    (skip-syntax-backward "w_")
+    (goto-char
+     (if (re-search-backward (concat "\\_<" (current-word) "\\_>") nil t)
+         (match-beginning 0)
+       cur))))
+
+(defun my-search-word-forward ()
+  "Find the previous occurrence of the current word."
+  (interactive)
+  (let ((cur (point)))
+    (skip-syntax-forward "w_")
+    (goto-char
+     (if (re-search-forward (concat "\\_<" (current-word) "\\_>") nil t)
+         (match-beginning 0)
+       cur))))
+
+(defun clean-up-buffer-or-region ()
+  "Untabifies, indents and deletes trailing whitespace from buffer or region."
+  (interactive)
+  (let ((beginning (if (region-active-p) (region-beginning) (point-min)))
+        (end (if (region-active-p) (region-end) (point-max))))
+    (untabify beginning end)
+    (indent-region beginning end)
+    (delete-trailing-whitespace beginning end)))
+
+
+(defun esk-sudo-edit (&optional arg)
+  (interactive "p")
+  (if (or arg (not buffer-file-name))
+      (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(defun esk-eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+
+;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file name new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
+
+
+;; From https://github.com/bbatsov/emacs-prelude
+(defun prelude-google ()
+  "Googles a query or region if any."
+  (interactive)
+  (browse-url
+   (concat
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
+    (if mark-active
+        (buffer-substring (region-beginning) (region-end))
+      (read-string "Google: ")))))
+
+;; AppleScript Safari stuff
+(defun tell-app (app something)
+  "Use Applescript to tell APP to do SOMETHING."
+  (decode-coding-string
+   (do-applescript
+    (concat "tell application\""
+            app
+            "\" to "
+            something))
+   'mac-roman))
+
+(defun my-safari-selection ()
+  (tell-app "Safari"
+            "do Javascript \"getSelection()\" in front document"))
+
+(defun my-safari-url ()
+  (tell-app "Safari"
+            "URL of front document"))
+
+(defun my-safari-title ()
+  (tell-app "Safari"
+            "do Javascript \"document.title\" in front document"))
+
+(defun my-safari-all-urls ()
+  "Return a list of all the URLs in the front most Safari window."
+  (split-string (do-applescript (concat "tell application \"Safari\"\n"
+                                        "set links to \"\"\n"
+                                        "repeat with t in every tab in front Window\n"
+                                        "set links to links & the URL of t & linefeed\n"
+                                        "end repeat\n"
+                                        "return links\n"
+                                        "end tell\n")) "\n" t))
+
+(defun my-safari-all-urls-as-markdown ()
+  (interactive)
+  (let ((urls (my-safari-all-urls))
+        (i 0))
+    (dolist (url urls)
+      (setq i (1+ i))
+      (insert (format "[%d]: %s\n" i url)))))
+
+(defun my-safari-url-as-markdown ()
+  (interactive)
+  (let ((url (my-safari-url))
+        (title (my-safari-title)))
+    (insert (concat "[" title "](" url ")"))))
+
+(defun my-organisation ()
+  "Return company name if I have one."
+  (if (boundp 'my-company)
+      (my-company)
+    (user-full-name)))
+
+(defun say-text (text)
+  (do-applescript
+   (concat "say \""
+           text
+           "\" waiting until completion false stopping current speech true")))
+
+(defun speak-buffer-or-region ()
+  "Read buffer or region aloud."
+  (interactive)
+  (let ((text (if (region-active-p)
+                  (buffer-substring (region-beginning) (region-end))
+                (buffer-string))))
+    (say-text text)))
+
+(defun stop-speech ()
+  "Stopping talking."
+  (interactive)
+  (say-text ""))
+
+(global-set-key [remap goto-line] #'goto-line-with-feedback)
+
+(defun goto-line-with-feedback ()
+  "Show line numbers temporarily, while prompting for the line number input."
+  (interactive)
+  (unwind-protect
+      (progn
+        (linum-mode 1)
+        (call-interactively 'goto-line))
+    (linum-mode -1)))
+
+
+;; From emacs start kit v2.
+;;; These belong in prog-mode-hook:
+
+;; We have a number of turn-on-* functions since it's advised that lambda
+;; functions not go in hooks. Repeatedly evaling an add-to-list with a
+;; hook value will repeatedly add it since there's no way to ensure
+;; that a lambda doesn't already exist in the list.
+
+(defun pd/local-comment-auto-fill ()
+  (set (make-local-variable 'comment-auto-fill-only-comments) t)
+  (auto-fill-mode t))
+
+(defun pd/add-watchwords ()
+  (font-lock-add-keywords
+   nil '(("\\<\\(FIXME\\|TODO\\|FIX\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
+          1 font-lock-warning-face t))))
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
@@ -233,13 +493,11 @@
 (use-package savehist
   :init (savehist-mode t))
 
-(bind-keys :prefix-map my-toggle-map
-           :prefix "C-x t"
-           ("c" . pd-cleanroom-mode)
-           ("f" . auto-fill-mode)
-           ("r" . dired-toggle-read-only)
-           ("w" . whitespace-mode)
-           ("v" . visual-line-mode))
+(use-package text-mode
+  :config
+  (add-hook 'text-mode-hook #'flyspell-mode)
+  (add-hook 'text-mode-hook #'auto-fill-mode)
+  (add-hook 'text-mode-hook #'bug-reference-mode))
 
 (use-package applescript-mode
   :defer t
@@ -522,43 +780,6 @@
          ("M-c". toggle-letter-case)
          ("M-<SPC>" . cycle-spacing)))
 
-(defun delete-indentation-forward ()
-  (interactive)
-  (delete-indentation t))
-
-(bind-key "M-J" #'delete-indentation-forward)
-(bind-key "M-j" #'delete-indentation)
-
-(bind-key "C-h a" #'apropos)
-
-(bind-key "C-c y" #'bury-buffer)
-
-(defun smarter-move-beginning-of-line (arg)
-  "Move point back to indentation of beginning of line.
-
-Move point to the first non-whitespace character on this line.
-If point is already there, move to the beginning of the line.
-Effectively toggle between the first non-whitespace character and
-the beginning of the line.
-
-If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-point reaches the beginning or end of the buffer, stop there."
-  (interactive "^p")
-  (setq arg (or arg 1))
-
-  ;; Move lines first
-  (when (/= arg 1)
-    (let ((line-move-visual nil))
-      (forward-line (1- arg))))
-
-  (let ((orig-point (point)))
-    (back-to-indentation)
-    (when (= orig-point (point))
-      (move-beginning-of-line 1))))
-
-(global-set-key [remap move-beginning-of-line]
-                #'smarter-move-beginning-of-line)
-
 (use-package bookmark
   :bind ("<f9>" . bookmark-bmenu-list))
 
@@ -572,22 +793,6 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init
   (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode))
-
-;; Yank line or region
-(defadvice kill-ring-save (before slick-copy activate compile)
-  "When called interactively with no active region, copy a single line instead."
-  (interactive
-   (if mark-active (list (region-beginning) (region-end))
-     (list (line-beginning-position)
-           (line-beginning-position 2)))))
-
-;; Kill line or region
-(defadvice kill-region (before slick-cut activate compile)
-  "When called interactively with no active region, kill a single line instead."
-  (interactive
-   (if mark-active (list (region-beginning) (region-end))
-     (list (line-beginning-position)
-           (line-beginning-position 2)))))
 
 (use-package hexl-mode
   :mode (("\\.exe\\'" . hexl-mode)
@@ -606,190 +811,6 @@ point reaches the beginning or end of the buffer, stop there."
              pd/toggle-window-split
              pd/setup-windows
              pd/toggle-just-one-window))
-
-(defun my-kill-word ()
-  (interactive)
-  (save-excursion
-    (let (p1 p2)
-      (skip-syntax-backward "w_")
-      (setq p1 (point))
-      (skip-syntax-forward "w_")
-      (setq p2 (point))
-      (kill-region p1 p2))))
-
-(defun my-copy-line (arg)
-  "Copy ARG lines in to the kill ring."
-  (interactive "p")
-  (kill-ring-save (line-beginning-position)
-                  (line-beginning-position (+ 1 arg)))
-  (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
-
-(defun my-isearch-yank-current-word ()
-  "Pull current word from buffer into search string."
-  (interactive)
-  (save-excursion
-    (skip-syntax-backward "w_")
-    (isearch-yank-internal
-     (lambda ()
-       (skip-syntax-forward "w_")
-       (point)))))
-
-(defun my-search-word-backward ()
-  "Find the previous occurrence of the current word."
-  (interactive)
-  (let ((cur (point)))
-    (skip-syntax-backward "w_")
-    (goto-char
-     (if (re-search-backward (concat "\\_<" (current-word) "\\_>") nil t)
-         (match-beginning 0)
-       cur))))
-
-(defun my-search-word-forward ()
-  "Find the previous occurrence of the current word."
-  (interactive)
-  (let ((cur (point)))
-    (skip-syntax-forward "w_")
-    (goto-char
-     (if (re-search-forward (concat "\\_<" (current-word) "\\_>") nil t)
-         (match-beginning 0)
-       cur))))
-
-(defun clean-up-buffer-or-region ()
-  "Untabifies, indents and deletes trailing whitespace from buffer or region."
-  (interactive)
-  (let ((beginning (if (region-active-p) (region-beginning) (point-min)))
-        (end (if (region-active-p) (region-end) (point-max))))
-    (untabify beginning end)
-    (indent-region beginning end)
-    (delete-trailing-whitespace beginning end)))
-
-
-(defun esk-sudo-edit (&optional arg)
-  (interactive "p")
-  (if (or arg (not buffer-file-name))
-      (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
-(defun esk-eval-and-replace ()
-  "Replace the preceding sexp with its value."
-  (interactive)
-  (backward-kill-sexp)
-  (condition-case nil
-      (prin1 (eval (read (current-kill 0)))
-             (current-buffer))
-    (error (message "Invalid expression")
-           (insert (current-kill 0)))))
-
-;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
-(defun rename-file-and-buffer (new-name)
-  "Renames both current buffer and file it's visiting to NEW-NAME."
-  (interactive "sNew name: ")
-  (let ((name (buffer-name))
-        (filename (buffer-file-name)))
-    (if (not filename)
-        (message "Buffer '%s' is not visiting a file!" name)
-      (if (get-buffer new-name)
-          (message "A buffer named '%s' already exists!" new-name)
-        (progn
-          (rename-file name new-name 1)
-          (rename-buffer new-name)
-          (set-visited-file-name new-name)
-          (set-buffer-modified-p nil))))))
-
-
-;; From https://github.com/bbatsov/emacs-prelude
-(defun prelude-google ()
-  "Googles a query or region if any."
-  (interactive)
-  (browse-url
-   (concat
-    "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
-    (if mark-active
-        (buffer-substring (region-beginning) (region-end))
-      (read-string "Google: ")))))
-
-;; AppleScript Safari stuff
-(defun tell-app (app something)
-  "Use Applescript to tell APP to do SOMETHING."
-  (decode-coding-string
-   (do-applescript
-    (concat "tell application\""
-            app
-            "\" to "
-            something))
-   'mac-roman))
-
-(defun my-safari-selection ()
-  (tell-app "Safari"
-            "do Javascript \"getSelection()\" in front document"))
-
-(defun my-safari-url ()
-  (tell-app "Safari"
-            "URL of front document"))
-
-(defun my-safari-title ()
-  (tell-app "Safari"
-            "do Javascript \"document.title\" in front document"))
-
-(defun my-safari-all-urls ()
-  "Return a list of all the URLs in the front most Safari window."
-  (split-string (do-applescript (concat "tell application \"Safari\"\n"
-                                        "set links to \"\"\n"
-                                        "repeat with t in every tab in front Window\n"
-                                        "set links to links & the URL of t & linefeed\n"
-                                        "end repeat\n"
-                                        "return links\n"
-                                        "end tell\n")) "\n" t))
-
-(defun my-safari-all-urls-as-markdown ()
-  (interactive)
-  (let ((urls (my-safari-all-urls))
-        (i 0))
-    (dolist (url urls)
-      (setq i (1+ i))
-      (insert (format "[%d]: %s\n" i url)))))
-
-(defun my-safari-url-as-markdown ()
-  (interactive)
-  (let ((url (my-safari-url))
-        (title (my-safari-title)))
-    (insert (concat "[" title "](" url ")"))))
-
-(defun my-organisation ()
-  "Return company name if I have one."
-  (if (boundp 'my-company)
-      (my-company)
-    (user-full-name)))
-
-(defun say-text (text)
-  (do-applescript
-   (concat "say \""
-           text
-           "\" waiting until completion false stopping current speech true")))
-
-(defun speak-buffer-or-region ()
-  "Read buffer or region aloud."
-  (interactive)
-  (let ((text (if (region-active-p)
-                  (buffer-substring (region-beginning) (region-end))
-                (buffer-string))))
-    (say-text text)))
-
-(defun stop-speech ()
-  "Stopping talking."
-  (interactive)
-  (say-text ""))
-
-(global-set-key [remap goto-line] #'goto-line-with-feedback)
-
-(defun goto-line-with-feedback ()
-  "Show line numbers temporarily, while prompting for the line number input."
-  (interactive)
-  (unwind-protect
-      (progn
-        (linum-mode 1)
-        (call-interactively 'goto-line))
-    (linum-mode -1)))
 
 (use-package deft
   :ensure t
@@ -1344,23 +1365,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package saveplace
   :init (save-place-mode))
-
-;; From emacs start kit v2.
-;;; These belong in prog-mode-hook:
-
-;; We have a number of turn-on-* functions since it's advised that lambda
-;; functions not go in hooks. Repeatedly evaling an add-to-list with a
-;; hook value will repeatedly add it since there's no way to ensure
-;; that a lambda doesn't already exist in the list.
-
-(defun pd/local-comment-auto-fill ()
-  (set (make-local-variable 'comment-auto-fill-only-comments) t)
-  (auto-fill-mode t))
-
-(defun pd/add-watchwords ()
-  (font-lock-add-keywords
-   nil '(("\\<\\(FIXME\\|TODO\\|FIX\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
-          1 font-lock-warning-face t))))
 
 (use-package prog-mode
   :config
