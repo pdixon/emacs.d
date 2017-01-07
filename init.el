@@ -160,9 +160,13 @@
 
 (setq diff-switches "-u")
 
-(defun delete-indentation-forward ()
-  (interactive)
-  (delete-indentation t))
+(setq tab-always-indent 'complete)
+(setq split-height-threshold 100)
+
+(if (eq system-type 'darwin)
+    (progn
+      (setq mac-option-modifier 'meta)
+      (setq mac-command-modifier 'none)))
 
 (bind-key "M-J" #'delete-indentation-forward)
 (bind-key "M-j" #'delete-indentation)
@@ -170,6 +174,23 @@
 (bind-key "C-h a" #'apropos)
 
 (bind-key "C-c y" #'bury-buffer)
+
+(bind-key "C-x w" 'delete-frame)
+(bind-key "C-x k" 'kill-this-buffer)
+
+(bind-keys :prefix-map my-toggle-map
+           :prefix "C-x t"
+           ("c" . pd-cleanroom-mode)
+           ("f" . auto-fill-mode)
+           ("r" . dired-toggle-read-only)
+           ("w" . whitespace-mode)
+           ("v" . visual-line-mode))
+
+
+(global-set-key [remap move-beginning-of-line]
+                #'smarter-move-beginning-of-line)
+
+(global-set-key [remap goto-line] #'goto-line-with-feedback)
 
 (defun smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
@@ -194,24 +215,18 @@ point reaches the beginning or end of the buffer, stop there."
     (when (= orig-point (point))
       (move-beginning-of-line 1))))
 
-(global-set-key [remap move-beginning-of-line]
-                #'smarter-move-beginning-of-line)
+(defun goto-line-with-feedback ()
+  "Show line numbers temporarily, while prompting for the line number input."
+  (interactive)
+  (unwind-protect
+      (progn
+        (linum-mode 1)
+        (call-interactively 'goto-line))
+    (linum-mode -1)))
 
-
-(setq tab-always-indent 'complete)
-(setq split-height-threshold 100)
-
-(bind-key "C-x w" 'delete-frame)
-(bind-key "C-x k" 'kill-this-buffer)
-
-(bind-keys :prefix-map my-toggle-map
-           :prefix "C-x t"
-           ("c" . pd-cleanroom-mode)
-           ("f" . auto-fill-mode)
-           ("r" . dired-toggle-read-only)
-           ("w" . whitespace-mode)
-           ("v" . visual-line-mode))
-
+(defun delete-indentation-forward ()
+  (interactive)
+  (delete-indentation t))
 
 ;; Yank line or region
 (defadvice kill-ring-save (before slick-copy activate compile)
@@ -403,16 +418,6 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (say-text ""))
 
-(global-set-key [remap goto-line] #'goto-line-with-feedback)
-
-(defun goto-line-with-feedback ()
-  "Show line numbers temporarily, while prompting for the line number input."
-  (interactive)
-  (unwind-protect
-      (progn
-        (linum-mode 1)
-        (call-interactively 'goto-line))
-    (linum-mode -1)))
 
 
 ;; From emacs start kit v2.
@@ -467,11 +472,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package frame
   :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
-
-(if (eq system-type 'darwin)
-    (progn
-      (setq mac-option-modifier 'meta)
-      (setq mac-command-modifier 'none)))
 
 ;; Save a list of recent files visited.
 (use-package recentf
