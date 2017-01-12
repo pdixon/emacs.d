@@ -437,6 +437,15 @@ point reaches the beginning or end of the buffer, stop there."
    nil '(("\\<\\(FIXME\\|TODO\\|FIX\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
           1 font-lock-warning-face t))))
 
+;; (use-package text-mode
+;;   :defer t
+;;   :config)
+;; TODO Ideally these should be in a text-mode use package. But
+;;   there's no (provide 'text-mode) till emacs 26.
+(add-hook 'text-mode-hook #'flyspell-mode)
+(add-hook 'text-mode-hook #'auto-fill-mode)
+(add-hook 'text-mode-hook #'bug-reference-mode)
+
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
   (message "Non use-package stuff...done (%.3fs)" elapsed))
@@ -492,12 +501,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package savehist
   :init (savehist-mode t))
-
-(use-package text-mode
-  :config
-  (add-hook 'text-mode-hook #'flyspell-mode)
-  (add-hook 'text-mode-hook #'auto-fill-mode)
-  (add-hook 'text-mode-hook #'bug-reference-mode))
 
 (use-package applescript-mode
   :defer t
