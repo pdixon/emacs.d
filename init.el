@@ -92,12 +92,12 @@
 
 (let* ((point-size (pcase system-type
                      (`darwin 12)
-                     (_ 9)))
+                     (_ 10)))
        (height (round (* 10 point-size)))
        (font (pcase system-type
                (`darwin "SF Mono")
                (_ "Source Code Pro"))))
-  (set-face-attribute 'default nil :font font :height height :weight 'light)
+  (set-face-attribute 'default nil :font font :height height :weight 'normal)
   (set-face-attribute 'fixed-pitch nil :font font :height height)
   (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 130 :weight 'normal))
 
