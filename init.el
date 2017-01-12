@@ -1186,8 +1186,7 @@ point reaches the beginning or end of the buffer, stop there."
   (add-hook 'c-mode-common-hook #'company-mode)
   (add-hook 'elisp-mode #'company-mode)
   :config
-  (require 'company-irony)
-  (add-to-list 'company-backends 'company-irony)
+  (add-to-list 'company-backends #'company-irony)
   (setq company-backends (delete 'company-semantic company-backends))
   (setq company-begin-commands '(self-insert-command))
   (setq company-idle-delay 0.3))
