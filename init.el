@@ -66,9 +66,14 @@
 
 (package-initialize)
 
+(defvar pd-package-refreshed nil)
+
 (defun pd-ensure-elpa (package)
   "Make sure PACKAGE is installed and mark it as user selected."
   (unless (package-installed-p package)
+    (unless pd-package-refreshed
+      (package-refresh-contents)
+      (setq pd-package-refreshed t))
     (package-install package))
   (when (package-installed-p package)
     (add-to-list 'package-selected-packages package)))
