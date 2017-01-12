@@ -192,10 +192,9 @@
            ("v" . visual-line-mode))
 
 
-(global-set-key [remap move-beginning-of-line]
-                #'smarter-move-beginning-of-line)
+(bind-key [remap move-beginning-of-line] #'smarter-move-beginning-of-line)
 
-(global-set-key [remap goto-line] #'goto-line-with-feedback)
+(bind-key [remap goto-line] #'goto-line-with-feedback)
 
 (defun smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
@@ -248,7 +247,6 @@ point reaches the beginning or end of the buffer, stop there."
    (if mark-active (list (region-beginning) (region-end))
      (list (line-beginning-position)
            (line-beginning-position 2)))))
-
 
 (defun my-kill-word ()
   (interactive)
