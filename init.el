@@ -466,7 +466,7 @@ point reaches the beginning or end of the buffer, stop there."
   (load-theme 'zenburn t))
 
 (use-package solarized
-  ;;:disabled t
+  :disabled t
   :ensure solarized-theme
   :defer t
   :init
@@ -480,7 +480,12 @@ point reaches the beginning or end of the buffer, stop there."
         solarized-height-plus-2 1.0
         solarized-height-plus-3 1.0
         solarized-height-plus-4 1.0)
-    (load-theme 'solarized-dark t))
+  (load-theme 'solarized-dark t))
+
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :config
+  (load-theme (color-theme-sanityinc-tomorrow--theme-name 'day) t))
 
 (use-package frame
   :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
