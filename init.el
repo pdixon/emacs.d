@@ -777,6 +777,10 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
+(use-package git-timemachine
+  :ensure t
+  :defer t)
+
 (use-package hg-commit-mode
   :mode ("hg-editor-.*\\.txt\\'" . hg-commit-mode))
 
