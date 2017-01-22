@@ -781,6 +781,18 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
+(use-package git-link
+  :ensure t
+  :defer t
+  :config
+  (require 'git-link-bitbucket-server)
+  (add-to-list 'git-link-remote-alist '("stash.sw.au.ivc" git-link-bitbucket-server))
+  (add-to-list 'git-link-commit-remote-alist '("stash.sw.au.ivc" git-link-commit-bitbucket-server)))
+
+(use-package git-link-bitbucket-server
+  :load-path "lisp/"
+  :defer t)
+
 (use-package hg-commit-mode
   :mode ("hg-editor-.*\\.txt\\'" . hg-commit-mode))
 
