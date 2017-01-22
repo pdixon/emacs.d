@@ -1199,7 +1199,6 @@ point reaches the beginning or end of the buffer, stop there."
   (setq company-idle-delay 0.3))
 
 (use-package autoinsert
-  :disabled t
   :defer t
   :init
   (add-hook 'find-file-hooks 'auto-insert)
