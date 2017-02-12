@@ -783,15 +783,14 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package git-link
   :ensure t
-  :defer t
-  :config
-  (require 'git-link-bitbucket-server)
-  (add-to-list 'git-link-remote-alist '("stash.sw.au.ivc" git-link-bitbucket-server))
-  (add-to-list 'git-link-commit-remote-alist '("stash.sw.au.ivc" git-link-commit-bitbucket-server)))
+  :defer t)
 
 (use-package git-link-bitbucket-server
   :load-path "lisp/"
-  :defer t)
+  :after git-link
+  :config
+  (add-to-list 'git-link-remote-alist '("stash.sw.au.ivc" git-link-bitbucket-server))
+  (add-to-list 'git-link-commit-remote-alist '("stash.sw.au.ivc" git-link-commit-bitbucket-server)))
 
 (use-package hg-commit-mode
   :mode ("hg-editor-.*\\.txt\\'" . hg-commit-mode))
@@ -1362,10 +1361,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package flycheck-irony
   :ensure t
-  :defer t
-  :init
-  (with-eval-after-load 'flycheck
-    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
+  :after flycheck
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 (use-package flycheck
   :ensure t
@@ -1376,7 +1374,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package flycheck-pos-tip
   :ensure t
-  :defer t
   :after flycheck
   :init
   (flycheck-pos-tip-mode))
