@@ -80,11 +80,11 @@
 
 ;; Boot strap use-package
 (pd-ensure-elpa 'use-package)
+; This needs to be set before use-package is loaded
+(custom-set-variables '(use-package-enable-imenu-support t))
+(custom-set-variables '(use-package-ensure-function #'pd-ensure-elpa))
+
 (require 'use-package)
-
-;; Redefine so we hook in with the package-selected-package mechanism
-(fset 'use-package-ensure-elpa 'pd-ensure-elpa)
-
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
