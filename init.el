@@ -68,20 +68,41 @@
 
 (defvar pd-package-refreshed nil)
 
-(defun pd-ensure-elpa (package)
+(defun pd-as-symbol (string-or-symbol)
+  "If STRING-OR-SYMBOL is already a symbol, return it.  Otherwise
+convert it to a symbol and return that."
+  (if (symbolp string-or-symbol) string-or-symbol
+    (intern string-or-symbol)))
+
+
+(defun pd-pre-ensure-elpa (name ensure state)
+  "Make a package as user installed if it's already installed."
+  (let ((package (or (when (eq ensure t) (pd-as-symbol name))
+                     ensure)))
+    (when package
+      (require 'package)
+      (when (package-installed-p package)
+        (add-to-list 'package-selected-packages package)))))
+
+(defun pd-ensure-elpa (name ensure state context &optional no-refresh)
   "Make sure PACKAGE is installed and mark it as user selected."
-  (unless (package-installed-p package)
-    (unless pd-package-refreshed
-      (package-refresh-contents)
-      (setq pd-package-refreshed t))
-    (package-install package))
-  (when (package-installed-p package)
-    (add-to-list 'package-selected-packages package)))
+  (let ((package (or (when (eq ensure t) (pd-as-symbol name))
+                     ensure)))
+    (when package
+      (require 'package)
+      (unless (package-installed-p package)
+        (unless pd-package-refreshed
+          (package-refresh-contents)
+          (setq pd-package-refreshed t))
+        (package-install package))
+      (when (package-installed-p package)
+        (add-to-list 'package-selected-packages package)))))
 
 ;; Boot strap use-package
-(pd-ensure-elpa 'use-package)
+(pd-ensure-elpa "use-package" t nil :ensure)
 ; This needs to be set before use-package is loaded
 (custom-set-variables '(use-package-enable-imenu-support t))
+(custom-set-variables '(use-package-pre-ensure-function #'pd-pre-ensure-elpa))
 (custom-set-variables '(use-package-ensure-function #'pd-ensure-elpa))
 
 (require 'use-package)
