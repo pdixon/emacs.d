@@ -1227,6 +1227,7 @@ point reaches the beginning or end of the buffer, stop there."
   (add-hook 'elisp-mode #'company-mode)
   :config
   (add-to-list 'company-backends #'company-irony)
+  (add-to-list 'company-backends #'company-capf)
   (setq company-backends (delete 'company-semantic company-backends))
   (setq company-begin-commands '(self-insert-command))
   (setq company-idle-delay 0.3))
@@ -1392,7 +1393,8 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init
   (add-hook 'c-mode-common-hook #'flycheck-mode)
-  (add-hook 'emacs-lisp-mode-hook #'flycheck-mode))
+  (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
+  (add-hook 'rust-mode-hook 'flycheck-mode))
 
 (use-package flycheck-pos-tip
   :ensure t
@@ -1496,6 +1498,29 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package restclient
   :ensure t
   :defer t)
+
+(use-package lsp-mode
+  ;:load-path "~/personal/src/emacs-lsp"
+  :ensure t
+  :defer t
+  :config
+  (defun swift-get-root ()
+    (or (expand-file-name (locate-dominating-file default-directory "Package.swift"))
+      (user-error "Couldn't find swift project")))
+  (lsp-define-stdio-client 'swift-mode "swift" 'stdio
+                           #'swift-get-root
+                           "Swift Language Server"
+                           '("~/mess/2017/10/langserver-swift/.build/debug/langserver-swift")))
+
+(use-package lsp-flycheck
+  :after lsp-mode
+  :after flycheck)
+
+(use-package lsp-rust
+  :ensure t
+  :after rust-mode
+  :init
+  (add-hook 'rust-mode-hook 'lsp-mode))
 
 (use-package rust-mode
   :ensure t
