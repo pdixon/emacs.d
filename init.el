@@ -873,7 +873,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package markdown-mode
   :ensure t
-  :mode (("\\.md\\'" . markdown-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
          ("\\.mdwn\\'" . markdown-mode)
          ("\\.markdown" . markdown-mode))
   :config
