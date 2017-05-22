@@ -506,7 +506,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
   :config
-  (load-theme (color-theme-sanityinc-tomorrow--theme-name 'day) t))
+  (load-theme (color-theme-sanityinc-tomorrow--theme-name 'eighties) t))
 
 (use-package frame
   :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
