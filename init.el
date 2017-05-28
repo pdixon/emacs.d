@@ -1524,6 +1524,10 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :mode ("\\.toml\\'" . toml-mode))
 
+(use-package copy-as-format
+  :ensure t
+  :defer t)
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
