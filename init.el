@@ -1493,17 +1493,8 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t)
 
 (use-package lsp-mode
-  ;:load-path "~/personal/src/emacs-lsp"
   :ensure t
-  :defer t
-  :config
-  (defun swift-get-root ()
-    (or (expand-file-name (locate-dominating-file default-directory "Package.swift"))
-      (user-error "Couldn't find swift project")))
-  (lsp-define-stdio-client 'swift-mode "swift" 'stdio
-                           #'swift-get-root
-                           "Swift Language Server"
-                           '("~/mess/2017/10/langserver-swift/.build/debug/langserver-swift")))
+  :defer t)
 
 (use-package lsp-flycheck
   :after lsp-mode
@@ -1514,6 +1505,13 @@ point reaches the beginning or end of the buffer, stop there."
   :after rust-mode
   :init
   (add-hook 'rust-mode-hook 'lsp-mode))
+
+(use-package lsp-swift
+  :disabled t
+  :load-path "lisp/"
+  :after swift-mode
+  :init
+  (add-hook 'swift-mode-hook 'lsp-mode))
 
 (use-package rust-mode
   :ensure t
