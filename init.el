@@ -326,11 +326,11 @@ point reaches the beginning or end of the buffer, stop there."
     (delete-trailing-whitespace beginning end)))
 
 
-(defun esk-sudo-edit (&optional arg)
-  (interactive "p")
-  (if (or arg (not buffer-file-name))
-      (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+;; (defun esk-sudo-edit (&optional arg)
+;;   (interactive "p")
+;;   (if (or arg (not buffer-file-name))
+;;       (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
+;;     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 (defun esk-eval-and-replace ()
   "Replace the preceding sexp with its value."
@@ -563,37 +563,19 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init (delete-selection-mode))
 
-(use-package ido
+(use-package ivy
+  :ensure t
+  :diminish ""
   :init
-  (ido-mode t)
+  (ivy-mode)
   :config
-  (progn
-    (setq ido-enable-prefix nil
-          ido-enable-flex-matching t
-          ido-auto-merge-work-directories-length nil
-          ido-create-new-buffer 'always
-          ido-use-filename-at-point 'guess
-          ido-use-virtual-buffers t
-          ido-max-prospects 10)))
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) "))
 
-(use-package flx-ido
+(use-package counsel
   :ensure t
-  :init
-  (flx-ido-mode))
-
-(use-package ido-vertical-mode
-  :ensure t
-  :init
-  (ido-vertical-mode))
-
-(use-package ido-ubiquitous
-  :ensure t
-  :init (ido-ubiquitous-mode))
-
-(use-package smex
-  :ensure t
-  :bind (([remap execute-extended-command] . smex)
-         ("M-X" . smex-major-mode-commands)))
+  :after ivy
+  :bind (("C-x C-f" . counsel-find-file)))
 
 (use-package whitespace
   :defer t
@@ -778,7 +760,7 @@ point reaches the beginning or end of the buffer, stop there."
   (magit-auto-revert-mode)
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (setq magit-display-buffer-function #'display-buffer)
-  (setq magit-completing-read-function #'magit-ido-completing-read)
+  (setq magit-completing-read-function #'ivy-completing-read)
   (setq magit-branch-prefer-remote-upstream '("master"))
   (add-to-list 'git-commit-known-pseudo-headers "Ticket"))
 
