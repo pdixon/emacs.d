@@ -177,6 +177,9 @@ convert it to a symbol and return that."
 ;;   (setq mouse-wheel-scroll-amount '(1))
 ;;   (setq mouse-wheel-progressive-speed nil))
 
+(setq mwheel-tilt-scroll-p t)
+(setq mwheel-flip-direction t)
+
 ;; Never insert tabs
 (set-default 'indent-tabs-mode nil)
 
