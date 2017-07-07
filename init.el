@@ -1175,6 +1175,7 @@ point reaches the beginning or end of the buffer, stop there."
   (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
+       (sqlite . t)
        (dot . t)
        (gnuplot . t)
        (plantuml . t)
