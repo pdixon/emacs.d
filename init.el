@@ -1530,6 +1530,12 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
+(use-package meson-mode
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'meson-mode-hook 'company-mode))
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
