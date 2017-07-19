@@ -25,6 +25,7 @@
 ;;; Code:
 
 (require 'compile)
+(require 'grep)
 (require 'project)
 (require 'subr-x)
 
@@ -35,8 +36,16 @@
 (defcustom pd-project-todo-regexp
   '("TODO" "HACK" "FIXME")
   "A list of terms for `pd-project-todo' to search for."
-  :group 'pd-proj
-  :type '(repeat string))
+  :group 'pd-project
+  :type '(repeat string)
+  :safe 'listp)
+
+(defcustom pd-project-todo-ignores
+  '("vendor/")
+  ""
+  :group 'pd-project
+  :type '(repeat string)
+  :safe 'listp)
 
 ;;;###autoload
 (defun pd-project-compile ()
@@ -59,7 +68,8 @@
 
 `pd-project-todo-regexp' is used to determine what this function looks for."
   (interactive)
-  (project-find-regexp (regexp-opt pd-project-todo-regexp)))
+  (let ((grep-find-ignored-files pd-project-todo-ignores))
+    (project-find-regexp (regexp-opt pd-project-todo-regexp))))
 
 (provide 'pd-project)
 ;;; pd-project.el ends here
