@@ -1519,8 +1519,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package rust-mode
   :ensure t
-  :mode ("\\.rs\\'" . rust-mode)
-  :config)
+  :mode ("\\.rs\\'" . rust-mode))
 
 (use-package toml-mode
   :ensure t
@@ -1535,6 +1534,15 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init
   (add-hook 'meson-mode-hook 'company-mode))
+
+(use-package sql
+  :defer t
+  :config
+  (setq sql-product 'sqlite))
+
+(use-package sql-indent
+  :ensure t
+  :after sql)
 
 (dir-locals-set-class-variables
  'work-directory
