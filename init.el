@@ -34,10 +34,6 @@
 
 (defconst *emacs-load-start* (current-time))
 
-(defconst lisp-dir (concat user-emacs-directory "lisp/"))
-
-(add-to-list 'load-path lisp-dir)
-
 (setq custom-file (concat user-emacs-directory "custom.el"))
 
 ;; load the customize stuff
@@ -105,7 +101,10 @@ convert it to a symbol and return that."
 (custom-set-variables '(use-package-pre-ensure-function #'pd-pre-ensure-elpa))
 (custom-set-variables '(use-package-ensure-function #'pd-ensure-elpa))
 
-(require 'use-package)
+(eval-when-compile
+  (require 'use-package))
+;(setq use-package-verbose t)
+(require 'diminish)
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
@@ -752,7 +751,8 @@ point reaches the beginning or end of the buffer, stop there."
   :commands (pinboard-list-bookmarks))
 
 (use-package diff-hl
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package magit
   :ensure t
@@ -808,6 +808,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq ediff-split-window-function #'split-window-horizontally))
 
 (use-package pd-editing-extras
+  :load-path "lisp/"
   :bind (("C-c +" . my-increment)
          ("C-t" . transpose-dwim)
          ("M-c". toggle-letter-case)
@@ -836,10 +837,12 @@ point reaches the beginning or end of the buffer, stop there."
   :mode (("/Jenkinsfile\\'" . groovy-mode)))
 
 (use-package pd-project
+  :load-path "lisp/"
   :bind(("C-c b" . pd-project-compile))
   :commands (pd-project-todo))
 
 (use-package pd-window-extras
+  :load-path "lisp/"
   :commands (pd/rotate-windows
              pd/toggle-window-split
              pd/setup-windows
@@ -1330,6 +1333,7 @@ point reaches the beginning or end of the buffer, stop there."
   (add-hook 'objc-mode-hook #'pd/objc-ff-setup-hook)
 
   (use-package pd-cc-mode-extras
+    :load-path "lisp/"
     :commands (pd/toggle-header
                pd/toggle-test)))
 
@@ -1369,23 +1373,24 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package company-irony
   :ensure t
-  :defer t
-  :init
+  :after irony
+  :config
   (add-hook 'irony-mode-hook #'company-irony-setup-begin-commands))
 
 (use-package flycheck-irony
   :ensure t
-  :after flycheck
+  :after irony
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 (use-package flycheck
   :ensure t
-  :defer t
-  :init
+  :after (:any cc-mode rust-mode elisp-mode)
+  :config
   (add-hook 'c-mode-common-hook #'flycheck-mode)
   (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
-  (add-hook 'rust-mode-hook 'flycheck-mode))
+  (add-hook 'rust-mode-hook 'flycheck-mode)
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 
 (use-package flycheck-pos-tip
   :ensure t
@@ -1404,6 +1409,7 @@ point reaches the beginning or end of the buffer, stop there."
   :init (save-place-mode))
 
 (use-package prog-mode
+  :defer t
   :config
   (add-hook 'prog-mode-hook 'pd/local-comment-auto-fill)
   (add-hook 'prog-mode-hook 'hl-line-mode)
@@ -1450,6 +1456,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq mediawiki-site-default "Software"))
 
 (use-package time
+  :defer t
   :config
   (setq display-time-world-time-format "%H:%M %d %b, %Z"
         display-time-world-list '(("Pacific/Auckland" "Christchurch")
@@ -1458,6 +1465,7 @@ point reaches the beginning or end of the buffer, stop there."
                                   ("America/Los_Angeles" "San Francisco"))))
 
 (use-package eww
+  :defer t
   ;;:init
   ;;(setq browse-url-browser-function 'eww-browse-url)
   :config
@@ -1467,21 +1475,25 @@ point reaches the beginning or end of the buffer, stop there."
   (add-hook 'eww-after-render-hook 'rename-eww-buffer))
 
 (use-package epg
+  :defer t
   :config
   (setq epg-gpgconf-program "gpg"))
 
 (use-package flycheck-swift
-  :ensure t)
+  :ensure t
+  :after swift-mode)
 
 (use-package swift-mode
   :ensure t
   :interpreter "swift")
 
 (use-package ninja-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package excorporate
   :ensure t
+  :defer t
   :config
   (setq excorporate-configuration
         '("pdixon@dynamiccontrols.com" . "https://outlook.office365.com/EWS/Exchange.asmx")))
@@ -1495,8 +1507,7 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t)
 
 (use-package lsp-flycheck
-  :after lsp-mode
-  :after flycheck)
+  :after (lsp-mode flycheck))
 
 (use-package lsp-rust
   :ensure t
