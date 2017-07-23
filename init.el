@@ -802,9 +802,6 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
-(use-package hg-commit-mode
-  :mode ("hg-editor-.*\\.txt\\'" . hg-commit-mode))
-
 (use-package ediff
   :defer t
   :config
@@ -1285,9 +1282,6 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package pkgbuild-mode
   :ensure t
   :mode ("PKGBUILD\\'" . pkgbuild-mode))
-
-(use-package conf-mode
-  :mode ("hgrc" . conf-mode))
 
 (use-package dummy-h-mode
   :ensure t
