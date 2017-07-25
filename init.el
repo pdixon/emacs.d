@@ -1010,6 +1010,11 @@ point reaches the beginning or end of the buffer, stop there."
            ("hidelinks" "hyperref" nil)
            "\\tolerance=1000")))
 
+(use-package ox-jira
+  :ensure t
+  :defer t
+  :after ox)
+
 (use-package ox-publish
   :defer t
   :commands pd/publish-blog
