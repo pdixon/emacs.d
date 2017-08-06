@@ -843,9 +843,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package pd-window-extras
   :load-path "lisp/"
+  :bind (("C-x 2" . pd-split-other-buffer-vertically)
+         ("C-x 3" . pd-split-other-buffer-horizontally))
   :commands (pd/rotate-windows
              pd/toggle-window-split
-             pd/setup-windows
              pd/toggle-just-one-window))
 
 (use-package deft

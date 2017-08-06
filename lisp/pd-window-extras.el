@@ -1,4 +1,4 @@
-;;; pd-window-extras.el --- Various helpers for working with windows.
+;;; pd-window-extras.el --- Various helpers for working with windows.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2013  Phillip Dixon
 
@@ -104,35 +104,6 @@
              (buffer-name))))
 
 ;;;###autoload
-(defun pd/setup-windows ()
-  (interactive)
-  (require 'window-number)
-  (delete-other-windows)
-  (let ((b1 (current-buffer))
-        (b2 (other-buffer)))
-    (if (> (frame-width) (* 2 80))
-        (split-window-horizontally))
-    (if (> (frame-width) (* 3 80))
-        (progn (split-window-horizontally)
-               (split-window-vertically)))
-    (balance-windows)
-    (if (< 3 (count-windows))
-        (progn
-          (window-number-select 1)
-          (deft)
-          (window-number-select 2)
-          (org-agenda 0 "w")
-          (window-number-select 3)
-          (switch-to-buffer b1)
-          (window-number-select 4)
-          (switch-to-buffer b2))
-      (if (< 1 (count-windows))
-          (progn
-            (window-number-select 1)
-            (switch-to-buffer b1)
-            (window-number-select 2)
-            (switch-to-buffer b2))))))
-
 (defun pd/toggle-just-one-window ()
   "Switch from the current window setup to just one window or back."
   (interactive)
@@ -141,6 +112,22 @@
         (window-configuration-to-register ?u)
         (delete-other-windows))
     (jump-to-register ?u)))
+
+
+(defun pd--split-window-func-with-other-buffer (split-function)
+  (lambda (&optional arg)
+    ""
+    (interactive "P")
+    (funcall split-function)
+    (let ((target-window (next-window)))
+      (set-window-buffer target-window (other-buffer))
+      (unless arg
+        (select-window target-window)))))
+
+(defalias 'pd-split-other-buffer-vertically (pd--split-window-func-with-other-buffer 'split-window-vertically))
+(defalias 'pd-split-other-buffer-horizontally (pd--split-window-func-with-other-buffer 'split-window-horizontally))
+
+
 
 (provide 'pd-window-extras)
 ;;; pd-window-extras.el ends here
