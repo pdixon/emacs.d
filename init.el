@@ -570,6 +570,8 @@ point reaches the beginning or end of the buffer, stop there."
   :diminish ""
   :init
   (ivy-mode)
+  :bind (:map ivy-minibuffer-map
+              ("RET" . ivy-alt-done))
   :config
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) "))
