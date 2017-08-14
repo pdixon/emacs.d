@@ -393,7 +393,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (defun my-safari-title ()
   (tell-app "Safari"
-            "do Javascript \"document.title\" in front document"))
+            "name of front document"))
 
 (defun my-safari-all-urls ()
   "Return a list of all the URLs in the front most Safari window."
