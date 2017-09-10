@@ -632,6 +632,14 @@ point reaches the beginning or end of the buffer, stop there."
   (progn
     (setq imenu-max-items 200)))
 
+(use-package imenu-list
+  :defer t
+  :ensure t
+  :bind ("C-'" . imenu-list-smart-toggle)
+  :config
+  (setq imenu-list-focus-after-activation t)
+  (setq imenu-list-auto-resize t))
+
 (use-package ibuffer
   :defer t
   :bind ("<f8>" . ibuffer)
