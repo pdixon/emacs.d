@@ -772,7 +772,7 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (magit-auto-revert-mode)
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
-  (setq magit-display-buffer-function #'display-buffer)
+  (setq magit-display-buffer-function #'magit-display-buffer-fullcolumn-most-v1)
   (setq magit-completing-read-function #'ivy-completing-read)
   (setq magit-branch-prefer-remote-upstream '("master"))
   (add-to-list 'git-commit-known-pseudo-headers "Ticket"))
