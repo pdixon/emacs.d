@@ -777,6 +777,13 @@ point reaches the beginning or end of the buffer, stop there."
   (setq magit-branch-prefer-remote-upstream '("master"))
   (add-to-list 'git-commit-known-pseudo-headers "Ticket"))
 
+(use-package magit-repos
+  :defer t
+  :config
+  (setq magit-repository-directories '(("~/personal/" . 3)
+                                       ("~/work/" . 3)
+                                       ("~/" . 1))))
+
 (use-package orgit
   :ensure t
   :defer t)
