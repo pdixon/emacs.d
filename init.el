@@ -1210,9 +1210,9 @@ point reaches the beginning or end of the buffer, stop there."
   :init
   (add-hook 'c-mode-common-hook #'company-mode)
   (add-hook 'elisp-mode #'company-mode)
+  (add-hook 'python-mode #'company-mode)
   :config
-  (add-to-list 'company-backends #'company-irony)
-  (add-to-list 'company-backends #'company-capf)
+  (push #'company-capf company-backends)
   (setq company-backends (delete 'company-semantic company-backends))
   (setq company-begin-commands '(self-insert-command))
   (setq company-idle-delay 0.3))
@@ -1356,28 +1356,6 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode))
 
-(use-package irony
-  :ensure t
-  :defer t
-  :init
-  (add-hook 'c-mode-hook #'irony-mode)
-  (add-hook 'c++-mode-hook #'irony-mode)
-  (add-hook 'objc-mode-hook #'irony-mode)
-  :config
-  (add-hook 'irony-mode-hook #'irony-cdb-autosetup-compile-options))
-
-(use-package company-irony
-  :ensure t
-  :after irony
-  :config
-  (add-hook 'irony-mode-hook #'company-irony-setup-begin-commands))
-
-(use-package flycheck-irony
-  :ensure t
-  :after irony
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-
 (use-package flycheck
   :ensure t
   :after (:any cc-mode rust-mode elisp-mode)
@@ -1502,24 +1480,30 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t)
 
 (use-package lsp-flycheck
-  :after (lsp-mode flycheck))
+  :after (lsp-mode flycheck)
+  :config
+  (lsp-flycheck-add-mode 'c++-mode)
+  (lsp-flycheck-add-mode 'c-mode)
+  (lsp-flycheck-add-mode 'objc-mode))
 
 (use-package lsp-rust
   :ensure t
-  :init
-  (add-hook 'rust-mode-hook #'lsp-rust-enable))
+  :hook (rust-mode . lsp-rust-enable))
 
 (use-package lsp-python
   :ensure t
-  :init
-  (add-hook 'python-mode-hook #'lsp-python-enable))
+  :hook (python-mode . lsp-python-enable))
 
-(use-package lsp-swift
-  :disabled t
+;; (use-package lsp-swift
+;;   :disabled t
+;;   :load-path "lisp/"
+;;   :after swift-mode
+;;   :init
+;;   (add-hook 'swift-mode-hook 'lsp-mode))
+
+(use-package lsp-cc
   :load-path "lisp/"
-  :after swift-mode
-  :init
-  (add-hook 'swift-mode-hook 'lsp-mode))
+  :hook ((c-mode c++-mode objc-mode) . lsp-clangd-enable))
 
 (use-package rust-mode
   :ensure t
