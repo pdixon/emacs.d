@@ -439,7 +439,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;;   there's no (provide 'text-mode) till emacs 26.
 (add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'text-mode-hook #'auto-fill-mode)
-(add-hook 'text-mode-hook #'bug-reference-mode)
+
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
@@ -715,6 +715,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package hungry-delete
   :ensure t
+  :diminish
   :init
   (global-hungry-delete-mode)
   :config
@@ -813,9 +814,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package paredit
   :ensure t
-  :defer t
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode))
+  :diminish
+  :hook (emacs-lisp-mode . enable-paredit-mode))
 
 (use-package hexl-mode
   :mode (("\\.exe\\'" . hexl-mode)
@@ -1183,11 +1183,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package yasnippet
   :ensure t
-  :commands (yas-minor-mode yas-expand yas-hippie-try-expand)
+  :commands (yas-expand yas-hippie-try-expand)
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
-  :init
-  (add-hook 'text-mode-hook #'yas-minor-mode)
-  (add-hook 'prog-mode-hook #'yas-minor-mode)
+  :hook ((text-mode prog-mode)  . yas-minor-mode)
   :config
   (setq yas-verbosity 1)
   (setq yas-snippet-dirs (list (concat user-emacs-directory "snippets")))
@@ -1348,13 +1346,8 @@ point reaches the beginning or end of the buffer, stop there."
   (add-hook 'compilation-filter-hook 'pd/colourise-compilation-buffer))
 
 (use-package eldoc
-  :diminish eldoc-mode
-  :defer t)
-
-(use-package lisp-mode
-  :defer t
-  :config
-  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode))
+  :diminish
+  :hook (emacs-lisp-mode . eldoc-mode))
 
 (use-package flycheck
   :ensure t
@@ -1387,8 +1380,11 @@ point reaches the beginning or end of the buffer, stop there."
   (add-hook 'prog-mode-hook 'pd/local-comment-auto-fill)
   (add-hook 'prog-mode-hook 'hl-line-mode)
   (add-hook 'prog-mode-hook 'whitespace-mode)
-  (add-hook 'prog-mode-hook 'pd/add-watchwords)
-  (add-hook 'prog-mode-hook #'bug-reference-prog-mode))
+  (add-hook 'prog-mode-hook 'pd/add-watchwords))
+
+(use-package bug-reference
+  :hook ((text-mode . bug-reference-mode)
+         (prog-mode . bug-reference-prog-mode)))
 
 (use-package server
   :defer t)
@@ -1497,9 +1493,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;; (use-package lsp-swift
 ;;   :disabled t
 ;;   :load-path "lisp/"
-;;   :after swift-mode
-;;   :init
-;;   (add-hook 'swift-mode-hook 'lsp-mode))
+;;   :hook (swift-mode .lsp-mode))
 
 (use-package lsp-cc
   :load-path "lisp/"
@@ -1519,9 +1513,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package meson-mode
   :ensure t
-  :defer t
-  :init
-  (add-hook 'meson-mode-hook 'company-mode))
+  :hook (meson-mode . company-mode))
 
 (use-package sql
   :defer t
