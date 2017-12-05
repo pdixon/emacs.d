@@ -63,10 +63,8 @@
 (package-initialize)
 
 ;; Boot strap use-package
-;; FIXME: This is busted in melpa at the moment
-;; (unless (package-installed-p 'use-package)
-;;   (package-install 'use-package))
-(add-to-list 'load-path (expand-file-name "~/mess/current/use-package/"))
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
 
 ; This needs to be set before use-package is loaded
 (custom-set-variables '(use-package-enable-imenu-support t))
