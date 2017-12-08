@@ -62,12 +62,48 @@
 
 (package-initialize)
 
+(defun pd-package-ensure-elpa (name args state &optional no-refresh)
+  (dolist (ensure args)
+    (let ((package
+           (or (and (eq ensure t) (use-package-as-symbol name))
+               ensure)))
+      (when package
+        (require 'package)
+        (when (consp package)
+          (use-package-pin-package (car package) (cdr package))
+          (setq package (car package)))
+        (unless (package-installed-p package)
+          (condition-case-unless-debug err
+              (progn
+                (when (assoc package (bound-and-true-p
+                                      package-pinned-packages))
+                  (package-read-all-archive-contents))
+                (if (assoc package package-archive-contents)
+                    (package-install package)
+                  (package-refresh-contents)
+                  (when (assoc package (bound-and-true-p
+                                        package-pinned-packages))
+                    (package-read-all-archive-contents))
+                  (package-install package))
+                t)
+            (error
+             (display-warning 'use-package
+                              (format "Failed to install %s: %s"
+                                      name (error-message-string err))
+                              :error))))
+        (when (package-installed-p package)
+          (add-to-list 'package-selected-packages package))))))
+
 ;; Boot strap use-package
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
+(when (package-installed-p 'use-package)
+  (add-to-list 'package-selected-packages 'use-package))
 
 ; This needs to be set before use-package is loaded
 (custom-set-variables '(use-package-enable-imenu-support t))
+(custom-set-variables '(use-package-ensure-function #'pd-package-ensure-elpa))
 
 (eval-when-compile
   (require 'use-package))
