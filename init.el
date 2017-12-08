@@ -695,7 +695,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package files
   :defer t
   :config
-  (when-let (gls (and (eq system-type 'darwin) (executable-find "gls")))
+  (when-let* ((gls (and (eq system-type 'darwin) (executable-find "gls"))))
     (setq insert-directory-program gls))
   (setq view-read-only t)
   (setq auto-save-file-name-transforms
