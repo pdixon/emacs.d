@@ -928,20 +928,6 @@ point reaches the beginning or end of the buffer, stop there."
           (tags . " %i %-12:c %b")
           (search . " %i %-12:c %b"))))
 
-(use-package org-mac-link
-  :ensure t
-  ;; :bind (:map org-mode-map
-  ;;             ("C-c g" . org-mac-grab-link))
-  :commands (org-mac-grab-link)
-  :config
-  (setq org-mac-grab-Addressbook-app-p nil)
-  (setq org-mac-grab-devonthink-app-p nil)
-  (setq org-mac-grab-Firefox-app-p nil)
-  (setq org-mac-grab-Firefox+Vimperator-p nil)
-  (setq org-mac-grab-Chrome-app-p nil)
-  (setq org-mac-grab-Together-app-p nil)
-  (setq org-mac-grab-Skim-app-p nil))
-
 (use-package org-capture
   :bind (("C-c r" . org-capture))
   :config
