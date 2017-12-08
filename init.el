@@ -471,9 +471,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;;   :config)
 ;; TODO Ideally these should be in a text-mode use package. But
 ;;   there's no (provide 'text-mode) till emacs 26.
-(add-hook 'text-mode-hook #'flyspell-mode)
 (add-hook 'text-mode-hook #'auto-fill-mode)
-
 
 (let ((elapsed (float-time (time-subtract (current-time)
                                           *emacs-load-start*))))
@@ -1371,12 +1369,13 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package flycheck
   :ensure t
-  :after (:any cc-mode rust-mode elisp-mode)
+  :hook (prog-mode . flycheck-mode)
   :config
-  (add-hook 'c-mode-common-hook #'flycheck-mode)
-  (add-hook 'emacs-lisp-mode-hook #'flycheck-mode)
-  (add-hook 'rust-mode-hook 'flycheck-mode)
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+
+(use-package flyspell
+  :hook ((text-mode . flyspell-mode)
+         (prog-mode . flyspell-prog-mode)))
 
 (use-package flycheck-pos-tip
   :ensure t
