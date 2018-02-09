@@ -1505,9 +1505,9 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :hook (rust-mode . lsp-rust-enable))
 
-(use-package lsp-python
-  :ensure t
-  :hook (python-mode . lsp-python-enable))
+;; (use-package lsp-python
+;;   :load-path "lisp/"
+;;   :hook (python-mode . lsp-python-enable))
 
 ;; (use-package lsp-swift
 ;;   :disabled t
