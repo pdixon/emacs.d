@@ -780,6 +780,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq magit-display-buffer-function #'magit-display-buffer-fullcolumn-most-v1)
   (setq magit-completing-read-function #'ivy-completing-read)
   (setq magit-branch-prefer-remote-upstream '("master"))
+  (setq magit-refs-pad-commit-counts t)
   (add-to-list 'git-commit-known-pseudo-headers "Ticket"))
 
 (use-package magit-repos
