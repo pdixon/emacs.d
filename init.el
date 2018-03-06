@@ -512,6 +512,9 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
   :config
+  (custom-set-faces '(lsp-face-highlight-textual ((t :underline "#ffcc66" :inherit unspecified)))
+                    '(lsp-face-highlight-write ((t :underline "#718c00" :inherit unspecified)))
+                    '(lsp-face-highlight-read ((t :underline "#c82829" :inherit unspecified))))
   (load-theme (color-theme-sanityinc-tomorrow--theme-name 'eighties) t))
 
 (use-package frame
@@ -1368,21 +1371,9 @@ point reaches the beginning or end of the buffer, stop there."
   :diminish
   :hook (emacs-lisp-mode . eldoc-mode))
 
-(use-package flycheck
-  :ensure t
-  :hook (prog-mode . flycheck-mode)
-  :config
-  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
-
 (use-package flyspell
   :hook ((text-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode)))
-
-(use-package flycheck-pos-tip
-  :ensure t
-  :after flycheck
-  :init
-  (flycheck-pos-tip-mode))
 
 (use-package ace-window
   :ensure t
@@ -1468,10 +1459,6 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq epg-gpgconf-program "gpg"))
 
-(use-package flycheck-swift
-  :ensure t
-  :after swift-mode)
-
 (use-package swift-mode
   :ensure t
   :interpreter "swift")
@@ -1495,13 +1482,6 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
-(use-package lsp-flycheck
-  :after (lsp-mode flycheck)
-  :config
-  (lsp-flycheck-add-mode 'c++-mode)
-  (lsp-flycheck-add-mode 'c-mode)
-  (lsp-flycheck-add-mode 'objc-mode))
-
 (use-package lsp-rust
   :ensure t
   :hook (rust-mode . lsp-rust-enable))
@@ -1518,6 +1498,11 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package lsp-cc
   :load-path "lisp/"
   :hook ((c-mode c++-mode objc-mode) . lsp-clangd-enable))
+
+(use-package lsp-flymake
+  :load-path "lisp/"
+  :hook ((lsp-mode . lsp-setup-flymake-backend)
+         (lsp-mode . flymake-mode)))
 
 (use-package rust-mode
   :ensure t
