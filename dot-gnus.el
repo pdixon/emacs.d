@@ -5,13 +5,13 @@
 (setq gnus-message-archive-group nil) ; Don't save stuff I send
 (setq gnus-treat-display-smileys nil)
 
-(setq gnus-select-method
-      '(nnimap "dixon.gen.nz"
-               (nnimap-address "imap.gmail.com")
-               (nnimap-server-port 993)
-               (nnimap-stream ssl)
-               (user "phil@dixon.gen.nz")
-               (nnir-search-engine imap)))
+;; (setq gnus-select-method
+;;       '(nnimap "dixon.gen.nz"
+;;                (nnimap-address "imap.gmail.com")
+;;                (nnimap-server-port 993)
+;;                (nnimap-stream ssl)
+;;                (user "phil@dixon.gen.nz")
+;;                (nnir-search-engine imap)))
 
 (add-to-list 'gnus-secondary-select-methods
              '(nntp "news.gmane.org"
