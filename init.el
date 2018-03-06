@@ -1529,6 +1529,14 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :after sql)
 
+(use-package ibuffer-sidebar
+  :ensure t
+  :defer t)
+
+(use-package dired-sidebar
+  :ensure t
+  :defer t)
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
