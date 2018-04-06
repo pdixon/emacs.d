@@ -64,6 +64,7 @@
     (funcall report-fn errors)))
 
 (defun lsp-setup-flymake-backend ()
+  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
   (add-hook 'flymake-diagnostic-functions 'lsp-flymake nil t)
   (add-hook 'lsp-after-diagnostics-hook 'flymake-start nil t))
 
