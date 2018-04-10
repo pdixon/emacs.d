@@ -48,8 +48,6 @@
 ;; package.el setup
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(setq package-enable-at-startup nil)
-(setq package-selected-packages nil)
 
 (defun pd-package--save-selected-packages (&optional value)
   "Set `package-selected-packages' to VALUE."
@@ -103,6 +101,7 @@
 
 ; This needs to be set before use-package is loaded
 (custom-set-variables '(use-package-enable-imenu-support t))
+(custom-set-variables '(use-package-compute-statistics t))
 (custom-set-variables '(use-package-ensure-function #'pd-package-ensure-elpa))
 
 (eval-when-compile
