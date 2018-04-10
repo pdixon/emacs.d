@@ -823,10 +823,6 @@ point reaches the beginning or end of the buffer, stop there."
   (add-to-list 'git-link-remote-alist '("stash.sw.au.ivc" git-link-bitbucket-server))
   (add-to-list 'git-link-commit-remote-alist '("stash.sw.au.ivc" git-link-commit-bitbucket-server)))
 
-(use-package gited
-  :ensure t
-  :defer t)
-
 (use-package ediff
   :defer t
   :config
