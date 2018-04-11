@@ -1499,6 +1499,14 @@ point reaches the beginning or end of the buffer, stop there."
   :hook ((lsp-mode . lsp-setup-flymake-backend)
          (lsp-mode . flymake-mode)))
 
+(use-package company-lsp
+  :ensure t
+  :after company
+  :config
+  (push 'company-lsp company-backends)
+  (setq company-lsp-enable-snippet t)
+  (setq company-lsp-enable-recompletion t))
+
 (use-package rust-mode
   :ensure t
   :mode ("\\.rs\\'" . rust-mode))
