@@ -511,9 +511,6 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
   :config
-  (custom-set-faces '(lsp-face-highlight-textual ((t :underline "#ffcc66" :inherit unspecified)))
-                    '(lsp-face-highlight-write ((t :underline "#718c00" :inherit unspecified)))
-                    '(lsp-face-highlight-read ((t :underline "#c82829" :inherit unspecified))))
   (load-theme (color-theme-sanityinc-tomorrow--theme-name 'eighties) t))
 
 (use-package frame
@@ -1473,39 +1470,16 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
-(use-package lsp-mode
+(use-package eglot
   :ensure t
-  :defer t)
-
-(use-package lsp-rust
-  :ensure t
-  :hook (rust-mode . lsp-rust-enable))
-
-;; (use-package lsp-python
-;;   :load-path "lisp/"
-;;   :hook (python-mode . lsp-python-enable))
-
-;; (use-package lsp-swift
-;;   :disabled t
-;;   :load-path "lisp/"
-;;   :hook (swift-mode .lsp-mode))
-
-(use-package lsp-cc
-  :load-path "lisp/"
-  :hook ((c-mode c++-mode objc-mode) . lsp-clangd-enable))
-
-(use-package lsp-flymake
-  :load-path "lisp/"
-  :hook ((lsp-mode . lsp-setup-flymake-backend)
-         (lsp-mode . flymake-mode)))
-
-(use-package company-lsp
-  :ensure t
-  :after company
+  :hook ((rust-mode . eglot-ensure)
+         (c-mode . eglot-ensure)
+         (c++-mode . eglot-ensure)
+         (obc-c-mode . eglot-ensure))
   :config
-  (push 'company-lsp company-backends)
-  (setq company-lsp-enable-snippet t)
-  (setq company-lsp-enable-recompletion t))
+  (add-to-list 'eglot-server-programs '(c-mode . ("/usr/local/opt/llvm/bin/clangd")))
+  (add-to-list 'eglot-server-programs '(c++-mode . ("/usr/local/opt/llvm/bin/clangd")))
+  (add-to-list 'eglot-server-programs '(obj-c-mode . ("/usr/local/opt/llvm/bin/clangd"))))
 
 (use-package rust-mode
   :ensure t
