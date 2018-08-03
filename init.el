@@ -1418,14 +1418,6 @@ point reaches the beginning or end of the buffer, stop there."
                       :family 'unspecified
                       :inherit font-lock-type-face))
 
-(use-package mediawiki
-  :ensure t
-  :defer t
-  :config
-  (add-to-list 'mediawiki-site-alist
-                 '("Software" "http://wiki.sw.au.ivc/mediawiki" "pdixon" "" "The PENSIEVE"))
-  (setq mediawiki-site-default "Software"))
-
 (use-package time
   :defer t
   :config
@@ -1500,18 +1492,6 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :config
   (setq sql-product 'sqlite))
-
-(use-package sql-indent
-  :ensure t
-  :after sql)
-
-(use-package ibuffer-sidebar
-  :ensure t
-  :defer t)
-
-(use-package dired-sidebar
-  :ensure t
-  :defer t)
 
 (dir-locals-set-class-variables
  'work-directory
