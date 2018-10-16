@@ -1463,6 +1463,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package eglot
   :ensure t
+  :commands (eglot eglot-ensure)
   :hook ((rust-mode . eglot-ensure)
          (c-mode . eglot-ensure)
          (c++-mode . eglot-ensure)
