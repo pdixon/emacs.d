@@ -1493,6 +1493,10 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq sql-product 'sqlite))
 
+(use-package sql-indent
+  :ensure t
+  :hook ((sql-mode . sqlind-minor-mode)))
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
