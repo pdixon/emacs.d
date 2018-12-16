@@ -1498,6 +1498,9 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :hook ((sql-mode . sqlind-minor-mode)))
 
+(use-package docker-compose-mode
+  :ensure t)
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
