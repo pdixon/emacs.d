@@ -866,9 +866,11 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :bind ("<f5>" . deft)
   :config
-  (setq deft-default-extension "org")
+  (setq deft-default-extension "md")
+  (setq deft-extensions '("md" "mdwn" "org"))
   (setq deft-directory "~/personal/notes")
-  (setq deft-use-filename-as-title t)
+  (setq deft-recursive t)
+  (setq deft-use-filename-as-title nil)
   (setq deft-use-filter-string-for-filename t)
   (setq deft-file-naming-rules '((noslash . "-")
                                  (nospace . "-")
