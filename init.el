@@ -788,6 +788,9 @@ point reaches the beginning or end of the buffer, stop there."
                                        ("~/work/" . 3)
                                        ("~/" . 1))))
 
+(use-package forge
+  :ensure t)
+
 (use-package orgit
   :ensure t
   :defer t)
