@@ -812,13 +812,6 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
-(use-package git-link-bitbucket-server
-  :load-path "lisp/"
-  :after git-link
-  :config
-  (add-to-list 'git-link-remote-alist '("stash.sw.au.ivc" git-link-bitbucket-server))
-  (add-to-list 'git-link-commit-remote-alist '("stash.sw.au.ivc" git-link-commit-bitbucket-server)))
-
 (use-package ediff
   :defer t
   :config
