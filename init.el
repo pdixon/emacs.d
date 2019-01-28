@@ -1365,6 +1365,10 @@ point reaches the beginning or end of the buffer, stop there."
   :hook ((text-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode)))
 
+(use-package flymake
+  :config
+  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
+
 (use-package ace-window
   :ensure t
   :bind (("C-x o" . ace-window)))
