@@ -460,11 +460,6 @@ point reaches the beginning or end of the buffer, stop there."
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
   (auto-fill-mode t))
 
-(defun pd/add-watchwords ()
-  (font-lock-add-keywords
-   nil '(("\\<\\(FIXME\\|TODO\\|FIX\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
-          1 font-lock-warning-face t))))
-
 ;; (use-package text-mode
 ;;   :defer t
 ;;   :config)
@@ -767,6 +762,10 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
+(use-package hl-todo
+  :ensure t
+  :hook (prog-mode . hl-todo-mode))
+
 (use-package magit
   :ensure t
   :bind (([remap magit-fetch-popup] . magit-pull-and-fetch-popup)
@@ -814,6 +813,8 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package git-link
   :ensure t
   :defer t)
+
+
 
 (use-package ediff
   :defer t
@@ -1377,8 +1378,7 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (add-hook 'prog-mode-hook 'pd/local-comment-auto-fill)
   (add-hook 'prog-mode-hook 'hl-line-mode)
-  (add-hook 'prog-mode-hook 'whitespace-mode)
-  (add-hook 'prog-mode-hook 'pd/add-watchwords))
+  (add-hook 'prog-mode-hook 'whitespace-mode))
 
 (use-package bug-reference
   :hook ((text-mode . bug-reference-mode)
