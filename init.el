@@ -768,9 +768,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package magit
   :ensure t
-  :bind (([remap magit-fetch-popup] . magit-pull-and-fetch-popup)
-         ([remap magit-pull-popup] . magit-pull-and-fetch-popup)
-         ("<f7>" . magit-status))
+  :bind (("<f7>" . magit-status))
   :config
   (magit-auto-revert-mode)
   (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
@@ -778,6 +776,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq magit-completing-read-function #'ivy-completing-read)
   (setq magit-branch-prefer-remote-upstream '("master"))
   (setq magit-refs-pad-commit-counts t)
+  (setq magit-pull-or-fetch t)
   (add-to-list 'git-commit-known-pseudo-headers "Ticket"))
 
 (use-package magit-repos
