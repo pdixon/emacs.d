@@ -1463,6 +1463,7 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t)
 
 (use-package eglot
+  :disabled t
   :ensure t
   :commands (eglot eglot-ensure)
   :hook ((swift-mode . eglot-ensure)
@@ -1472,7 +1473,17 @@ point reaches the beginning or end of the buffer, stop there."
          (obc-c-mode . eglot-ensure))
   :config
   (setenv "SOURCEKIT_TOOLCHAIN_PATH" "/Library/Developer/Toolchains/swift-latest.xctoolchain")
-  (add-to-list 'eglot-server-programs '((swift-mode c-mode c++-mode obj-c-mode) . ("~/mess/builds/sourcekit-lsp/.build/release/sourcekit-lsp"))))
+  (add-to-list 'eglot-server-programs '((swift-mode c-mode c++-mode obj-c-mode) . ("~/mess/builds/sourcekit-lsp/.build/release/sourcekit-lsp")))
+  (add-to-list 'eglot-server-programs '((c-mode c++-mode obj-c-mode) . ("/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin/clangd"))))
+
+
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :hook ((c-mode . lsp)
+         (c++-mode . lsp))
+  :config
+  (setq lsp-clients-clangd-executable "/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin/clangd"))
 
 (use-package rust-mode
   :ensure t
