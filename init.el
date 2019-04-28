@@ -480,7 +480,7 @@ point reaches the beginning or end of the buffer, stop there."
   :init (exec-path-from-shell-initialize))
 
 (use-package zenburn-theme
-;  :disabled t
+  :disabled t
   :ensure t
   :config
   (load-theme 'zenburn t))
@@ -503,7 +503,7 @@ point reaches the beginning or end of the buffer, stop there."
   (load-theme 'solarized-dark t))
 
 (use-package color-theme-sanityinc-tomorrow
-  :disabled t
+;  :disabled t
   :ensure t
   :config
   (load-theme (color-theme-sanityinc-tomorrow--theme-name 'eighties) t))
