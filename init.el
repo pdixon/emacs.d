@@ -151,6 +151,9 @@
   (tooltip-mode -1)
   (blink-cursor-mode -1))
 
+(unless (eq system-type 'darwin)
+  (menu-bar-mode -1))
+
 (setq vc-handled-backends '(Git Hg))
 
 (setq mail-user-agent 'message-user-agent)
