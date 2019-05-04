@@ -1392,9 +1392,6 @@ point reaches the beginning or end of the buffer, stop there."
   :hook ((text-mode . bug-reference-mode)
          (prog-mode . bug-reference-prog-mode)))
 
-(use-package server
-  :defer t)
-
 (use-package mu4e
   :defer t
   :load-path "/usr/local/share/emacs/site-lisp/mu4e"
