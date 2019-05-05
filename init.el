@@ -1291,7 +1291,7 @@ point reaches the beginning or end of the buffer, stop there."
   :mode ("PKGBUILD\\'" . pkgbuild-mode))
 
 (use-package dummy-h-mode
-  :ensure t
+  :load-path "vendor/dummy-h-mode"
   :mode ("\\.h$" . dummy-h-mode))
 
 (use-package google-c-style
