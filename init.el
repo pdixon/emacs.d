@@ -172,7 +172,7 @@
 (line-number-mode t)
 (size-indication-mode t)
 
-(setq fill-column 78)
+(setq-default fill-column 80)
 
 (set-default 'sentence-end-double-space nil)
 
@@ -586,6 +586,10 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq whitespace-style '(face trailing tabs)
         whitespace-line-column 80))
+
+(use-package display-fill-column-indicator
+  :defer t
+  :hook (prog-mode . display-fill-column-indicator-mode))
 
 (use-package auth-source
   :defer t
