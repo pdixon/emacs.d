@@ -790,6 +790,7 @@ point reaches the beginning or end of the buffer, stop there."
                                        ("~/" . 1))))
 
 (use-package forge
+  :disabled t
   :ensure t)
 
 (use-package orgit
