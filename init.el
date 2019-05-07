@@ -1302,24 +1302,6 @@ point reaches the beginning or end of the buffer, stop there."
   :load-path "vendor/dummy-h-mode"
   :mode ("\\.h$" . dummy-h-mode))
 
-(use-package google-c-style
-  :ensure t
-  :defer t
-  :after cc-mode
-  :init
-  (c-add-style "Google" google-c-style)
-
-  (defconst my-c-style
-    '("Google"
-      (c-basic-offset . 4)
-      (c-offsets-alist . ((inextern-lang . -)))))
-  (c-add-style "PERSONAL" my-c-style)
-
-  (defconst dcl-c-style
-    '("Google"
-      (c-basic-offset . 3)))
-  (c-add-style "DCL" dcl-c-style))
-
 (use-package cc-mode
   :defer t
   :config
@@ -1330,10 +1312,9 @@ point reaches the beginning or end of the buffer, stop there."
       (c-offsets-alist . ((case-label . +)))))
   (c-add-style "my-obj-c" my-obj-c-style)
 
-    ;; Customizations for all modes in CC Mode.
-
+  ;; Customizations for all modes in CC Mode.
   (defun my-c-mode-common-hook ()
-    (c-set-style "PERSONAL")
+    (c-set-style "my-obj-c")
     (setq ff-always-in-other-window nil))
 
   (add-hook 'c-mode-common-hook #'my-c-mode-common-hook)
