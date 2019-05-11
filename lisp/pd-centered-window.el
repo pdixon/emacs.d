@@ -60,6 +60,7 @@
 
 ;;;###autoload
 (define-minor-mode pd-centered-window-mode
+  ""
   :init-value nil
   :global t
   (if pd-centered-window-mode

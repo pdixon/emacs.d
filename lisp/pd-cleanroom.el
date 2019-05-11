@@ -27,21 +27,35 @@
 
 (require 'pd-centered-window)
 
+(defun pd-cleanroom--enter ()
+  ""
+  (pd-centered-window-mode 1))
+
+(defun pd-cleanroom--leave ()
+  ""
+  (pd-centered-window-mode -1))
+
+(defun pd-cleanroom--update ()
+  ""
+  (if (= (count-windows) 1)
+      (pd-cleanroom--enter)
+    (pd-cleanroom--leave)))
+
 ;;;###autoload
 (define-minor-mode pd-cleanroom-mode
+  ""
   :init-value nil
   :global t
   :group 'editing-basics
-  (toggle-frame-fullscreen)
   (if (not pd-cleanroom-mode)
       (progn
-        (menu-bar-mode 1)
-        (pd-centered-window-mode -1)
-        )
+        (remove-hook 'window-configuration-change-hook
+                     'pd-cleanroom--update 'local)
+        (pd-cleanroom--leave))
     (progn
-      (menu-bar-mode -1)
-      (delete-other-windows)
-      (pd-centered-window-mode 1))))
+      (add-hook 'window-configuration-change-hook
+                'pd-cleanroom--update 'append 'local)
+      (pd-cleanroom--update))))
 
 (provide 'pd-cleanroom)
 ;;; pd-cleanroom.el ends here
