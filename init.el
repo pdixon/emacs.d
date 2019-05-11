@@ -1457,9 +1457,22 @@ point reaches the beginning or end of the buffer, stop there."
          (c++-mode . eglot-ensure)
          (obc-c-mode . eglot-ensure))
   :config
-  (setenv "SOURCEKIT_TOOLCHAIN_PATH" "/Library/Developer/Toolchains/swift-latest.xctoolchain")
-  (add-to-list 'eglot-server-programs '((swift-mode) . ("~/mess/builds/sourcekit-lsp/.build/release/sourcekit-lsp")))
-  (add-to-list 'eglot-server-programs '((c-mode c++-mode obj-c-mode) . ("/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/bin/clangd"))))
+
+  (setq pd-toolchain-directory "/Library/Developer/Toolchains/swift-latest.xctoolchain/")
+  (setq pd-clangd-path (concat pd-toolchain-directory "usr/bin/clangd"))
+  (setq pd-sourcekit-lsp-path "~/mess/builds/sourcekit-lsp/.build/release/sourcekit-lsp")
+
+  (defun pd-cc-mode-lsp-server (arg)
+    "Figure if we want to use sourcekit-lsp or clangd as our server."
+    (let* ((root (nth 0 (project-roots (project-current))))
+           (package-file (concat root "Package.swift")))
+      (if (file-exists-p package-file)
+          (list pd-sourcekit-lsp-path)
+        (list pd-clangd-path))))
+
+  (setenv "SOURCEKIT_TOOLCHAIN_PATH" pd-toolchain-directory)
+  (add-to-list 'eglot-server-programs '((swift-mode) . (pd-sourcekit-lsp-path)))
+  (add-to-list 'eglot-server-programs '((c-mode c++-mode obj-c-mode) . pd-cc-mode-lsp-server)))
 
 (use-package rust-mode
   :ensure t
