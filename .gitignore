@@ -29,3 +29,5 @@ elpa/
 /network-security.data
 /site-lisp/
 /smex-items
+/transient/
+/forge-database.sqlite
