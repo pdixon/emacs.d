@@ -123,83 +123,45 @@
   (set-face-attribute 'fixed-pitch nil :font font :height height)
   (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 130 :weight 'normal))
 
-;; Basic Apperance
-;; (if (not (eq system-type 'darwin))
-;;     (menu-bar-mode 0))
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
-
-(setq use-dialog-box nil)
-
-;; Load up my config stuff
-(setq inhibit-startup-message t)
-
-(fset 'yes-or-no-p #'y-or-n-p)
-(fset 'display-startup-echo-area-message #'ignore)
-
 (show-paren-mode 1)
-
-;; Transparently open compressed files
 (auto-compression-mode t)
+(tooltip-mode -1)
+(blink-cursor-mode -1)
 
-;; Enable syntax highlighting for older Emacsen that have it off
-(global-font-lock-mode t)
-
-(when window-system
-  (setq frame-resize-pixelwise t
-        frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
-  (tooltip-mode -1)
-  (blink-cursor-mode -1))
-
+;; C Source
+(setq use-dialog-box nil)
+(setq user-full-name "Phillip Dixon")
+(setq indicate-empty-lines t)
+(setq frame-resize-pixelwise t)
+(setq frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
+(setq-default fill-column 80)
+(setq-default indent-tabs-mode nil) ;; Never insert tabs
+(put 'narrow-to-region 'disabled nil)
 (unless (eq system-type 'darwin)
   (menu-bar-mode -1))
 
-(setq vc-handled-backends '(Git Hg))
-
-(setq mail-user-agent 'message-user-agent)
+;; Startup
+(setq inhibit-startup-message t)
 (setq user-mail-address "phil@dixon.gen.nz")
-(setq user-full-name "Phillip Dixon")
 
-(electric-pair-mode 1)
-;;(electric-indent-mode 1)
-;;(electric-layout-mode 1)
-
-(put 'set-goal-column 'disabled nil)
-
-(put 'narrow-to-region 'disabled nil)
-
-(column-number-mode t)
-(line-number-mode t)
-(size-indication-mode t)
-
-(setq-default fill-column 80)
-
-(set-default 'sentence-end-double-space nil)
-
-;; (use-package mwheel
-;;   :config
-;;   (setq mouse-wheel-scroll-amount '(1))
-;;   (setq mouse-wheel-progressive-speed nil))
-
-(setq mwheel-tilt-scroll-p t)
-(setq mwheel-flip-direction t)
-
-;; Never insert tabs
-(set-default 'indent-tabs-mode nil)
-
-;; Show me empty lines after buffer end
-(setq indicate-empty-lines t
-      require-final-newline t)
-
-(setq diff-switches "-u")
-
+;; Indent
 (setq tab-always-indent 'complete)
+
+;; Window
 (setq split-height-threshold 100)
 
 (if (eq system-type 'darwin)
     (progn
       (setq mac-option-modifier 'meta)
       (setq mac-command-modifier 'none)))
+
+;; Paragraphs
+(setq-default sentence-end-double-space nil)
+
+(fset 'yes-or-no-p #'y-or-n-p)
+(fset 'display-startup-echo-area-message #'ignore)
 
 (bind-key "M-J" #'delete-indentation-forward)
 (bind-key "M-j" #'delete-indentation)
@@ -324,7 +286,7 @@ point reaches the beginning or end of the buffer, stop there."
        cur))))
 
 (defun clean-up-buffer-or-region ()
-  "Untabifies, indents and deletes trailing whitespace from buffer or region."
+  "Untabify, indent, and delete trailing whitespace from buffer or region."
   (interactive)
   (let ((beginning (if (region-active-p) (region-beginning) (point-min)))
         (end (if (region-active-p) (region-end) (point-max))))
@@ -449,8 +411,6 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (say-text ""))
 
-
-
 ;; From emacs start kit v2.
 ;;; These belong in prog-mode-hook:
 
@@ -474,8 +434,38 @@ point reaches the beginning or end of the buffer, stop there."
                                           *emacs-load-start*))))
   (message "Non use-package stuff...done (%.3fs)" elapsed))
 
+(use-package simple
+  :init
+  (column-number-mode t)
+  (line-number-mode t)
+  (size-indication-mode t)
+  :config
+  (setq mail-user-agent 'message-user-agent))
+
 (use-package diminish
   :ensure t)
+
+(use-package elec-pair
+  :init
+  (electric-pair-mode t))
+
+(use-package electric
+  :init
+  (electric-indent-mode t)
+  (electric-layout-mode t))
+
+(use-package vc-hooks
+  :config
+  (setq vc-handled-backends '(Git Hg)))
+
+(use-package mwheel
+  :config
+  (setq mouse-wheel-tilt-scroll t)
+  (setq mouse-wheel-flip-direction t))
+
+(use-package font-core
+  :init
+  (global-font-lock-mode t))
 
 (use-package exec-path-from-shell
   :if (eq system-type 'darwin)
@@ -695,6 +685,7 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (when-let* ((gls (and (eq system-type 'darwin) (executable-find "gls"))))
     (setq insert-directory-program gls))
+  (setq require-final-newline t)
   (setq view-read-only t)
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
@@ -821,7 +812,9 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
-
+(use-package diff
+  :config
+  (setq diff-switches "-u"))
 
 (use-package ediff
   :defer t
