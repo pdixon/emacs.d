@@ -1459,7 +1459,9 @@ point reaches the beginning or end of the buffer, stop there."
   :config
 
   (setq pd-toolchain-directory "/Library/Developer/Toolchains/swift-latest.xctoolchain/")
-  (setq pd-clangd-path (concat pd-toolchain-directory "usr/bin/clangd"))
+  (setq pd-clangd-path (pcase system-type
+                         (`darwin (concat pd-toolchain-directory "usr/bin/clangd"))
+                         (_ "clangd")))
   (setq pd-sourcekit-lsp-path "~/mess/builds/sourcekit-lsp/.build/release/sourcekit-lsp")
 
   (defun pd-cc-mode-lsp-server (arg)
