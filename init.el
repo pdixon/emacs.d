@@ -1382,6 +1382,7 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq display-time-world-time-format "%H:%M %d %b, %Z"
         display-time-world-list '(("Pacific/Auckland" "Christchurch")
+                                  ("Pacific/Brisbane" "Brisbane")
                                   ("Asia/Shanghai" "Suzhou")
                                   ("Europe/London"    "London")
                                   ("America/Los_Angeles" "San Francisco"))))
