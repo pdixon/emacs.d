@@ -936,22 +936,6 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq gnus-init-file (concat user-emacs-directory "dot-gnus.el")))
 
-;; Setup for Org
-(use-package org-agenda
-  :bind (("<f6>" . my-org-agenda)
-         ("C-c a" . org-agenda))
-  :init
-  (defun my-org-agenda ()
-    (interactive)
-    (org-agenda nil "w"))
-  :config
-  (setq org-agenda-prefix-format
-        '((agenda . " %i %-12:c%?-12t% s %b")
-          (timeline . "  % s %b")
-          (todo . " %i %-12:c %b")
-          (tags . " %i %-12:c %b")
-          (search . " %i %-12:c %b"))))
-
 (use-package org-capture
   :bind (("C-c r" . org-capture))
   :config
