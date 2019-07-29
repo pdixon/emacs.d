@@ -112,16 +112,12 @@
                                           *emacs-load-start*))))
   (message "Package Config...done (%.3fs)" elapsed))
 
-(let* ((point-size (pcase system-type
-                     (`darwin 12)
-                     (_ 10)))
-       (height (round (* 10 point-size)))
-       (font (pcase system-type
-               (`darwin "SF Mono")
-               (_ "Source Code Pro"))))
-  (set-face-attribute 'default nil :font font :height height :weight 'normal)
-  (set-face-attribute 'fixed-pitch nil :font font :height height)
-  (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 130 :weight 'normal))
+
+(if (eq system-type 'darwin)
+    (add-to-list 'default-frame-alist
+                 '(font . "SF Mono-12"))
+  (add-to-list 'default-frame-alist
+               '(font . "Source Code Pro-10")))
 
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
