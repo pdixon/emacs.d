@@ -1217,7 +1217,8 @@ point reaches the beginning or end of the buffer, stop there."
     (yas-expand-snippet (buffer-string) (point-min) (point-max)))
 
   (setq auto-insert-directory (concat user-emacs-directory "mytemplates/")
-        auto-insert-query nil)
+        auto-insert-query nil
+        auto-insert-alist nil)
 
   (define-auto-insert "setup.py\\'"
     ["template-setup.py" pd-expand-buffer])
