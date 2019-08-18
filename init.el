@@ -1478,6 +1478,9 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package docker-compose-mode
   :ensure t)
 
+(use-package json-mode
+  :ensure t)
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
