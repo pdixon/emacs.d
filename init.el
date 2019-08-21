@@ -112,13 +112,6 @@
                                           *emacs-load-start*))))
   (message "Package Config...done (%.3fs)" elapsed))
 
-
-(if (eq system-type 'darwin)
-    (add-to-list 'default-frame-alist
-                 '(font . "SF Mono-12"))
-  (add-to-list 'default-frame-alist
-               '(font . "Source Code Pro-10")))
-
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 (show-paren-mode 1)
@@ -496,6 +489,11 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :config
   (load-theme (color-theme-sanityinc-tomorrow--theme-name 'eighties) t))
+
+(use-package pd-fonts-theme
+  :load-path ""
+  :config
+  (load-theme 'pd-fonts t))
 
 (use-package frame
   :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
