@@ -1435,7 +1435,9 @@ point reaches the beginning or end of the buffer, stop there."
   (setq pd-clangd-path (pcase system-type
                          (`darwin (concat pd-toolchain-directory "usr/bin/clangd"))
                          (_ "clangd")))
-  (setq pd-sourcekit-lsp-path "~/mess/builds/sourcekit-lsp/.build/release/sourcekit-lsp")
+  (setq pd-sourcekit-lsp-path (pcase system-type
+                         (`darwin (concat pd-toolchain-directory "usr/bin/sourcekit-lsp"))
+                         (_ "sourcekit-lsp")))
 
   (defun pd-cc-mode-lsp-server (arg)
     "Figure if we want to use sourcekit-lsp or clangd as our server."
