@@ -1,9 +1,11 @@
-;;; (>>FILE<<) --- 
+;;; `(file-name-nondirectory (buffer-file-name))` --- ${2:summary} -*- lexical-binding: t -*-
 
-;; Copyright (C) (>>YEAR<<)  Phillip Dixon
+;; Copyright (C) since `(format-time-string "%Y")` `(user-full-name)`
 
-;; Author: Phillip Dixon <phil@dixon.gen.nz>
-;; Keywords: 
+;; Author: `(user-full-name)` <`user-mail-address`>
+;; Keywords:
+
+;; This file is not part of GNU Emacs
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,13 +20,9 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-;;; Commentary:
-
-;; 
-
 ;;; Code:
 
+$0
 
-
-(provide '(>>FILE_NO_EXT<<))
-;;; (>>FILE<<) ends here
+(provide '`(file-name-base (buffer-file-name))`)
+;;; `(file-name-nondirectory (buffer-file-name))` ends here

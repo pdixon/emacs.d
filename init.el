@@ -1218,6 +1218,9 @@ point reaches the beginning or end of the buffer, stop there."
         auto-insert-query nil
         auto-insert-alist nil)
 
+ (define-auto-insert "\\.el\\'"
+    ["template.el" pd-expand-buffer])
+
   (define-auto-insert "setup.py\\'"
     ["template-setup.py" pd-expand-buffer])
 
