@@ -763,7 +763,6 @@ point reaches the beginning or end of the buffer, stop there."
   :bind (("<f7>" . magit-status))
   :config
   (magit-auto-revert-mode)
-  (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
   (setq magit-display-buffer-function #'magit-display-buffer-fullcolumn-most-v1)
   (setq magit-completing-read-function #'ivy-completing-read)
   (setq magit-branch-prefer-remote-upstream '("master"))
