@@ -1445,7 +1445,7 @@ point reaches the beginning or end of the buffer, stop there."
     "Figure if we want to use sourcekit-lsp or clangd as our server."
     (let* ((root (nth 0 (project-roots (project-current))))
            (package-file (concat root "Package.swift")))
-      (if (file-exists-p package-file)
+      (if (and (file-exists-p package-file) (file-exists-p pd-sourcekit-lsp-path))
           (list pd-sourcekit-lsp-path)
         (list pd-clangd-path))))
 
