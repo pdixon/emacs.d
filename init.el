@@ -1433,8 +1433,9 @@ point reaches the beginning or end of the buffer, stop there."
          (c++-mode . eglot-ensure)
          (obc-c-mode . eglot-ensure))
   :config
+
   (setq eglot-confirm-server-initiated-edits nil)
-  (setq pd-toolchain-directory "/Library/Developer/Toolchains/swift-latest.xctoolchain/")
+  (setq pd-toolchain-directory "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/")
   (setq pd-clangd-path (pcase system-type
                          (`darwin (concat pd-toolchain-directory "usr/bin/clangd"))
                          (_ "clangd")))
