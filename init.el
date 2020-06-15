@@ -1484,6 +1484,8 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package json-mode
   :ensure t)
 
+(defvar user-company "Phillip Dixon")
+
 (dir-locals-set-class-variables
  'work-directory
  '((nil . ((user-company . "Dynamic Controls")
