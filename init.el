@@ -1283,7 +1283,8 @@ point reaches the beginning or end of the buffer, stop there."
     '("bsd"
       (c-basic-offset . 4)
       (indent-tabs-mode . nil)
-      (c-offsets-alist . ((case-label . +)))))
+      (c-offsets-alist . ((case-label . 0)
+                          (innamespace . 0)))))
   (c-add-style "my-obj-c" my-obj-c-style)
 
   ;; Customizations for all modes in CC Mode.
