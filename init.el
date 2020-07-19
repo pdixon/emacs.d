@@ -491,6 +491,7 @@ point reaches the beginning or end of the buffer, stop there."
   (load-theme (color-theme-sanityinc-tomorrow--theme-name 'eighties) t))
 
 (use-package pd-fonts-theme
+  :load-path "themes"
   :init
   (add-to-list 'custom-theme-load-path
                (directory-file-name (concat user-emacs-directory "themes")))
