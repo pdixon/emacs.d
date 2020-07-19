@@ -12,4 +12,6 @@
    `(default ((t (:height ,height :family ,family))))
    `(fixed-pitch ((t (:height ,height :family ,family))))))
 
+(add-to-list 'custom-theme-load-path (file-name-directory load-file-name))
+
 (provide-theme 'pd-fonts)
