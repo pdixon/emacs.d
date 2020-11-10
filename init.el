@@ -1453,7 +1453,8 @@ point reaches the beginning or end of the buffer, stop there."
         (list pd-clangd-path))))
 
   (add-to-list 'eglot-server-programs '((swift-mode) . (pd-sourcekit-lsp-path)))
-  (add-to-list 'eglot-server-programs '((c-mode c++-mode obj-c-mode) . pd-cc-mode-lsp-server)))
+  (add-to-list 'eglot-server-programs '((c-mode c++-mode obj-c-mode) . pd-cc-mode-lsp-server))
+  (add-to-list 'eglot-server-programs '(rust-mode "rust-analyzer")))
 
 (use-package rust-mode
   :ensure t
