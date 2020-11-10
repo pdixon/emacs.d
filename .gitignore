@@ -31,3 +31,6 @@ elpa/
 /smex-items
 /transient/
 /forge-database.sqlite
+/.lsp-session-v1
+/eln-cache/
+/projects
