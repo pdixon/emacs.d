@@ -716,6 +716,10 @@ point reaches the beginning or end of the buffer, stop there."
 
   (bind-key "^" 'pd-dired-find-alternate-parent dired-mode-map))
 
+(use-package calendar
+  :custom
+  (calendar-week-start-day 1 "Weeks start on Monday"))
+
 (use-package dired-x
   :bind (("C-x C-j" . dired-jump)
          ("C-x 4 C-j" . dired-jump-other-window)))
