@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: try
+# key: try
+# --
+try {
+    $0
+} catch(${1: const std::exception &err}) {
+
+}
