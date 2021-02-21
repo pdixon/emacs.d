@@ -500,7 +500,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Save a list of recent files visited.
 (use-package recentf
-  :defer 1
+  :init (recentf-mode +1)
+  :hook (buffer-list-update-hook . recentf-track-opened-file)
   :config
   (setq  recentf-auto-cleanup 300
          recentf-exclude (list "/\\.git/.*\\'" ; Git contents
@@ -517,6 +518,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package savehist
   :init (savehist-mode t))
+
+(use-package minibuffer
+  :config
+  (setq completion-styles '(basic substring partial-completion)))
 
 (use-package applescript-mode
   :defer t
@@ -550,7 +555,25 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init (delete-selection-mode))
 
+(use-package selectrum
+  :ensure t
+  :init (selectrum-mode +1))
+
+(use-package consult
+  :ensure t
+  :bind (("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         )
+  :config
+  (setq consult-project-root-function
+        (lambda ()
+          (when-let (project (project-current))
+            (car (project-roots project)))))
+  )
+
 (use-package ivy
+  :disabled t
   :ensure t
   :diminish ""
   :init
@@ -561,6 +584,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq ivy-count-format "(%d/%d) "))
 
 (use-package counsel
+  :disabled t
   :ensure t
   :after ivy
   :bind (("C-x C-f" . counsel-find-file)))
