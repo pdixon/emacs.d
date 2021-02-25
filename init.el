@@ -792,7 +792,6 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (magit-auto-revert-mode)
   (setq magit-display-buffer-function #'magit-display-buffer-fullcolumn-most-v1)
-  (setq magit-completing-read-function #'ivy-completing-read)
   (setq magit-branch-prefer-remote-upstream '("master"))
   (setq magit-refs-pad-commit-counts t)
   (setq magit-pull-or-fetch t)
