@@ -569,7 +569,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq consult-project-root-function
         (lambda ()
           (when-let (project (project-current))
-            (car (project-roots project)))))
+            (expand-file-name (car (project-roots project))))))
   )
 
 (use-package ivy
