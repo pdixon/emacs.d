@@ -1225,6 +1225,7 @@ point reaches the beginning or end of the buffer, stop there."
   (add-hook 'c-mode-common-hook #'company-mode)
   (add-hook 'elisp-mode #'company-mode)
   (add-hook 'python-mode #'company-mode)
+  (add-hook 'rust-mode #'company-mode)
   :config
   (push #'company-capf company-backends)
   (setq company-backends (delete 'company-semantic company-backends))
