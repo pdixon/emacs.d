@@ -1476,7 +1476,7 @@ point reaches the beginning or end of the buffer, stop there."
     (let* ((root (nth 0 (project-roots (project-current))))
            (swift-package-file (concat root "Package.swift"))
            (cmake-file (concat root "CMakeLists.txt")))
-      (if (and (not (file-exists-p cmake-file)) (file-exists-p package-file) (file-exists-p pd-sourcekit-lsp-path))
+      (if (and (not (file-exists-p cmake-file)) (file-exists-p swift-package-file) (file-exists-p pd-sourcekit-lsp-path))
           (list pd-sourcekit-lsp-path)
         (list pd-clangd-path))))
 
