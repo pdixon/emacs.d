@@ -6,9 +6,9 @@
  '(ns-pop-up-frames nil)
  '(ns-use-srgb-colorspace t)
  '(safe-local-variable-values
-   (quote
-    ((flycheck-clang-language-standard . "c++14")
-     (emacs-lisp-docstring-fill-column . 75)
+   '((emacs-lisp-docstring-fill-column . 75)
      (user-mail-address . "pdixon@dynamiccontrols.com")
-     (user-company . "Dynamic Controls")))))
-
+     (user-company . "Dynamic Controls")))
+ '(use-package-compute-statistics t)
+ '(use-package-enable-imenu-support t)
+ '(use-package-ensure-function #'pd-package-ensure-elpa))
