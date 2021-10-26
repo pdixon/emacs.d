@@ -128,6 +128,7 @@
 (setq-default fill-column 80)
 (setq-default indent-tabs-mode nil) ;; Never insert tabs
 (put 'narrow-to-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 (unless (eq system-type 'darwin)
   (menu-bar-mode -1))
 
