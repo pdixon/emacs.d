@@ -1342,7 +1342,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package eldoc
   :diminish
-  :hook (emacs-lisp-mode . eldoc-mode))
+  :hook (emacs-lisp-mode . eldoc-mode)
+  :config
+  (eldoc-add-command 'c-electric-paren))
 
 (use-package flyspell
   :hook ((text-mode . flyspell-mode)
