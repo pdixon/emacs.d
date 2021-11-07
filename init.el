@@ -1460,7 +1460,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq eglot-confirm-server-initiated-edits nil)
   (setq pd-toolchain-directory "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/")
   (setq pd-clangd-path (pcase system-type
-                         (`darwin "/usr/local/opt/llvm/bin/clangd")
+                         (`darwin "/opt/homebrew/opt/llvm/bin/clangd")
                          (_ "clangd")))
   (setq pd-sourcekit-lsp-path (pcase system-type
                          (`darwin (concat pd-toolchain-directory "usr/bin/sourcekit-lsp"))
