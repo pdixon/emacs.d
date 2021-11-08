@@ -5,7 +5,7 @@
                   120
                 100))
       (family (if (eq system-type 'darwin)
-                "Menlo"
+                "SF Mono"
               "Source Code Pro")))
   (custom-theme-set-faces
    'pd-fonts
