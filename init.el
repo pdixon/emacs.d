@@ -127,6 +127,8 @@
 (setq frame-title-format '(buffer-file-name "emacs - %f" ("emacs - %b")))
 (setq-default fill-column 80)
 (setq-default indent-tabs-mode nil) ;; Never insert tabs
+(setq-default indicate-buffer-boundaries 'left)
+(setq-default indicate-empty-lines t)
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (unless (eq system-type 'darwin)
