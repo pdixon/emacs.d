@@ -11,4 +11,5 @@
      (user-company . "Dynamic Controls")))
  '(use-package-compute-statistics t)
  '(use-package-enable-imenu-support t)
- '(use-package-ensure-function #'pd-package-ensure-elpa))
+ '(use-package-ensure-function #'pd-package-ensure-elpa)
+ '(warning-suppress-types '((comp))))
