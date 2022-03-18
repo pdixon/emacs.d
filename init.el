@@ -138,6 +138,11 @@
 
 ;; Indent
 (setq tab-always-indent 'complete)
+(setq completion-cycle-threshold 3)
+
+;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+(setq read-extended-command-predicate
+      #'command-completion-default-include-p)
 
 ;; Window
 (setq split-height-threshold 100)
@@ -1211,7 +1216,12 @@ point reaches the beginning or end of the buffer, stop there."
   ;; Add this back in at the end of the list.
   (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t))
 
+(use-package corfu
+  :ensure t
+  :hook ((prog-mode . corfu-mode)))
+
 (use-package company
+  :disabled t
   :ensure t
   :defer t
   :init
@@ -1299,6 +1309,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package cc-mode
   :defer t
+  :bind (:map c-mode-base-map
+         ([tab] . indent-for-tab-command))
   :config
   (defconst my-obj-c-style
     '("bsd"
