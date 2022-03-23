@@ -563,9 +563,10 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init (delete-selection-mode))
 
-(use-package selectrum
+(use-package vertico
   :ensure t
-  :init (selectrum-mode +1))
+  :init
+  (vertico-mode))
 
 (use-package consult
   :ensure t
