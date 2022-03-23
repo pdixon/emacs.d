@@ -573,12 +573,7 @@ point reaches the beginning or end of the buffer, stop there."
          ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
          ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
          )
-  :config
-  (setq consult-project-root-function
-        (lambda ()
-          (when-let (project (project-current))
-            (expand-file-name (car (project-roots project))))))
-  )
+  :config)
 
 (use-package ivy
   :disabled t
