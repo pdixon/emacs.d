@@ -576,22 +576,7 @@ point reaches the beginning or end of the buffer, stop there."
          )
   :config)
 
-(use-package ivy
-  :disabled t
-  :ensure t
-  :diminish ""
-  :init
-  (ivy-mode)
-  :config
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-use-selectable-prompt t)
-  (setq ivy-count-format "(%d/%d) "))
 
-(use-package counsel
-  :disabled t
-  :ensure t
-  :after ivy
-  :bind (("C-x C-f" . counsel-find-file)))
 
 (use-package whitespace
   :defer t
