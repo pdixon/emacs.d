@@ -576,7 +576,13 @@ point reaches the beginning or end of the buffer, stop there."
          )
   :config)
 
+(use-package consult-project-extra
+  :ensure t
+  :defer t)
 
+(use-package consult-eglot
+  :ensure t
+  :defer t)
 
 (use-package whitespace
   :defer t
