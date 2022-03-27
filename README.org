@@ -39,7 +39,6 @@ Hence I've spend a bit of time on the various auto typing features.
 - autoinsert
 
 * External Programs
-- ~aspell~
-- ~clang-format~
-- ~libclang~
-- ~gpg~
++ ~aspell~
++ ~clangd~
++ ~sourcekit-lsp~
