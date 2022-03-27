@@ -439,6 +439,10 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq mail-user-agent 'message-user-agent))
 
+(use-package pixel-scroll
+  :init
+  (pixel-scroll-precision-mode t))
+
 (use-package diminish
   :ensure t)
 
