@@ -1461,7 +1461,7 @@ point reaches the beginning or end of the buffer, stop there."
          (c++-mode . eglot-ensure)
          (obc-c-mode . eglot-ensure))
   :config
-
+  (setq eglot-strict-mode nil)
   (setq eglot-confirm-server-initiated-edits nil)
   (setq pd-toolchain-directory "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/")
   (setq pd-clangd-path (pcase system-type
