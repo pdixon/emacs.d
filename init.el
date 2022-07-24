@@ -1213,6 +1213,10 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :hook ((prog-mode . corfu-mode)))
 
+(use-package corfu-doc
+  :ensure t
+  :hook ((corfu . corfu-doc-mode)))
+
 (use-package company
   :disabled t
   :ensure t
