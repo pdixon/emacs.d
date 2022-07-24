@@ -28,12 +28,12 @@
 
 (defun wizard-db-to-str-ref ()
   "Transform the number under the point to Wizard DB string ref.
-   Note current only works for PM databases."
+   Note current only works for r2 databases."
   (interactive)
   (skip-chars-backward "0123456789")
   (or (looking-at "[0123456789]+")
       (error "No number at point"))
-  (replace-match (number-to-string (+ 8388608 (string-to-number (match-string 0))))))
+  (replace-match (number-to-string (logior (ash #xff25 15) (string-to-number (match-string 0))))))
 
 (defvar wizard-db-mode-map
   (let ((map (make-sparse-keymap)))
