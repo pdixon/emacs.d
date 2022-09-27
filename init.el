@@ -1467,25 +1467,9 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq eglot-strict-mode nil)
   (setq eglot-confirm-server-initiated-edits nil)
-  (setq pd-toolchain-directory "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/")
-  (setq pd-clangd-path (pcase system-type
-                         (`darwin "/opt/homebrew/opt/llvm/bin/clangd")
-                         (_ "clangd")))
-  (setq pd-sourcekit-lsp-path (pcase system-type
-                         (`darwin (concat pd-toolchain-directory "usr/bin/sourcekit-lsp"))
-                         (_ "sourcekit-lsp")))
 
-  (defun pd-cc-mode-lsp-server (arg)
-    "Figure if we want to use sourcekit-lsp or clangd as our server."
-    (let* ((root (nth 0 (project-roots (project-current))))
-           (swift-package-file (concat root "Package.swift"))
-           (cmake-file (concat root "CMakeLists.txt")))
-      (if (and (not (file-exists-p cmake-file)) (file-exists-p swift-package-file) (file-exists-p pd-sourcekit-lsp-path))
-          (list pd-sourcekit-lsp-path)
-        (list pd-clangd-path))))
-
-  (add-to-list 'eglot-server-programs `((swift-mode) ,pd-sourcekit-lsp-path))
-  (add-to-list 'eglot-server-programs '((c-mode c++-mode obj-c-mode) . pd-cc-mode-lsp-server))
+  (add-to-list 'eglot-server-programs '((swift-mode) "sourcekit-lsp"))
+  (add-to-list 'eglot-server-programs '((c-mode c++-mode obj-c-mode) "clangd"))
   (add-to-list 'eglot-server-programs '(rust-mode "rust-analyzer")))
 
 (use-package rust-mode
