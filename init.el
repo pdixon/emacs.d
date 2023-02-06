@@ -584,10 +584,6 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
-(use-package consult-eglot
-  :ensure t
-  :defer t)
-
 (use-package whitespace
   :defer t
   :config
