@@ -34,3 +34,4 @@ elpa/
 /.lsp-session-v1
 /eln-cache/
 /projects
+/org-persist/
