@@ -1499,6 +1499,14 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package json-mode
   :ensure t)
 
+(use-package pinboard
+  :ensure t
+  :defer t)
+
+(use-package age
+  :ensure t
+  :defer t)
+
 (defvar user-company "Phillip Dixon")
 
 (dir-locals-set-class-variables
