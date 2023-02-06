@@ -42,3 +42,16 @@ Hence I've spend a bit of time on the various auto typing features.
 + ~aspell~
 + ~clangd~
 + ~sourcekit-lsp~
+
+* Building Emacs
+I like to run recent builds from the master branch (I'm not patient enough to
+wait for a release to get all the great new stuff that's getting merged).
+
+On macOS:
+
+#+BEGIN_SRC zsh
+./configure --with-mailutils --with-native-compilation
+MAKEFLAGS="-j$(nproc)" make bootstrap && make install
+plutil -insert LSEnvironment -xml '<dict/>' nextstep/Emacs.app/Contents/Info.plist
+plutil -insert LSEnvironment.PATH -string "$(echo $PATH)" nextstep/Emacs.app/Contents/Info.plist
+#+END_SRC
