@@ -468,11 +468,6 @@ point reaches the beginning or end of the buffer, stop there."
   :init
   (global-font-lock-mode t))
 
-(use-package exec-path-from-shell
-  :if (eq system-type 'darwin)
-  :ensure t
-  :init (exec-path-from-shell-initialize))
-
 (use-package zenburn-theme
   :disabled t
   :ensure t
