@@ -92,13 +92,6 @@
         (when (package-installed-p package)
           (add-to-list 'package-selected-packages package))))))
 
-;; Boot strap use-package
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(when (package-installed-p 'use-package)
-  (add-to-list 'package-selected-packages 'use-package))
-
 ; This needs to be set before use-package is loaded
 (custom-set-variables '(use-package-enable-imenu-support t))
 (custom-set-variables '(use-package-compute-statistics t))
