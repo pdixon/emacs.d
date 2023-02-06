@@ -1357,6 +1357,7 @@ point reaches the beginning or end of the buffer, stop there."
          (prog-mode . flyspell-prog-mode)))
 
 (use-package flymake
+  :defer t
   :config
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 
@@ -1453,6 +1454,7 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t)
 
 (use-package eglot
+  :defer t
   :ensure t
   :commands (eglot eglot-ensure)
   :hook ((swift-mode . eglot-ensure)
@@ -1494,9 +1496,11 @@ point reaches the beginning or end of the buffer, stop there."
   :hook ((sql-mode . sqlind-minor-mode)))
 
 (use-package docker-compose-mode
+  :defer t
   :ensure t)
 
 (use-package json-mode
+  :defer t
   :ensure t)
 
 (use-package pinboard
