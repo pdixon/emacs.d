@@ -35,3 +35,5 @@ elpa/
 /eln-cache/
 /projects
 /org-persist/
+/tree-sitter/
+/multisession/
