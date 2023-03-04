@@ -1446,7 +1446,7 @@ point reaches the beginning or end of the buffer, stop there."
   :commands (eglot eglot-ensure)
   :hook ((swift-mode . eglot-ensure)
          (rust-mode . eglot-ensure)
-         (rust-ts-mode . elgot-ensure)
+         (rust-ts-mode . eglot-ensure)
          (c-mode . eglot-ensure)
          (c++-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
