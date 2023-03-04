@@ -1455,8 +1455,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq eglot-confirm-server-initiated-edits nil)
 
   (add-to-list 'eglot-server-programs '((swift-mode) "sourcekit-lsp"))
-  (add-to-list 'eglot-server-programs '((c-mode c++-mode obj-c-mode) "clangd"))
-  (add-to-list 'eglot-server-programs '(rust-mode "rust-analyzer")))
+  (add-to-list 'eglot-server-programs '((obj-c-mode) "clangd")))
 
 (use-package rust-mode
   :ensure t
