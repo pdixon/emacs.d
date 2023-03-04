@@ -1447,8 +1447,11 @@ point reaches the beginning or end of the buffer, stop there."
   :commands (eglot eglot-ensure)
   :hook ((swift-mode . eglot-ensure)
          (rust-mode . eglot-ensure)
+         (rust-ts-mode . elgot-ensure)
          (c-mode . eglot-ensure)
          (c++-mode . eglot-ensure)
+         (c-ts-mode . eglot-ensure)
+         (c++-ts-mode . eglot-ensure)
          (obc-c-mode . eglot-ensure))
   :config
   (setq eglot-strict-mode nil)
@@ -1497,6 +1500,14 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package age
   :ensure t
   :defer t)
+
+(use-package treesit
+  :defer t
+  :init
+  (setq treesit-language-source-alist
+        '((c . ("https://github.com/tree-sitter/tree-sitter-c"))
+          (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
+          (rust . ("https://github.com/tree-sitter/tree-sitter-rust")))))
 
 (defvar user-company "Phillip Dixon")
 
