@@ -1450,7 +1450,8 @@ point reaches the beginning or end of the buffer, stop there."
          (c++-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
          (c++-ts-mode . eglot-ensure)
-         (obc-c-mode . eglot-ensure))
+         (obc-c-mode . eglot-ensure)
+         (eglot-managed-mode . eglot-inlay-hints-mode))
   :config
   (setq eglot-strict-mode nil)
   (setq eglot-confirm-server-initiated-edits nil)
