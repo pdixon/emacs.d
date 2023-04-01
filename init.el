@@ -1442,7 +1442,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package eglot
   :defer t
-  :ensure t
   :commands (eglot eglot-ensure)
   :hook ((swift-mode . eglot-ensure)
          (rust-mode . eglot-ensure)
