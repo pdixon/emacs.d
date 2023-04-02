@@ -1340,8 +1340,14 @@ point reaches the beginning or end of the buffer, stop there."
   (eldoc-add-command 'c-electric-paren))
 
 (use-package flyspell
+  :disabled t
   :hook ((text-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode)))
+
+(use-package jinx
+  :ensure t
+  :hook (emacs-startup . global-jinx-mode)
+  :bind ([remap ispell-word] . jinx-correct))
 
 (use-package flymake
   :defer t
