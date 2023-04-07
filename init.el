@@ -757,10 +757,6 @@ point reaches the beginning or end of the buffer, stop there."
   :load-path "lisp/"
   :commands (pd-cleanroom-mode))
 
-(use-package pinboard
-  :load-path "lisp/pinboard"
-  :commands (pinboard-list-bookmarks))
-
 (use-package diff-hl
   :ensure t
   :defer t)
@@ -1375,22 +1371,6 @@ point reaches the beginning or end of the buffer, stop there."
   :hook ((text-mode . bug-reference-mode)
          (prog-mode . bug-reference-prog-mode)))
 
-(use-package mu4e
-  :defer t
-  :load-path "/usr/local/share/emacs/site-lisp/mu4e"
-  :commands (mu4e)
-  :config
-  (require 'mu4e-contrib)
-  (setq mu4e-maildir "~/.mail/gmail"
-        mu4e-sent-folder "/sent"
-        mu4e-drafts-folder "/drafts"
-        mu4e-trash-folder "/trash"
-        mu4e-refile-folder "/archive"
-        mu4e-get-mail-command "mbsync -a"
-        mu4e-view-prefer-html t
-        mu4e-html2text-command 'mu4e-shr2text
-        mu4e-change-filenames-when-moving t))
-
 (use-package clang-format
   :defer t
   :ensure t)
@@ -1434,13 +1414,6 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package ninja-mode
   :ensure t
   :defer t)
-
-(use-package excorporate
-  :ensure t
-  :defer t
-  :config
-  (setq excorporate-configuration
-        '("pdixon@dynamiccontrols.com" . "https://outlook.office365.com/EWS/Exchange.asmx")))
 
 (use-package restclient
   :ensure t
