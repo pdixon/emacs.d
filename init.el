@@ -572,6 +572,12 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
+(use-package marginalia
+  :ensure t
+  :bind (:map minibuffer-local-map
+             ("M-A" . marginalia-cycle))
+  :init (marginalia-mode))
+
 (use-package whitespace
   :defer t
   :config
