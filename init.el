@@ -578,6 +578,17 @@ point reaches the beginning or end of the buffer, stop there."
              ("M-A" . marginalia-cycle))
   :init (marginalia-mode))
 
+(use-package embark
+  :ensure t
+  :bind
+  (("C-." . embark-act)
+   ("C-;" . embark-dwim)))
+
+(use-package embark-consult
+  :ensure t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
 (use-package whitespace
   :defer t
   :config
