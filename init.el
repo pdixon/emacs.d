@@ -1456,6 +1456,10 @@ point reaches the beginning or end of the buffer, stop there."
   (add-to-list 'eglot-server-programs '((swift-mode) "sourcekit-lsp"))
   (add-to-list 'eglot-server-programs '((obj-c-mode) "clangd")))
 
+(use-package breadcrumb
+  :vc (:url "https://github.com/joaotavora/breadcrumb.git"
+       :rev :newest))
+
 (use-package rust-mode
   :ensure t
   :mode ("\\.rs\\'" . rust-mode))
