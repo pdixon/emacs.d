@@ -791,7 +791,8 @@ point reaches the beginning or end of the buffer, stop there."
   (setq magit-branch-prefer-remote-upstream '("master"))
   (setq magit-refs-pad-commit-counts t)
   (setq magit-pull-or-fetch t)
-  (add-to-list 'git-commit-known-pseudo-headers "Ticket"))
+  (add-to-list 'git-commit-known-pseudo-headers "Ticket")
+  (add-to-list 'git-commit-known-pseudo-headers "Fixes"))
 
 (use-package magit-repos
   :defer t
