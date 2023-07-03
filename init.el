@@ -1361,7 +1361,8 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package jinx
   :ensure t
   :hook (emacs-startup . global-jinx-mode)
-  :bind ([remap ispell-word] . jinx-correct))
+  :bind  (([remap ispell-word] . jinx-correct)
+          ("C-;" . jinx-correct)))
 
 (use-package flymake
   :defer t
