@@ -780,6 +780,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package hl-todo
   :ensure t
+  :init (add-hook 'flymake-diagnostics-functions #'hl-todo-flymake)
   :hook (prog-mode . hl-todo-mode))
 
 (use-package magit
