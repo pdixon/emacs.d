@@ -1458,8 +1458,9 @@ point reaches the beginning or end of the buffer, stop there."
   (add-to-list 'eglot-server-programs '((obj-c-mode) "clangd")))
 
 (use-package breadcrumb
-  :vc (:url "https://github.com/joaotavora/breadcrumb.git"
-       :rev :newest))
+  :ensure t
+  :defer t
+  :hook ((prog-mode breadcrumb-local)))
 
 (use-package rust-mode
   :ensure t
