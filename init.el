@@ -1260,14 +1260,6 @@ point reaches the beginning or end of the buffer, stop there."
   (define-auto-insert "\\.org\\'"
     ["template.org" pd-expand-buffer]))
 
-
-(use-package haskell-mode
-  :ensure t
-  :mode ("\\.l?hs\\'" . haskell-mode)
-  :config
-  (add-hook 'haskell-mode-hook #'turn-on-haskell-doc-mode)
-  (add-hook 'haskell-mode-hook #'turn-on-haskell-indent))
-
 (use-package lua-mode
   :ensure t
   :mode ("\\.lua\\'" . lua-mode)
