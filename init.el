@@ -1441,6 +1441,7 @@ point reaches the beginning or end of the buffer, stop there."
          (c-ts-mode . eglot-ensure)
          (c++-ts-mode . eglot-ensure)
          (obc-c-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
          (eglot-managed-mode . eglot-inlay-hints-mode))
   :config
   (setq eglot-strict-mode nil)
