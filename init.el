@@ -555,6 +555,10 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init (delete-selection-mode))
 
+(use-package project
+  :defer t
+  :custom ((project-mode-line t)))
+
 (use-package vertico
   :ensure t
   :init
