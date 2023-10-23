@@ -784,7 +784,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package hl-todo
   :ensure t
-  :init (add-hook 'flymake-diagnostics-functions #'hl-todo-flymake)
+  :init (add-hook 'flymake-diagnostic-functions #'hl-todo-flymake)
   :hook (prog-mode . hl-todo-mode))
 
 (use-package magit
@@ -1447,11 +1447,17 @@ point reaches the beginning or end of the buffer, stop there."
          (c++-ts-mode . eglot-ensure)
          (obc-c-mode . eglot-ensure)
          (python-mode . eglot-ensure)
-         (eglot-managed-mode . eglot-inlay-hints-mode))
+         (eglot-managed-mode . eglot-inlay-hints-mode)
+         (eglot-managed-mode . flymake-mode))
   :config
   (setq eglot-strict-mode nil)
-  (setq eglot-confirm-server-initiated-edits nil)
+  (setq eglot-confirm-server-edits nil)
 
+  ;; Since I want to have multiple flymake back ends I don't want the automatic
+  ;; flymake setup
+  (add-to-list 'eglot-stay-out-of 'flymake)
+
+  (add-hook 'flymake-diagnostic-functions 'eglot-flymake-backend)
   (add-to-list 'eglot-server-programs '((swift-mode) "sourcekit-lsp"))
   (add-to-list 'eglot-server-programs '((obj-c-mode) "clangd")))
 
