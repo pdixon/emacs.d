@@ -1461,6 +1461,11 @@ point reaches the beginning or end of the buffer, stop there."
   (add-to-list 'eglot-server-programs '((swift-mode) "sourcekit-lsp"))
   (add-to-list 'eglot-server-programs '((obj-c-mode) "clangd")))
 
+(use-package dape
+  :vc (:url "https://github.com/svaante/dape"
+            :branch "master")
+  :defer t)
+
 (use-package breadcrumb
   :ensure t
   :defer t

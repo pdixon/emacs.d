@@ -6,7 +6,7 @@
  '(ns-pop-up-frames nil)
  '(ns-use-srgb-colorspace t)
  '(package-vc-selected-packages
-   '((breadcrumb :url "https://github.com/joaotavora/breadcrumb.git")))
+   '((dape :url "https://github.com/svaante/dape" :branch "master")))
  '(safe-local-variable-values
    '((emacs-lisp-docstring-fill-column . 75)
      (user-mail-address . "pdixon@dynamiccontrols.com")
