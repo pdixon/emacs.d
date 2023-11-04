@@ -1463,6 +1463,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package dape
   :vc (:url "https://github.com/svaante/dape"
+            :rev :newest
             :branch "master")
   :defer t)
 
