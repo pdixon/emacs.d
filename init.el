@@ -1470,7 +1470,17 @@ point reaches the beginning or end of the buffer, stop there."
   :vc (:url "https://github.com/svaante/dape"
             :rev :newest
             :branch "master")
-  :defer t)
+  :defer t
+  :config
+  (add-to-list 'dape-configs
+               `(lldb-vscode
+                 modes (c-mode c-ts-mode c++-mode c++-ts-mode rust-mode rust-ts-mode)
+                 command "lldb-vscode"
+                 :name "Debug"
+                 :type "lldb-vscode"
+                 :request "launch"
+                 :cwd dape-cwd-fn
+                 :program dape-find-file)))
 
 (use-package breadcrumb
   :ensure t
