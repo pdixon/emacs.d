@@ -1368,6 +1368,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package flymake
   :defer t
+  :custom
+  (flymake-show-diagnostics-at-end-of-line 'short)
   :config
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 
