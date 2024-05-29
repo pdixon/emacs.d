@@ -161,7 +161,7 @@
 (bind-key "C-c y" #'bury-buffer)
 
 (bind-key "C-x w" 'delete-frame)
-(bind-key "C-x k" 'kill-this-buffer)
+(bind-key "C-x k" 'kill-current-buffer)
 
 (bind-keys :prefix-map my-toggle-map
            :prefix "C-x t"
