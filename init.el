@@ -1469,9 +1469,7 @@ point reaches the beginning or end of the buffer, stop there."
   (add-to-list 'eglot-server-programs '((obj-c-mode) "clangd")))
 
 (use-package dape
-  :vc (:url "https://github.com/svaante/dape"
-            :rev :newest
-            :branch "master")
+  :ensure t
   :defer t
   :config
   (add-to-list 'dape-configs
