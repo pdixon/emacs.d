@@ -1333,13 +1333,7 @@ point reaches the beginning or end of the buffer, stop there."
     (setq truncate-lines t))
 
   (add-hook 'compilation-mode-hook #'pd/compilation-hook)
-
-  (require 'ansi-color)
-  (defun pd/colourise-compilation-buffer ()
-    (when (eq major-mode 'compilation-mode)
-      (ansi-color-apply-on-region compilation-filter-start (point-max))))
-
-  (add-hook 'compilation-filter-hook 'pd/colourise-compilation-buffer))
+  (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter))
 
 (use-package eldoc
   :diminish
