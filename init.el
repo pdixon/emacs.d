@@ -535,10 +535,6 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :ensure t)
 
-(use-package go-mode
-  :defer t
-  :ensure t)
-
 (use-package graphviz-dot-mode
   :defer t
   :ensure t)
