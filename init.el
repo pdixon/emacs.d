@@ -791,7 +791,9 @@ point reaches the beginning or end of the buffer, stop there."
   (setq magit-display-buffer-function #'magit-display-buffer-fullcolumn-most-v1)
   (setq magit-branch-prefer-remote-upstream '("master"))
   (setq magit-refs-pad-commit-counts t)
-  (setq magit-pull-or-fetch t))
+  (setq magit-pull-or-fetch t)
+  (add-to-list 'git-commit-trailers "Ticket")
+  (add-to-list 'git-commit-trailers "Fixes"))
 
 (use-package magit-repos
   :defer t
@@ -819,13 +821,6 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package git-link
   :ensure t
   :defer t)
-
-(use-package git-commit
-  :ensure t
-  :defer t
-  :config
-  (add-to-list 'git-commit-trailers "Ticket")
-  (add-to-list 'git-commit-trailers "Fixes"))
 
 (use-package diff
   :config
