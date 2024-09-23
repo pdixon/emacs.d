@@ -24,6 +24,11 @@
 
 ;;; Code:
 
+(if (eq system-type 'darwin)
+    (progn
+      (setenv "PATH" (concat "/opt/homebrew/bin" ":" (getenv "PATH")))
+      (add-to-list 'exec-path "/opt/homebrew/bin")))
+
 (setq package-enable-at-startup nil)
 (setq package-selected-packages nil)
 
