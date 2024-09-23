@@ -601,6 +601,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package auth-source
   :defer t
+  :disabled t
   :config
   (setq auth-sources '("~/.authinfo.gpg")))
 
