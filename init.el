@@ -1407,6 +1407,11 @@ point reaches the beginning or end of the buffer, stop there."
 
   (add-hook 'eww-after-render-hook 'rename-eww-buffer))
 
+(use-package nov
+  :ensure t
+  :custom (nov-header-line-format nil)
+  :mode ("\\.epub\\'" . nov-mode))
+
 (use-package epg
   :defer t
   :config
