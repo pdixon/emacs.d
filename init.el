@@ -1466,7 +1466,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package breadcrumb
   :ensure t
   :defer t
-  :hook ((prog-mode breadcrumb-local)))
+  :init (breadcrumb-mode))
 
 (use-package rust-mode
   :ensure t
