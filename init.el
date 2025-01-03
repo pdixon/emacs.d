@@ -1376,10 +1376,6 @@ point reaches the beginning or end of the buffer, stop there."
   :hook ((text-mode . bug-reference-mode)
          (prog-mode . bug-reference-prog-mode)))
 
-(use-package clang-format
-  :defer t
-  :ensure t)
-
 (use-package info
   :defer t
   :config
