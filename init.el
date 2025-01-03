@@ -1417,10 +1417,6 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq epg-gpgconf-program "gpg"))
 
-(use-package swift-mode
-  :ensure t
-  :interpreter "swift")
-
 (use-package ninja-mode
   :ensure t
   :defer t)
@@ -1441,6 +1437,7 @@ point reaches the beginning or end of the buffer, stop there."
          (c++-ts-mode . eglot-ensure)
          (obc-c-mode . eglot-ensure)
          (python-mode . eglot-ensure)
+         (swift-ts-mode . eglot-ensure)
          (eglot-managed-mode . eglot-inlay-hints-mode)
          (eglot-managed-mode . flymake-mode))
   :config
@@ -1452,7 +1449,7 @@ point reaches the beginning or end of the buffer, stop there."
   (add-to-list 'eglot-stay-out-of 'flymake)
 
   (add-hook 'flymake-diagnostic-functions 'eglot-flymake-backend)
-  (add-to-list 'eglot-server-programs '((swift-mode) "sourcekit-lsp"))
+  (add-to-list 'eglot-server-programs '((swift-mode swift-ts-mode) "sourcekit-lsp"))
   (add-to-list 'eglot-server-programs '((obj-c-mode) "clangd")))
 
 (use-package dape
@@ -1531,8 +1528,29 @@ point reaches the beginning or end of the buffer, stop there."
           (make "https://github.com/alemuller/tree-sitter-make")
           (markdown "https://github.com/ikatyang/tree-sitter-markdown")
           (python "https://github.com/tree-sitter/tree-sitter-python")
+          (swift "https://codeberg.org/woolsweater/tree-sitter-swifter.git")
           (toml "https://github.com/tree-sitter/tree-sitter-toml")
-          (yaml "https://github.com/ikatyang/tree-sitter-yaml"))))
+          (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+  (setq major-mode-remap-alist
+        '((yaml-mode . yaml-ts-mode)
+          (css-mode . css-ts-mode)
+          (javascript-mode . js-ts-mode)
+          (json-mode . json-ts-mode)
+          (html-mode . html-ts-mode)
+          (swift-mode . swift-ts-mode))))
+
+
+;; Major Modes
+
+;;; Text Modes
+
+;;; Prog Modes
+(use-package swift-ts-mode
+  :ensure t
+  :vc (:url "https://codeberg.org/woolsweater/swift-ts-mode.git"
+            :rev :newest)
+  :mode "\\.swift\\'"
+  :interpreter "swift")
 
 (defvar user-company "Phillip Dixon")
 
