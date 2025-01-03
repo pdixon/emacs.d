@@ -1467,10 +1467,6 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init (breadcrumb-mode))
 
-(use-package rust-mode
-  :ensure t
-  :mode ("\\.rs\\'" . rust-mode))
-
 (use-package toml-mode
   :ensure t
   :mode ("\\.toml\\'" . toml-mode))
@@ -1533,6 +1529,7 @@ point reaches the beginning or end of the buffer, stop there."
           (javascript-mode . js-ts-mode)
           (json-mode . json-ts-mode)
           (html-mode . html-ts-mode)
+          (rust-mode . rust-ts-mode)
           (swift-mode . swift-ts-mode))))
 
 
@@ -1541,6 +1538,10 @@ point reaches the beginning or end of the buffer, stop there."
 ;;; Text Modes
 
 ;;; Prog Modes
+
+(use-package rust-ts-mode
+  :mode "\\.rs\\'")
+
 (use-package swift-ts-mode
   :ensure t
   :vc (:url "https://codeberg.org/woolsweater/swift-ts-mode.git"
