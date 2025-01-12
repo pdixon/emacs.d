@@ -1467,10 +1467,6 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :init (breadcrumb-mode))
 
-(use-package toml-mode
-  :ensure t
-  :mode ("\\.toml\\'" . toml-mode))
-
 (use-package copy-as-format
   :ensure t
   :defer t)
@@ -1524,13 +1520,14 @@ point reaches the beginning or end of the buffer, stop there."
           (toml "https://github.com/tree-sitter/tree-sitter-toml")
           (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
   (setq major-mode-remap-alist
-        '((yaml-mode . yaml-ts-mode)
-          (css-mode . css-ts-mode)
+        '((css-mode . css-ts-mode)
           (javascript-mode . js-ts-mode)
           (json-mode . json-ts-mode)
           (html-mode . html-ts-mode)
           (rust-mode . rust-ts-mode)
-          (swift-mode . swift-ts-mode))))
+          (swift-mode . swift-ts-mode)
+          (toml-mode . toml-ts-mode)
+          (yaml-mode . yaml-ts-mode))))
 
 
 ;; Major Modes
@@ -1548,6 +1545,9 @@ point reaches the beginning or end of the buffer, stop there."
             :rev :newest)
   :mode "\\.swift\\'"
   :interpreter "swift")
+
+(use-package toml-ts-mode
+  :mode ("\\.toml\\'" . toml-mode))
 
 (defvar user-company "Phillip Dixon")
 
