@@ -1529,6 +1529,14 @@ point reaches the beginning or end of the buffer, stop there."
           (toml-mode . toml-ts-mode)
           (yaml-mode . yaml-ts-mode))))
 
+(use-package indent-bars
+  :ensure t
+  :defer t
+  :custom
+  (indent-bars-no-descend-lists t) ; no extra bars in continued func arg lists
+  (indent-bars-treesit-support t)
+  :hook
+  (prog-mode . indent-bars-mode))
 
 ;; Major Modes
 
