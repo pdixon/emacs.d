@@ -1436,6 +1436,8 @@ point reaches the beginning or end of the buffer, stop there."
          (swift-ts-mode . eglot-ensure)
          (eglot-managed-mode . eglot-inlay-hints-mode)
          (eglot-managed-mode . flymake-mode))
+  :custom
+  (eglot-code-action-indicator "α")
   :config
   (setq eglot-strict-mode nil)
   (setq eglot-confirm-server-edits nil)
