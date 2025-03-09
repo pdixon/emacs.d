@@ -1552,7 +1552,9 @@ point reaches the beginning or end of the buffer, stop there."
   :vc (:url "https://codeberg.org/woolsweater/swift-ts-mode.git"
             :rev :newest)
   :mode "\\.swift\\'"
-  :interpreter "swift")
+  :interpreter "swift"
+  :custom
+  (swift-ts-basic-offset 4))
 
 (use-package toml-ts-mode
   :mode ("\\.toml\\'" . toml-mode))
