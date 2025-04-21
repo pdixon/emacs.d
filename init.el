@@ -458,10 +458,6 @@ point reaches the beginning or end of the buffer, stop there."
   (setq mouse-wheel-tilt-scroll t)
   (setq mouse-wheel-flip-direction t))
 
-(use-package font-core
-  :init
-  (global-font-lock-mode t))
-
 (use-package zenburn-theme
   :disabled t
   :ensure t
