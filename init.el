@@ -426,28 +426,24 @@ point reaches the beginning or end of the buffer, stop there."
   (message "Non use-package stuff...done (%.3fs)" elapsed))
 
 (use-package simple
-  :init
-  (column-number-mode t)
-  (line-number-mode t)
-  (size-indication-mode t)
   :config
-  (setq mail-user-agent 'message-user-agent))
+  (setq mail-user-agent 'message-user-agent)
+  :hook ((after-init . column-number-mode)
+         (after-init . line-number-mode)
+         (after-init . size-indication-mode)))
 
 (use-package pixel-scroll
-  :init
-  (pixel-scroll-precision-mode t))
+  :hook (after-init . pixel-scroll-precision-mode))
 
 (use-package diminish
   :ensure t)
 
 (use-package elec-pair
-  :init
-  (electric-pair-mode t))
+  :hook (after-init . electric-pair-mode))
 
 (use-package electric
-  :init
-  (electric-indent-mode t)
-  (electric-layout-mode t))
+  :hook ((after-init . electric-indent-mode)
+         (after-init . electric-layout-mode)))
 
 (use-package vc-hooks
   :config
@@ -473,8 +469,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Save a list of recent files visited.
 (use-package recentf
-  :init (recentf-mode +1)
-  :hook (buffer-list-update-hook . recentf-track-opened-file)
+  :hook ((after-init . recentf-mode)
+         (buffer-list-update . recentf-track-opened-file))
   :config
   (setq  recentf-auto-cleanup 300
          recentf-exclude (list "/\\.git/.*\\'" ; Git contents
@@ -482,7 +478,7 @@ point reaches the beginning or end of the buffer, stop there."
                                )))
 
 (use-package autorevert
-  :init (global-auto-revert-mode)
+  :hook (after-init . global-auto-revert-mode)
   :config
   (progn
     (setq global-auto-revert-non-file-buffers t
@@ -490,7 +486,7 @@ point reaches the beginning or end of the buffer, stop there."
           auto-revert-verbose nil)))
 
 (use-package savehist
-  :init (savehist-mode t))
+  :hook (after-init . savehist-mode))
 
 (use-package minibuffer
   :config
@@ -521,8 +517,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t)
 
 (use-package delsel
-  :defer t
-  :init (delete-selection-mode))
+  :hook (after-init . delete-selection-mode))
 
 (use-package project
   :defer t
@@ -530,8 +525,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package vertico
   :ensure t
-  :init
-  (vertico-mode))
+  :hook (after-init . vertico-mode))
 
 (use-package consult
   :ensure t
@@ -549,7 +543,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :bind (:map minibuffer-local-map
              ("M-A" . marginalia-cycle))
-  :init (marginalia-mode))
+  :hook (after-init . marginalia-mode))
 
 (use-package embark
   :ensure t
@@ -666,7 +660,7 @@ point reaches the beginning or end of the buffer, stop there."
                 ))))
 
 (use-package uniquify
-  :init
+  :config
   (setq uniquify-buffer-name-style 'reverse
         uniquify-separator "/"
         uniquify-after-kill-buffer-p t
@@ -735,8 +729,8 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package hungry-delete
   :ensure t
   :diminish
-  :init
-  (global-hungry-delete-mode)
+  :hook
+  (after-init . global-hungry-delete-mode)
   :config
   (setq hungry-delete-chars-to-skip " \t"))
 
@@ -1318,17 +1312,15 @@ point reaches the beginning or end of the buffer, stop there."
   :bind (("C-x o" . ace-window)))
 
 (use-package which-func
-  :init (which-function-mode))
+  :hook (after-init . which-function-mode))
 
 (use-package saveplace
-  :init (save-place-mode))
+  :hook (after-init . save-place-mode))
 
 (use-package prog-mode
-  :defer t
-  :config
-  (add-hook 'prog-mode-hook 'pd/local-comment-auto-fill)
-  (add-hook 'prog-mode-hook 'hl-line-mode)
-  (add-hook 'prog-mode-hook 'whitespace-mode))
+  :hook ((prog-mode . pd/local-comment-auto-fill)
+         (prog-mode . hl-line-mode)
+         (prog-mode . whitespace-mode)))
 
 (use-package bug-reference
   :hook ((text-mode . bug-reference-mode)
@@ -1359,7 +1351,7 @@ point reaches the beginning or end of the buffer, stop there."
   (defun rename-eww-buffer ()
     (rename-buffer (format "*eww : %s *" (plist-get eww-data :title)) t))
 
-  (add-hook 'eww-after-render-hook 'rename-eww-buffer))
+  :hook (eww-after-render . rename-eww-buffer))
 
 (use-package nov
   :ensure t
@@ -1425,7 +1417,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package breadcrumb
   :ensure t
   :defer t
-  :init (breadcrumb-mode))
+  :hook (after-init . breadcrumb-mode))
 
 (use-package copy-as-format
   :ensure t
