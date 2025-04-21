@@ -458,31 +458,7 @@ point reaches the beginning or end of the buffer, stop there."
   (setq mouse-wheel-tilt-scroll t)
   (setq mouse-wheel-flip-direction t))
 
-(use-package zenburn-theme
-  :disabled t
-  :ensure t
-  :config
-  (load-theme 'zenburn t))
-
-(use-package solarized
-  :disabled t
-  :ensure solarized-theme
-  :defer t
-  :init
-  (setq solarized-distinct-fringe-background t
-        solarized-high-contrast-mode-line nil
-        solarized-use-less-bold t
-        solarized-use-more-italic t
-        solarized-use-variable-pitch nil
-        solarized-height-minus-1 1.0
-        solarized-height-plus-1 1.0
-        solarized-height-plus-2 1.0
-        solarized-height-plus-3 1.0
-        solarized-height-plus-4 1.0)
-  (load-theme 'solarized-dark t))
-
 (use-package color-theme-sanityinc-tomorrow
-;  :disabled t
   :ensure t
   :config
   (load-theme (color-theme-sanityinc-tomorrow--theme-name 'eighties) t))
@@ -1208,21 +1184,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package corfu-popupinfo
   :hook ((corfu . corfu-popupinfo-mode)))
-
-(use-package company
-  :disabled t
-  :ensure t
-  :defer t
-  :init
-  (add-hook 'c-mode-common-hook #'company-mode)
-  (add-hook 'elisp-mode #'company-mode)
-  (add-hook 'python-mode #'company-mode)
-  (add-hook 'rust-mode #'company-mode)
-  :config
-  (push #'company-capf company-backends)
-  (setq company-backends (delete 'company-semantic company-backends))
-  (setq company-begin-commands '(self-insert-command))
-  (setq company-idle-delay 0.3))
 
 (use-package autoinsert
   :defer t
