@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defvar my-yas-after-expand-sexp nil)
 
 (defmacro my-yas-after-expand (&rest body)

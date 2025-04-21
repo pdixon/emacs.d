@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;; init.el -- Emacs init file.
 
 ;; Copyright (C) 2011-2014 Phillip Dixon

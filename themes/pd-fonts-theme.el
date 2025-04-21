@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (deftheme pd-fonts
   "My basic font settings.")
 
