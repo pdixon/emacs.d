@@ -1455,22 +1455,6 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package treesit
   :defer t
   :init
-  (setq treesit-language-source-alist
-        '((c . ("https://github.com/tree-sitter/tree-sitter-c"))
-          (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
-          (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
-          (bash "https://github.com/tree-sitter/tree-sitter-bash")
-          (cmake "https://github.com/uyha/tree-sitter-cmake")
-          (css "https://github.com/tree-sitter/tree-sitter-css")
-          (html "https://github.com/tree-sitter/tree-sitter-html")
-          (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
-          (json "https://github.com/tree-sitter/tree-sitter-json")
-          (make "https://github.com/alemuller/tree-sitter-make")
-          (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-          (python "https://github.com/tree-sitter/tree-sitter-python")
-          (swift "https://codeberg.org/woolsweater/tree-sitter-swifter.git")
-          (toml "https://github.com/tree-sitter/tree-sitter-toml")
-          (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
   (setq major-mode-remap-alist
         '((css-mode . css-ts-mode)
           (javascript-mode . js-ts-mode)
