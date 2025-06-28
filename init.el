@@ -465,7 +465,7 @@ point reaches the beginning or end of the buffer, stop there."
   (load-theme 'pd-fonts t))
 
 (use-package frame
-  :config (add-to-list 'initial-frame-alist '(fullscreen . maximized)))
+  :config ())
 
 ;; Save a list of recent files visited.
 (use-package recentf
