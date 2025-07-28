@@ -754,6 +754,8 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package magit
   :ensure t
   :bind (("<f7>" . magit-status))
+  :custom
+  (magit-refs-primary-column-width '(16 . 64))
   :config
   (magit-auto-revert-mode)
   (setq magit-display-buffer-function #'magit-display-buffer-fullcolumn-most-v1)
