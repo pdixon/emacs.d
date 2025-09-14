@@ -125,6 +125,7 @@
 (setq-default indicate-empty-lines t)
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
 (unless (eq system-type 'darwin)
   (menu-bar-mode -1))
 
