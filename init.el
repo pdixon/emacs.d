@@ -1500,6 +1500,9 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package toml-ts-mode
   :mode ("\\.toml\\'" . toml-mode))
 
+(use-package taskpaper-mode
+  :ensure t)
+
 (defvar user-company "Phillip Dixon")
 
 (dir-locals-set-class-variables
