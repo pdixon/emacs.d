@@ -37,3 +37,4 @@ elpa/
 /org-persist/
 /tree-sitter/
 /multisession/
+/user-lisp/.user-lisp-autoloads.el

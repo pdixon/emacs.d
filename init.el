@@ -737,11 +737,9 @@ point reaches the beginning or end of the buffer, stop there."
   (setq hungry-delete-chars-to-skip " \t"))
 
 (use-package pd-centered-window
-  :load-path "lisp/"
   :commands (pd-centered-window-mode))
 
 (use-package pd-cleanroom
-  :load-path "lisp/"
   :commands (pd-cleanroom-mode))
 
 (use-package diff-hl
@@ -804,7 +802,6 @@ point reaches the beginning or end of the buffer, stop there."
   (setq ediff-split-window-function #'split-window-horizontally))
 
 (use-package pd-editing-extras
-  :load-path "lisp/"
   :bind (("C-c +" . my-increment)
          ("C-t" . transpose-dwim)
          ("M-c". toggle-letter-case)
@@ -828,12 +825,10 @@ point reaches the beginning or end of the buffer, stop there."
          ("\\.dll\\'" . hexl-mode)))
 
 (use-package pd-project
-  :load-path "lisp/"
   :bind(("C-c b" . pd-project-compile))
   :commands (pd-project-todo))
 
 (use-package pd-window-extras
-  :load-path "lisp/"
   :bind (("C-x 2" . pd-split-other-buffer-vertically)
          ("C-x 3" . pd-split-other-buffer-horizontally))
   :commands (pd/rotate-windows
@@ -1271,12 +1266,11 @@ point reaches the beginning or end of the buffer, stop there."
     (set (make-local-variable 'cc-other-file-alist)
          '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
 
-  (add-hook 'objc-mode-hook #'pd/objc-ff-setup-hook)
+  (add-hook 'objc-mode-hook #'pd/objc-ff-setup-hook))
 
-  (use-package pd-cc-mode-extras
-    :load-path "lisp/"
+(use-package pd-cc-mode-extras
     :commands (pd/toggle-header
-               pd/toggle-test)))
+               pd/toggle-test))
 
 (use-package compile
   :defer t
