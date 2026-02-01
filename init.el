@@ -1484,6 +1484,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package swift-ts-mode
   :ensure t
+  :defer t
   :vc (:url "https://codeberg.org/woolsweater/swift-ts-mode.git"
             :rev :newest)
   :mode "\\.swift\\'"
@@ -1492,10 +1493,12 @@ point reaches the beginning or end of the buffer, stop there."
   (swift-ts-basic-offset 4))
 
 (use-package toml-ts-mode
+  :defer t
   :mode ("\\.toml\\'" . toml-mode))
 
 (use-package taskpaper-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (defvar user-company "Phillip Dixon")
 
