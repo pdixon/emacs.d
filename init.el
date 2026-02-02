@@ -523,7 +523,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package project
   :defer t
-  :custom ((project-mode-line t)))
+  :custom ((project-mode-line t)
+           (project-compilation-buffer-name-function 'project-prefixed-buffer-name)))
 
 (use-package vertico
   :ensure t

@@ -24,7 +24,6 @@
 
 ;;; Code:
 
-(require 'compile)
 (require 'grep)
 (require 'project)
 (require 'subr-x)
@@ -46,21 +45,6 @@
   :group 'pd-project
   :type '(repeat string)
   :safe 'listp)
-
-;;;###autoload
-(defun pd-project-compile ()
-  "Call compile at the project root."
-  (interactive)
-  (when-let (root (nth 0 (project-roots (project-current))))
-    (let ((comp-buffer-name (concat "*compilation: " root "*"))
-          (default-directory root))
-      (if (get-buffer comp-buffer-name)
-          (with-current-buffer comp-buffer-name
-            (recompile))
-        (progn
-          (compile compile-command)
-          (with-current-buffer "*compilation*"
-            (rename-buffer comp-buffer-name)))))))
 
 ;;;###autoload
 (defun pd-project-todo ()
