@@ -719,10 +719,10 @@ point reaches the beginning or end of the buffer, stop there."
   :bind (("C-x C-j" . dired-jump)
          ("C-x 4 C-j" . dired-jump-other-window)))
 
-(use-package expand-region
+(use-package expreg
   :ensure t
-  :bind (("M-\"" . er/contract-region)
-         ("M-'" . er/expand-region)))
+  :bind (("M-\"" . expreg-contract)
+         ("M-'" . expreg-expand)))
 
 (use-package change-inner
   :ensure t
