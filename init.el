@@ -724,11 +724,6 @@ point reaches the beginning or end of the buffer, stop there."
   :bind (("M-\"" . expreg-contract)
          ("M-'" . expreg-expand)))
 
-(use-package change-inner
-  :ensure t
-  :bind (("M-i" . change-inner)
-         ("M-o" . change-outer)))
-
 (use-package hungry-delete
   :ensure t
   :diminish
@@ -773,10 +768,6 @@ point reaches the beginning or end of the buffer, stop there."
                                        ("~/work/" . 3)
                                        ("~/" . 1))))
 
-(use-package forge
-  :disabled t
-  :ensure t)
-
 (use-package orgit
   :ensure t
   :defer t)
@@ -810,11 +801,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package bookmark
   :bind ("<f9>" . bookmark-bmenu-list))
-
-(use-package multiple-cursors
-  :ensure t
-  :bind (("C-<" . mc/mark-previous-like-this)
-         ("C->" . mc/mark-next-like-this)))
 
 (use-package paredit
   :ensure t
