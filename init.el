@@ -1501,6 +1501,9 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :defer t)
 
+(use-package c-ts-mode
+  :custom (c-ts-mode-enable-doxygen 't))
+
 (defvar user-company "Phillip Dixon")
 
 (dir-locals-set-class-variables
