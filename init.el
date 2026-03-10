@@ -502,10 +502,6 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :ensure t)
 
-(use-package cmake-mode
-  :defer t
-  :ensure t)
-
 (use-package graphviz-dot-mode
   :defer t
   :ensure t)
@@ -1484,6 +1480,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package c-ts-mode
   :custom (c-ts-mode-enable-doxygen 't))
+
+(use-package treesit
+  :custom (treesit-enabled-modes t))
 
 (defvar user-company "Phillip Dixon")
 
