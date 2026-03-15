@@ -248,36 +248,6 @@ point reaches the beginning or end of the buffer, stop there."
                   (line-beginning-position (+ 1 arg)))
   (message "%d line%s copied" arg (if (= 1 arg) "" "s")))
 
-(defun my-isearch-yank-current-word ()
-  "Pull current word from buffer into search string."
-  (interactive)
-  (save-excursion
-    (skip-syntax-backward "w_")
-    (isearch-yank-internal
-     (lambda ()
-       (skip-syntax-forward "w_")
-       (point)))))
-
-(defun my-search-word-backward ()
-  "Find the previous occurrence of the current word."
-  (interactive)
-  (let ((cur (point)))
-    (skip-syntax-backward "w_")
-    (goto-char
-     (if (re-search-backward (concat "\\_<" (current-word) "\\_>") nil t)
-         (match-beginning 0)
-       cur))))
-
-(defun my-search-word-forward ()
-  "Find the previous occurrence of the current word."
-  (interactive)
-  (let ((cur (point)))
-    (skip-syntax-forward "w_")
-    (goto-char
-     (if (re-search-forward (concat "\\_<" (current-word) "\\_>") nil t)
-         (match-beginning 0)
-       cur))))
-
 (defun clean-up-buffer-or-region ()
   "Untabify, indent, and delete trailing whitespace from buffer or region."
   (interactive)
@@ -286,13 +256,6 @@ point reaches the beginning or end of the buffer, stop there."
     (untabify beginning end)
     (indent-region beginning end)
     (delete-trailing-whitespace beginning end)))
-
-
-;; (defun esk-sudo-edit (&optional arg)
-;;   (interactive "p")
-;;   (if (or arg (not buffer-file-name))
-;;       (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
-;;     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 (defun esk-eval-and-replace ()
   "Replace the preceding sexp with its value."
