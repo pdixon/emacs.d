@@ -114,6 +114,7 @@
 (blink-cursor-mode -1)
 
 ;; C Source
+(setopt use-short-answers t)
 (setq use-dialog-box nil)
 (setq user-full-name "Phillip Dixon")
 (setq indicate-empty-lines t)
@@ -153,7 +154,6 @@
 ;; Paragraphs
 (setq-default sentence-end-double-space nil)
 
-(fset 'yes-or-no-p #'y-or-n-p)
 (fset 'display-startup-echo-area-message #'ignore)
 
 (bind-key "M-J" #'delete-indentation-forward)
