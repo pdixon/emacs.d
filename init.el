@@ -473,6 +473,10 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :ensure t)
 
+(use-package isearch
+  :defer t
+  :custom (isearch-lazy-count t))
+
 (use-package window-number
   :defer t
   :ensure t)
