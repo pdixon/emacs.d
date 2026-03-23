@@ -1377,10 +1377,6 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :ensure t)
 
-(use-package json-mode
-  :defer t
-  :ensure t)
-
 (use-package pinboard
   :ensure t
   :defer t)
