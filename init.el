@@ -774,16 +774,9 @@ point reaches the beginning or end of the buffer, stop there."
   :mode (("\\.exe\\'" . hexl-mode)
          ("\\.dll\\'" . hexl-mode)))
 
-(use-package pd-project
-  :bind(("C-c b" . pd-project-compile))
-  :commands (pd-project-todo))
-
 (use-package pd-window-extras
   :bind (("C-x 2" . pd-split-other-buffer-vertically)
-         ("C-x 3" . pd-split-other-buffer-horizontally))
-  :commands (pd/rotate-windows
-             pd/toggle-window-split
-             pd/toggle-just-one-window))
+         ("C-x 3" . pd-split-other-buffer-horizontally)))
 
 (use-package deft
   :ensure t
