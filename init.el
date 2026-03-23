@@ -1362,7 +1362,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package meson-mode
   :ensure t
-  :hook (meson-mode . company-mode))
+  :defer t)
 
 (use-package sql
   :defer t
