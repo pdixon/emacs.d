@@ -767,7 +767,11 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package paredit
   :ensure t
+  :defer t
   :diminish
+  :bind (:map paredit-mode-map
+         ("M-s" . nil)
+         ("M-?" . nil))
   :hook (emacs-lisp-mode . enable-paredit-mode))
 
 (use-package hexl-mode
