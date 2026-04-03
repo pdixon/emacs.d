@@ -412,7 +412,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package vc-hooks
   :config
-  (setq vc-handled-backends '(Git Hg)))
+  (setq vc-handled-backends '(Git)))
 
 (use-package mwheel
   :config
