@@ -903,7 +903,11 @@ point reaches the beginning or end of the buffer, stop there."
     ["template.m" pd-expand-buffer])
 
   (define-auto-insert "\\.org\\'"
-    ["template.org" pd-expand-buffer]))
+    ["template.org" pd-expand-buffer])
+ 
+  (define-auto-insert "\\.cpp\\'"
+    ["template.cpp" pd-expand-buffer])
+  )
 
 (use-package lua-mode
   :ensure t
@@ -1192,6 +1196,17 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package treesit
   :custom (treesit-enabled-modes t))
+
+(use-package proced
+  :defer t
+  :custom
+  (proced-enable-color-flag t)
+  (proced-tree-flag t)
+  (proced-auto-update-flag 'visible)
+  (proced-auto-update-interval 1)
+  (proced-descend t)
+  (proced-format 'medium)
+  (proced-filter 'user))
 
 (defvar user-company "Phillip Dixon")
 
