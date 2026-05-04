@@ -381,8 +381,8 @@ point reaches the beginning or end of the buffer, stop there."
 (message "Non use-package stuff...done (%.3fs)" (time-to-seconds (time-since before-init-time)))
 
 (use-package simple
-  :config
-  (setq mail-user-agent 'message-user-agent)
+  :defer t
+  :custom (mail-user-agent 'message-user-agent)
   :hook ((after-init . column-number-mode)
          (after-init . line-number-mode)
          (after-init . size-indication-mode)))
@@ -391,7 +391,8 @@ point reaches the beginning or end of the buffer, stop there."
   :hook (after-init . pixel-scroll-precision-mode))
 
 (use-package diminish
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package elec-pair
   :hook (after-init . electric-pair-mode))
@@ -401,13 +402,14 @@ point reaches the beginning or end of the buffer, stop there."
          (after-init . electric-layout-mode)))
 
 (use-package vc-hooks
-  :config
-  (setq vc-handled-backends '(Git)))
+  :defer t
+  :custom (vc-handled-backends '(Git)))
 
 (use-package mwheel
-  :config
-  (setq mouse-wheel-tilt-scroll t)
-  (setq mouse-wheel-flip-direction t))
+  :defer t
+  :custom
+  (mouse-wheel-tilt-scroll t)
+  (mouse-wheel-flip-direction t))
 
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
@@ -441,6 +443,7 @@ point reaches the beginning or end of the buffer, stop there."
   :hook (after-init . savehist-mode))
 
 (use-package minibuffer
+  :defer t
   :config
   (setq completion-styles '(basic substring partial-completion)))
 
@@ -613,6 +616,7 @@ point reaches the beginning or end of the buffer, stop there."
                 ))))
 
 (use-package uniquify
+  :defer t
   :config
   (setq uniquify-buffer-name-style 'reverse
         uniquify-separator "/"
@@ -662,6 +666,7 @@ point reaches the beginning or end of the buffer, stop there."
   (bind-key "^" 'pd-dired-find-alternate-parent dired-mode-map))
 
 (use-package calendar
+  :defer t
   :custom
   (calendar-week-start-day 1 "Weeks start on Monday"))
 
@@ -731,6 +736,7 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t)
 
 (use-package diff
+  :defer t
   :config
   (setq diff-switches "-u"))
 
@@ -969,6 +975,7 @@ point reaches the beginning or end of the buffer, stop there."
   (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter))
 
 (use-package eldoc
+  :defer t
   :diminish
   :hook (emacs-lisp-mode . eldoc-mode)
   :config
@@ -1131,16 +1138,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package treesit
   :defer t
-  :init
-  (setq major-mode-remap-alist
-        '((css-mode . css-ts-mode)
-          (javascript-mode . js-ts-mode)
-          (json-mode . json-ts-mode)
-          (html-mode . html-ts-mode)
-          (rust-mode . rust-ts-mode)
-          (swift-mode . swift-ts-mode)
-          (toml-mode . toml-ts-mode)
-          (yaml-mode . yaml-ts-mode))))
+  :custom (treesit-enabled-modes t))
 
 (use-package indent-bars
   :ensure t
@@ -1179,10 +1177,8 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t)
 
 (use-package c-ts-mode
+  :defer t
   :custom (c-ts-mode-enable-doxygen 't))
-
-(use-package treesit
-  :custom (treesit-enabled-modes t))
 
 (use-package proced
   :defer t
