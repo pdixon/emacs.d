@@ -31,8 +31,6 @@
 ;; Please don't load outdated byte code
 (setq load-prefer-newer t)
 
-(require 'subr-x)
-
 (setq custom-file (concat user-emacs-directory "custom.el"))
 
 ;; load the customize stuff
@@ -420,9 +418,6 @@ point reaches the beginning or end of the buffer, stop there."
   :load-path "themes"
   :config
   (load-theme 'pd-fonts t))
-
-(use-package frame
-  :config ())
 
 ;; Save a list of recent files visited.
 (use-package recentf
