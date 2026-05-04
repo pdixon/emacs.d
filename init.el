@@ -33,8 +33,6 @@
 
 (require 'subr-x)
 
-(defconst *emacs-load-start* (current-time))
-
 (setq custom-file (concat user-emacs-directory "custom.el"))
 
 ;; load the customize stuff
@@ -42,9 +40,7 @@
 
 (prefer-coding-system 'utf-8)
 
-(let ((elapsed (float-time (time-subtract (current-time)
-                                          *emacs-load-start*))))
-  (message "Basic Config...done (%.3fs)" elapsed))
+(message "Basic Config...done (%.3fs)" (time-to-seconds (time-since before-init-time)))
 
 ;; package.el setup
 (require 'package)
@@ -102,9 +98,7 @@
   (require 'use-package))
 ;(setq use-package-verbose t)
 
-(let ((elapsed (float-time (time-subtract (current-time)
-                                          *emacs-load-start*))))
-  (message "Package Config...done (%.3fs)" elapsed))
+(message "Package Config...done (%.3fs)" (time-to-seconds (time-since before-init-time)))
 
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
@@ -386,9 +380,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;;   there's no (provide 'text-mode) till emacs 26.
 (add-hook 'text-mode-hook #'auto-fill-mode)
 
-(let ((elapsed (float-time (time-subtract (current-time)
-                                          *emacs-load-start*))))
-  (message "Non use-package stuff...done (%.3fs)" elapsed))
+(message "Non use-package stuff...done (%.3fs)" (time-to-seconds (time-since before-init-time)))
 
 (use-package simple
   :config
@@ -1218,7 +1210,5 @@ point reaches the beginning or end of the buffer, stop there."
 (dir-locals-set-directory-class
  (expand-file-name "~/work/") 'work-directory)
 
-(let ((elapsed (float-time (time-subtract (current-time)
-                                          *emacs-load-start*))))
-  (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+(message "Loading %s...done (%.3fs)" load-file-name  (time-to-seconds (time-since before-init-time)))
 ;;; init.el ends here

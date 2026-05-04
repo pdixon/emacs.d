@@ -32,5 +32,14 @@
 (setq package-enable-at-startup nil)
 (setq package-selected-packages nil)
 
+(defun display-startup-time ()
+  "Display the startup time and number of garbage collections."
+  (message "Emacs init loaded in %.3f seconds (time to emacs-startup-hook: %.3fs) with %d garbage collections."
+           (float-time (time-subtract after-init-time before-init-time))
+           (time-to-seconds (time-since before-init-time))
+           gcs-done))
+
+(add-hook 'emacs-startup-hook #'display-startup-time 100)
+
 (provide 'early-init)
 ;;; early-init.el ends here
