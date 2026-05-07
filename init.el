@@ -91,6 +91,7 @@
 (setopt use-package-enable-imenu-support t)
 (setopt use-package-compute-statistics t)
 (setopt use-package-ensure-function #'pd-package-ensure-elpa)
+(setopt use-package-hook-name-suffix nil)
 (eval-when-compile
   (require 'use-package))
 (setopt use-package-verbose t)
@@ -375,36 +376,36 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package simple
   :defer t
   :custom (mail-user-agent 'message-user-agent)
-  :hook ((after-init . column-number-mode)
-         (after-init . line-number-mode)
-         (after-init . size-indication-mode)))
+  :hook ((after-init-hook . column-number-mode)
+         (after-init-hook . line-number-mode)
+         (after-init-hook . size-indication-mode)))
 
 (use-package text-mode
   :defer t
   :hook
-  (text-mode . auto-fill-mode))
+  (text-mode-hook . auto-fill-mode))
 
 (use-package pixel-scroll
   :disabled t
-  :hook (after-init . pixel-scroll-precision-mode))
+  :hook (after-init-hook . pixel-scroll-precision-mode))
 
 (use-package ultra-scroll
   :ensure t
   :defer t
   :custom
   (scroll-margin 0)
-  :hook (after-init . ultra-scroll-mode))
+  :hook (after-init-hook . ultra-scroll-mode))
 
 (use-package diminish
   :ensure t
   :defer t)
 
 (use-package elec-pair
-  :hook (after-init . electric-pair-mode))
+  :hook (after-init-hook . electric-pair-mode))
 
 (use-package electric
-  :hook ((after-init . electric-indent-mode)
-         (after-init . electric-layout-mode)))
+  :hook ((after-init-hook . electric-indent-mode)
+         (after-init-hook . electric-layout-mode)))
 
 (use-package vc-hooks
   :defer t
@@ -428,8 +429,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Save a list of recent files visited.
 (use-package recentf
-  :hook ((after-init . recentf-mode)
-         (buffer-list-update . recentf-track-opened-file))
+  :hook ((after-init-hook . recentf-mode)
+         (buffer-list-update-hook . recentf-track-opened-file))
   :custom
   (recentf-auto-cleanup 300)
   (recentf-exclude '("/\\.git/.*\\'"      ; Git contents
@@ -437,14 +438,14 @@ point reaches the beginning or end of the buffer, stop there."
                      )))
 
 (use-package autorevert
-  :hook (after-init . global-auto-revert-mode)
+  :hook (after-init-hook . global-auto-revert-mode)
   :custom
   (global-auto-revert-non-file-buffers t)
   (auto-revert-check-vc-info t)
   (auto-revert-verbose nil))
 
 (use-package savehist
-  :hook (after-init . savehist-mode))
+  :hook (after-init-hook . savehist-mode))
 
 (use-package minibuffer
   :defer t
@@ -476,7 +477,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t)
 
 (use-package delsel
-  :hook (after-init . delete-selection-mode))
+  :hook (after-init-hook . delete-selection-mode))
 
 (use-package project
   :defer t
@@ -485,7 +486,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package vertico
   :ensure t
-  :hook (after-init . vertico-mode))
+  :hook (after-init-hook . vertico-mode))
 
 (use-package consult
   :ensure t
@@ -502,7 +503,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :bind (:map minibuffer-local-map
              ("M-A" . marginalia-cycle))
-  :hook (after-init . marginalia-mode))
+  :hook (after-init-hook . marginalia-mode))
 
 (use-package embark
   :ensure t
@@ -513,7 +514,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package embark-consult
   :ensure t
   :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+  (embark-collect-mode-hook . consult-preview-at-point-mode))
 
 (use-package whitespace
   :defer t
@@ -523,7 +524,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package display-fill-column-indicator
   :defer t
-  :hook (prog-mode . display-fill-column-indicator-mode))
+  :hook (prog-mode-hook . display-fill-column-indicator-mode))
 
 (use-package auth-source
   :defer t
@@ -685,7 +686,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :diminish
   :hook
-  (after-init . global-hungry-delete-mode)
+  (after-init-hook . global-hungry-delete-mode)
   :custom
   (hungry-delete-chars-to-skip " \t"))
 
@@ -702,7 +703,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package hl-todo
   :ensure t
   :init (add-hook 'flymake-diagnostic-functions #'hl-todo-flymake)
-  :hook (prog-mode . hl-todo-mode))
+  :hook (prog-mode-hook . hl-todo-mode))
 
 (use-package magit
   :ensure t
@@ -841,7 +842,7 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :commands (yas-expand yas-hippie-try-expand)
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
-  :hook ((text-mode prog-mode)  . yas-minor-mode)
+  :hook ((text-mode-hook prog-mode-hook)  . yas-minor-mode)
   :config
   (setq yas-verbosity 1)
   (setq yas-snippet-dirs (list (concat user-emacs-directory "snippets")))
@@ -860,10 +861,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package corfu
   :ensure t
-  :hook ((prog-mode . corfu-mode)))
+  :hook ((prog-mode-hook . corfu-mode)))
 
 (use-package corfu-popupinfo
-  :hook ((corfu . corfu-popupinfo-mode)))
+  :hook ((corfu-hook . corfu-popupinfo-mode)))
 
 (use-package autoinsert
   :defer t
@@ -975,13 +976,13 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package eldoc
   :defer t
   :diminish
-  :hook (emacs-lisp-mode . eldoc-mode)
+  :hook (emacs-lisp-mode-hook . eldoc-mode)
   :config
   (eldoc-add-command 'c-electric-paren))
 
 (use-package jinx
   :ensure t
-  :hook (emacs-startup . global-jinx-mode)
+  :hook (emacs-startup-hook . global-jinx-mode)
   :bind  (([remap ispell-word] . jinx-correct)
           ("C-;" . jinx-correct)))
 
@@ -998,19 +999,19 @@ point reaches the beginning or end of the buffer, stop there."
   :bind (("C-x o" . ace-window)))
 
 (use-package which-func
-  :hook (after-init . which-function-mode))
+  :hook (after-init-hook . which-function-mode))
 
 (use-package saveplace
-  :hook (after-init . save-place-mode))
+  :hook (after-init-hook . save-place-mode))
 
 (use-package prog-mode
-  :hook ((prog-mode . pd/local-comment-auto-fill)
-         (prog-mode . hl-line-mode)
-         (prog-mode . whitespace-mode)))
+  :hook ((prog-mode-hook . pd/local-comment-auto-fill)
+         (prog-mode-hook . hl-line-mode)
+         (prog-mode-hook . whitespace-mode)))
 
 (use-package bug-reference
-  :hook ((text-mode . bug-reference-mode)
-         (prog-mode . bug-reference-prog-mode)))
+  :hook ((text-mode-hook . bug-reference-mode)
+         (prog-mode-hook . bug-reference-prog-mode)))
 
 (use-package info
   :defer t
@@ -1037,7 +1038,7 @@ point reaches the beginning or end of the buffer, stop there."
   (defun rename-eww-buffer ()
     (rename-buffer (format "*eww : %s *" (plist-get eww-data :title)) t))
 
-  :hook (eww-after-render . rename-eww-buffer))
+  :hook (eww-after-render-hook . rename-eww-buffer))
 
 (use-package nov
   :ensure t
@@ -1060,18 +1061,18 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package eglot
   :defer t
   :commands (eglot eglot-ensure)
-  :hook ((swift-mode . eglot-ensure)
-         (rust-mode . eglot-ensure)
-         (rust-ts-mode . eglot-ensure)
-         (c-mode . eglot-ensure)
-         (c++-mode . eglot-ensure)
-         (c-ts-mode . eglot-ensure)
-         (c++-ts-mode . eglot-ensure)
-         (obc-c-mode . eglot-ensure)
-         (python-mode . eglot-ensure)
-         (swift-ts-mode . eglot-ensure)
-         (eglot-managed-mode . eglot-inlay-hints-mode)
-         (eglot-managed-mode . flymake-mode))
+  :hook ((swift-mode-hook . eglot-ensure)
+         (rust-mode-hook . eglot-ensure)
+         (rust-ts-mode-hook . eglot-ensure)
+         (c-mode-hook . eglot-ensure)
+         (c++-mode-hook . eglot-ensure)
+         (c-ts-mode-hook . eglot-ensure)
+         (c++-ts-mode-hook . eglot-ensure)
+         (obc-c-mode-hook . eglot-ensure)
+         (python-mode-hook . eglot-ensure)
+         (swift-ts-mode-hook . eglot-ensure)
+         (eglot-managed-mode-hook . eglot-inlay-hints-mode)
+         (eglot-managed-mode-hook . flymake-mode))
   :custom
   (eglot-code-action-indicator "α")
   (eglot-strict-mode nil)
@@ -1103,7 +1104,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package breadcrumb
   :ensure t
   :defer t
-  :hook (after-init . breadcrumb-mode))
+  :hook (after-init-hook . breadcrumb-mode))
 
 (use-package copy-as-format
   :ensure t
@@ -1120,7 +1121,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package sql-indent
   :ensure t
-  :hook ((sql-mode . sqlind-minor-mode)))
+  :hook ((sql-mode-hook . sqlind-minor-mode)))
 
 (use-package docker-compose-mode
   :defer t
@@ -1145,7 +1146,7 @@ point reaches the beginning or end of the buffer, stop there."
   (indent-bars-no-descend-lists t) ; no extra bars in continued func arg lists
   (indent-bars-treesit-support t)
   :hook
-  (prog-mode . indent-bars-mode))
+  (prog-mode-hook . indent-bars-mode))
 
 ;; Major Modes
 
