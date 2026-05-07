@@ -430,27 +430,26 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package recentf
   :hook ((after-init . recentf-mode)
          (buffer-list-update . recentf-track-opened-file))
-  :config
-  (setq  recentf-auto-cleanup 300
-         recentf-exclude (list "/\\.git/.*\\'" ; Git contents
-                               "/elpa/.*\\'" ; Package files
-                               )))
+  :custom
+  (recentf-auto-cleanup 300)
+  (recentf-exclude '("/\\.git/.*\\'"      ; Git contents
+                     "/elpa/.*\\'"        ; Package files
+                     )))
 
 (use-package autorevert
   :hook (after-init . global-auto-revert-mode)
-  :config
-  (progn
-    (setq global-auto-revert-non-file-buffers t
-          auto-revert-check-vc-info t
-          auto-revert-verbose nil)))
+  :custom
+  (global-auto-revert-non-file-buffers t)
+  (auto-revert-check-vc-info t)
+  (auto-revert-verbose nil))
 
 (use-package savehist
   :hook (after-init . savehist-mode))
 
 (use-package minibuffer
   :defer t
-  :config
-  (setq completion-styles '(basic substring partial-completion)))
+  :custom
+  (completion-styles '(basic substring partial-completion)))
 
 (use-package applescript-mode
   :defer t
@@ -493,8 +492,7 @@ point reaches the beginning or end of the buffer, stop there."
   :bind (("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
          ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
          ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-         )
-  :config)
+         ))
 
 (use-package consult-project-extra
   :ensure t
@@ -519,9 +517,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package whitespace
   :defer t
-  :config
-  (setq whitespace-style '(face trailing tabs)
-        whitespace-line-column 80))
+  :custom
+  (whitespace-style '(face trailing tabs))
+  (whitespace-line-column 80))
 
 (use-package display-fill-column-indicator
   :defer t
@@ -530,8 +528,8 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package auth-source
   :defer t
   :disabled t
-  :config
-  (setq auth-sources '("~/.authinfo.gpg")))
+  :custom
+  (auth-sources '("~/.authinfo.gpg")))
 
 (use-package eudc
   :defer t
@@ -544,42 +542,41 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package message
   :defer t
-  :config
-  (setq message-send-mail-function 'smtpmail-send-it
-        message-kill-buffer-on-exit t))
+  :custom
+  (message-send-mail-function 'smtpmail-send-it)
+  (message-kill-buffer-on-exit t))
 
 (use-package sendmail
   :defer t
-  :config
-  (setq send-mail-function 'smtpmail-send-it ))
+  :custom
+  (send-mail-function 'smtpmail-send-it) )
 
 (use-package smtpmail
   :defer t
-  :config
-  (setq smtpmail-stream-type 'ssl
-        smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 465))
+  :custom
+  (smtpmail-stream-type 'ssl)
+  (smtpmail-smtp-server "smtp.gmail.com")
+  (smtpmail-smtp-service 465))
 
 (use-package ispell
   :defer t
-  :config
-  (setq ispell-dictionary "en_GB-ise"
-        ispell-extra-args `("--keyboard=dvorak")
-        ispell-silently-savep t))
+  :custom
+  (ispell-dictionary "en_GB-ise")
+  (ispell-extra-args `("--keyboard=dvorak"))
+  (ispell-silently-savep t))
 
 (use-package imenu
   :defer t
-  :config
-  (progn
-    (setq imenu-max-items 200)))
+  :custom
+  (imenu-max-items 200))
 
 (use-package imenu-list
   :defer t
   :ensure t
   :bind ("C-'" . imenu-list-smart-toggle)
-  :config
-  (setq imenu-list-focus-after-activation t)
-  (setq imenu-list-auto-resize t))
+  :custom
+  (imenu-list-focus-after-activation t)
+  (imenu-list-auto-resize t))
 
 (use-package ibuffer
   :defer t
@@ -622,11 +619,11 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package uniquify
   :defer t
-  :config
-  (setq uniquify-buffer-name-style 'reverse
-        uniquify-separator "/"
-        uniquify-after-kill-buffer-p t
-        uniquify-ignore-buffers-re "^\\*"))
+  :custom
+  (uniquify-buffer-name-style 'reverse)
+  (uniquify-separator "/")
+  (uniquify-after-kill-buffer-p t)
+  (uniquify-ignore-buffers-re "^\\*"))
 
 (use-package files
   :defer t
@@ -689,8 +686,8 @@ point reaches the beginning or end of the buffer, stop there."
   :diminish
   :hook
   (after-init . global-hungry-delete-mode)
-  :config
-  (setq hungry-delete-chars-to-skip " \t"))
+  :custom
+  (hungry-delete-chars-to-skip " \t"))
 
 (use-package pd-centered-window
   :commands (pd-centered-window-mode))
@@ -723,10 +720,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package magit-repos
   :defer t
-  :config
-  (setq magit-repository-directories '(("~/personal/" . 3)
-                                       ("~/work/" . 3)
-                                       ("~/" . 1))))
+  :custom
+  (magit-repository-directories '(("~/personal/" . 3)
+                                  ("~/work/" . 3)
+                                  ("~/" . 1))))
 
 (use-package git-modes
   :ensure t
@@ -742,13 +739,13 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package diff
   :defer t
-  :config
-  (setq diff-switches "-u"))
+  :custom
+  (diff-switches "-u"))
 
 (use-package ediff
   :defer t
-  :config
-  (setq ediff-split-window-function #'split-window-horizontally))
+  :custom
+  (ediff-split-window-function #'split-window-horizontally))
 
 (use-package pd-editing-extras
   :bind (("C-c +" . my-increment)
@@ -779,16 +776,16 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package deft
   :ensure t
   :bind ("<f5>" . deft)
-  :config
-  (setq deft-default-extension "md")
-  (setq deft-extensions '("md" "mdwn" "org"))
-  (setq deft-directory "~/personal/notes")
-  (setq deft-recursive t)
-  (setq deft-use-filename-as-title nil)
-  (setq deft-use-filter-string-for-filename t)
-  (setq deft-file-naming-rules '((noslash . "-")
-                                 (nospace . "-")
-                                 (case-fn . downcase))))
+  :custom
+  (deft-default-extension "md")
+  (deft-extensions '("md" "mdwn" "org"))
+  (deft-directory "~/personal/notes")
+  (deft-recursive t)
+  (deft-use-filename-as-title nil)
+  (deft-use-filter-string-for-filename t)
+  (deft-file-naming-rules '((noslash . "-")
+                            (nospace . "-")
+                            (case-fn . downcase))))
 
 (use-package markdown-mode
   :ensure t
@@ -796,9 +793,10 @@ point reaches the beginning or end of the buffer, stop there."
          ("\\.md\\'" . markdown-mode)
          ("\\.mdwn\\'" . markdown-mode)
          ("\\.markdown" . markdown-mode))
-  :config
-  (setq markdown-command "pandoc")
-  (add-hook 'markdown-mode-hook #'imenu-add-menubar-index))
+  :custom
+  (markdown-command "pandoc")
+  :hook
+  (markdown-mode . imenu-add-menubar-index))
 
 
 (use-package pd-blog-helpers
@@ -907,8 +905,8 @@ point reaches the beginning or end of the buffer, stop there."
   :mode ("\\.lua\\'" . lua-mode)
   :interpreter (("lua" . lua-mode)
                 ("luajit" . lua-mode))
-  :config
-  (setq lua-indent-level 4))
+  :custom
+  (lua-indent-level 4))
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)
@@ -1023,13 +1021,13 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package time
   :defer t
-  :config
-  (setq display-time-world-time-format "%H:%M %d %b, %Z"
-        display-time-world-list '(("Pacific/Auckland" "Christchurch")
-                                  ("Pacific/Brisbane" "Brisbane")
-                                  ("Asia/Shanghai" "Suzhou")
-                                  ("Europe/London"    "London")
-                                  ("America/Los_Angeles" "San Francisco"))))
+  :custom
+  (display-time-world-time-format "%H:%M %d %b, %Z")
+  (display-time-world-list '(("Pacific/Auckland" "Christchurch")
+                             ("Pacific/Brisbane" "Brisbane")
+                             ("Asia/Shanghai" "Suzhou")
+                             ("Europe/London"    "London")
+                             ("America/Los_Angeles" "San Francisco"))))
 
 (use-package eww
   :defer t
@@ -1048,8 +1046,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package epg
   :defer t
-  :config
-  (setq epg-gpgconf-program "gpg"))
+  :custom
+  (epg-gpgconf-program "gpg"))
 
 (use-package ninja-mode
   :ensure t
@@ -1076,10 +1074,10 @@ point reaches the beginning or end of the buffer, stop there."
          (eglot-managed-mode . flymake-mode))
   :custom
   (eglot-code-action-indicator "α")
-  :config
-  (setq eglot-strict-mode nil)
-  (setq eglot-confirm-server-edits nil)
+  (eglot-strict-mode nil)
+  (eglot-confirm-server-edits nil)
 
+  :config
   ;; Since I want to have multiple flymake back ends I don't want the automatic
   ;; flymake setup
   (add-to-list 'eglot-stay-out-of 'flymake)
@@ -1117,8 +1115,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package sql
   :defer t
-  :config
-  (setq sql-product 'sqlite))
+  :custom
+  (sql-product 'sqlite))
 
 (use-package sql-indent
   :ensure t
