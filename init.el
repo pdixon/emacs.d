@@ -839,11 +839,6 @@ point reaches the beginning or end of the buffer, stop there."
     (goto-address-mode))
   (add-hook 'term-mode-hook 'my-term-hook))
 
-(use-package gnus-start
-  :defer t
-  :config
-  (setq gnus-init-file (concat user-emacs-directory "dot-gnus.el")))
-
 (use-package yasnippet
   :ensure t
   :commands (yas-expand yas-hippie-try-expand)
