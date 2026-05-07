@@ -88,13 +88,12 @@
           (add-to-list 'package-selected-packages package))))))
 
 ; This needs to be set before use-package is loaded
-(custom-set-variables '(use-package-enable-imenu-support t))
-(custom-set-variables '(use-package-compute-statistics t))
-(custom-set-variables '(use-package-ensure-function #'pd-package-ensure-elpa))
-
+(setopt use-package-enable-imenu-support t)
+(setopt use-package-compute-statistics t)
+(setopt use-package-ensure-function #'pd-package-ensure-elpa)
 (eval-when-compile
   (require 'use-package))
-;(setq use-package-verbose t)
+(setopt use-package-verbose t)
 
 (message "Package Config...done (%.3fs)" (time-to-seconds (time-since before-init-time)))
 

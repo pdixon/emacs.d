@@ -12,9 +12,6 @@
    '((emacs-lisp-docstring-fill-column . 75)
      (user-mail-address . "pdixon@dynamiccontrols.com")
      (user-company . "Dynamic Controls")))
- '(use-package-compute-statistics t)
- '(use-package-enable-imenu-support t)
- '(use-package-ensure-function #'pd-package-ensure-elpa)
  '(warning-suppress-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
