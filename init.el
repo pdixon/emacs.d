@@ -370,13 +370,6 @@ point reaches the beginning or end of the buffer, stop there."
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
   (auto-fill-mode t))
 
-;; (use-package text-mode
-;;   :defer t
-;;   :config)
-;; TODO Ideally these should be in a text-mode use package. But
-;;   there's no (provide 'text-mode) till emacs 26.
-(add-hook 'text-mode-hook #'auto-fill-mode)
-
 (message "Non use-package stuff...done (%.3fs)" (time-to-seconds (time-since before-init-time)))
 
 (use-package simple
@@ -385,6 +378,11 @@ point reaches the beginning or end of the buffer, stop there."
   :hook ((after-init . column-number-mode)
          (after-init . line-number-mode)
          (after-init . size-indication-mode)))
+
+(use-package text-mode
+  :defer t
+  :hook
+  (text-mode . auto-fill-mode))
 
 (use-package pixel-scroll
   :disabled t
