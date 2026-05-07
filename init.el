@@ -388,7 +388,15 @@ point reaches the beginning or end of the buffer, stop there."
          (after-init . size-indication-mode)))
 
 (use-package pixel-scroll
+  :disabled t
   :hook (after-init . pixel-scroll-precision-mode))
+
+(use-package ultra-scroll
+  :ensure t
+  :defer t
+  :custom
+  (scroll-margin 0)
+  :hook (after-init . ultra-scroll-mode))
 
 (use-package diminish
   :ensure t
