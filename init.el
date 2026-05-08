@@ -1177,7 +1177,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package c-ts-mode
   :defer t
-  :custom (c-ts-mode-enable-doxygen 't))
+  :custom
+  (c-ts-mode-enable-doxygen 't)
+  (c-ts-indent-offset 4))
 
 (use-package proced
   :defer t
