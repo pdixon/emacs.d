@@ -952,19 +952,16 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package compile
   :defer t
+  :hook (compilation-filter-hook . ansi-color-compilation-filter)
   :config
   (defun pd/compilation-hook ()
     (setq truncate-lines t))
-
-  (add-hook 'compilation-mode-hook #'pd/compilation-hook)
-  (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter))
+  (add-hook 'compilation-mode-hook #'pd/compilation-hook))
 
 (use-package eldoc
   :defer t
   :diminish
-  :hook (emacs-lisp-mode-hook . eldoc-mode)
-  :config
-  (eldoc-add-command 'c-electric-paren))
+  :hook (emacs-lisp-mode-hook . eldoc-mode))
 
 (use-package jinx
   :ensure t
