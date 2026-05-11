@@ -94,7 +94,8 @@
 (setopt use-package-hook-name-suffix nil)
 (eval-when-compile
   (require 'use-package))
-(setopt use-package-verbose t)
+(setopt use-package-verbose 'debug)
+(setopt use-package-minimum-reported-time 0.01)
 
 (message "Package Config...done (%.3fs)" (time-to-seconds (time-since before-init-time)))
 
