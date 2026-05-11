@@ -1169,7 +1169,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package toml-ts-mode
   :defer t
-  :mode ("\\.toml\\'" . toml-mode))
+  :mode ("\\.toml\\'" . toml-ts-mode))
 
 (use-package taskpaper-mode
   :ensure t
