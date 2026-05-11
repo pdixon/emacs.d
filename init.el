@@ -104,6 +104,8 @@
 (auto-compression-mode t)
 (tooltip-mode -1)
 (blink-cursor-mode -1)
+(unless (eq system-type 'darwin)
+  (menu-bar-mode -1))
 
 ;; C Source
 (setopt use-short-answers t)
@@ -119,11 +121,10 @@
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
-(unless (eq system-type 'darwin)
-  (menu-bar-mode -1))
 
 ;; Startup
 (setq inhibit-startup-message t)
+(setq inhibit-startup-echo-area-message t)
 (setq user-mail-address "phil@dixon.gen.nz")
 
 ;; Indent
@@ -132,8 +133,6 @@
 (setq-default tab-width 4)
 
 ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-(setq read-extended-command-predicate
-      #'command-completion-default-include-p)
 
 ;; Window
 (setq split-height-threshold 100)
@@ -145,8 +144,6 @@
 
 ;; Paragraphs
 (setq-default sentence-end-double-space nil)
-
-(fset 'display-startup-echo-area-message #'ignore)
 
 (bind-key "M-J" #'delete-indentation-forward)
 (bind-key "M-j" #'delete-indentation)
@@ -375,7 +372,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package simple
   :defer t
-  :custom (mail-user-agent 'message-user-agent)
+  :custom ((mail-user-agent 'message-user-agent)
+           (read-extended-command-predicate 'command-completion-default-include-p))
   :hook ((after-init-hook . column-number-mode)
          (after-init-hook . line-number-mode)
          (after-init-hook . size-indication-mode)))
