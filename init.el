@@ -786,18 +786,6 @@ point reaches the beginning or end of the buffer, stop there."
                             (nospace . "-")
                             (case-fn . downcase))))
 
-(use-package markdown-mode
-  :ensure t
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.mdwn\\'" . markdown-mode)
-         ("\\.markdown" . markdown-mode))
-  :custom
-  (markdown-command "pandoc")
-  :hook
-  (markdown-mode . imenu-add-menubar-index))
-
-
 (use-package pd-blog-helpers
   :commands (pd-blog-draft
              pd-blog-publish-post))
