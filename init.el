@@ -1007,12 +1007,12 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package time
   :defer t
   :custom
-  (display-time-world-time-format "%H:%M %d %b, %Z")
-  (display-time-world-list '(("Pacific/Auckland" "Christchurch")
-                             ("Pacific/Brisbane" "Brisbane")
-                             ("Asia/Shanghai" "Suzhou")
-                             ("Europe/London"    "London")
-                             ("America/Los_Angeles" "San Francisco"))))
+  (world-clock-time-format "%H:%M %d %b, %Z")
+  (world-clock-list '(("Pacific/Auckland" "Christchurch")
+                      ("Australia/Brisbane" "Brisbane")
+                      ("Asia/Shanghai" "Suzhou")
+                      ("Europe/London"    "London")
+                      ("America/Los_Angeles" "San Francisco"))))
 
 (use-package eww
   :defer t
