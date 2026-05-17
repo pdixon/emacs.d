@@ -32,15 +32,12 @@
 (defun pd-magit-bb-visit-pull-request ()
   "Visit the current branch's PR on bitbucket."
   (interactive)
-  (message
-   (format "%s/pull-requests/new?source=%s"
-           (replace-regexp-in-string
-            "\\`\\(.+\\)\\.git\\'" "\\1"
-            (magit-get "remote"
-                       (magit-get-remote (magit-branch-at-point))
-                       "url"))
-           (cdr (or (magit-get-upstream-branch (magit-branch-at-point))
-                    (user-error "No remote branch"))))))
+  (let* ((branch (or (magit-branch-at-point) (magit-get-current-branch)))
+         (url (magit-get "remote" branch "url")))
+    (message
+     (format "%s/pull-requests/new?source=%s"
+             url
+             branch))))
 
 (provide 'pd-magit-bitbucket)
 ;;; pd-magit-bitbucket.el ends here
