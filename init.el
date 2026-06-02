@@ -1136,6 +1136,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;;; Text Modes
 
+(use-package markdown-ts-mode
+  :defer t
+  :mode ("\\.mdwn\\'" . markdown-ts-mode-maybe))
+
 ;;; Prog Modes
 
 (use-package rust-ts-mode
