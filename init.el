@@ -1139,6 +1139,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;;; Prog Modes
 
 (use-package rust-ts-mode
+  :defer t
   :mode "\\.rs\\'")
 
 (use-package swift-ts-mode
