@@ -27,7 +27,21 @@
 (if (eq system-type 'darwin)
     (progn
       (setenv "PATH" (concat "/opt/homebrew/bin" ":" (getenv "PATH")))
-      (add-to-list 'exec-path "/opt/homebrew/bin")))
+      (add-to-list 'exec-path "/opt/homebrew/bin")
+      (setq native-comp-async-env-modifier-form
+            '(progn
+               (defun c/native-comp--preload-eln-after-compile
+                   (compile function-or-file &optional with-late-load output)
+                 "Preload async native-comp output in the compiler child."
+                 (prog1 (funcall compile function-or-file with-late-load output)
+                   (when (and (stringp function-or-file) with-late-load)
+                     (with-demoted-errors "Async native .eln preload: %S"
+                       (let ((eln-file (comp-el-to-eln-filename function-or-file)))
+                         (when (file-exists-p eln-file)
+                           (native-elisp-load eln-file t)))))))
+
+               (advice-add 'comp--native-compile
+                           :around #'c/native-comp--preload-eln-after-compile)))))
 
 (setq package-enable-at-startup nil)
 (setq package-selected-packages nil)
