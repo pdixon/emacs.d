@@ -137,6 +137,11 @@
 
 ;; Window
 (setq split-height-threshold 100)
+(setq window-combination-resize t)
+
+(setq help-window-select t)
+
+(setq ffap-machine-p-known 'reject)
 
 (if (eq system-type 'darwin)
     (progn
