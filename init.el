@@ -858,6 +858,12 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package corfu-popupinfo
   :hook ((corfu-hook . corfu-popupinfo-mode)))
 
+(use-package completion-preview
+  :hook (after-init-hook . global-completion-preview-mode)
+  :bind (:map completion-preview-active-mode-map
+              ("M-n" . completion-preview-next-candidate)
+              ("M-p" . completion-preview-prev-candidate)))
+
 (use-package autoinsert
   :defer t
   :init
