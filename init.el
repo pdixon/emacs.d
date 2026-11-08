@@ -792,10 +792,6 @@ point reaches the beginning or end of the buffer, stop there."
                             (nospace . "-")
                             (case-fn . downcase))))
 
-(use-package pd-blog-helpers
-  :commands (pd-blog-draft
-             pd-blog-publish-post))
-
 (use-package writegood-mode
   :ensure t
   :commands (writegood-mode))
@@ -940,10 +936,6 @@ point reaches the beginning or end of the buffer, stop there."
          '(("\\.m\\'" (".h")) ("\\.h\\'" (".m" ".c" ".cpp")))))
 
   (add-hook 'objc-mode-hook #'pd/objc-ff-setup-hook))
-
-(use-package pd-cc-mode-extras
-    :commands (pd/toggle-header
-               pd/toggle-test))
 
 (use-package compile
   :defer t
