@@ -808,27 +808,10 @@ point reaches the beginning or end of the buffer, stop there."
   :mode (("\\.bibtex\\'" . bibtex-mode)
          ("\\.bib\\'". bibtex-mode)))
 
-(use-package ansi-term
-  :bind ("<f10>" . pd-visit-term)
-  :init
-  (defun pd-visit-term ()
-    ""
-    (interactive)
-    (if (not (get-buffer "*ansi-term*"))
-        (ansi-term (getenv "SHELL"))
-      (switch-to-buffer "*ansi-term*")))
-  :config
-  (defun my-term-paste (&optional string)
-    (interactive)
-    (process-send-string
-     (get-buffer-process (current-buffer))
-     (if string
-         string
-       (current-kill 0))))
+(use-package ghostel
+  :ensure t)
 
-  (defun my-term-hook ()
-    (goto-address-mode))
-  (add-hook 'term-mode-hook 'my-term-hook))
+(use-package ghostel-project)
 
 (use-package yasnippet
   :ensure t
